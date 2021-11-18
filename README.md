@@ -16,7 +16,7 @@ xtool 是一个小小的 Java 工具集，仅包含了一些最常用的工具�
 
 ```xml
 <dependency>
-    <groupId>com.igeeksky.xtool</groupId>
+    <groupId>com.igeeksky</groupId>
     <artifactId>xtool</artifactId>
     <version>1.0.0</version>
 </dependency>
