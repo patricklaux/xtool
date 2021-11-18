@@ -34,7 +34,7 @@ implementation 'com.igeeksky:xtool:1.0.0'
 
 - https://gitee.com/igeeksky/xtool
 
-然后执行命令进行安装
+首先 git clone 项目，然后执行 maven 命令安装
 
 ```shell
 # git clone项目到本地
