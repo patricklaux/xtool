@@ -17,7 +17,7 @@
 package com.igeeksky.xtool.core.lang;
 
 /**
- * 数字工具类
+ * 数值工具类
  *
  * @author Patrick.Lau
  * @since 0.0.1 2017-02-28

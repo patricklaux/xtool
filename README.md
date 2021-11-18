@@ -1,18 +1,16 @@
 # xtool
 
-xtool 是一个小小的 Java 工具集，仅包含了一些最常用的工具类，不求大而全，只求小而美。
+## 1. 简介
 
+xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不求大而全，但求小而美。主要包含：
 
+- 字符串、数值、集合、IO等工具类；
+- 常用的自定义注解；
+- NLP 方向的数据结构。
 
-### Features
+## 2. 安装
 
-
-
-### Getting started
-
-
-
-### Maven dependency
+### Maven
 
 ```xml
 <dependency>
@@ -21,3 +19,12 @@ xtool 是一个小小的 Java 工具集，仅包含了一些最常用的工具�
     <version>1.0.0</version>
 </dependency>
 ```
+
+### Gradle
+
+```groovy
+implementation 'com.igeeksky:xtool:1.0.0'
+```
+
+## 3. 参与
+

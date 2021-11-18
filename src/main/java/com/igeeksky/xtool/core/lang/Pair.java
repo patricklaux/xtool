@@ -57,6 +57,6 @@ public class Pair<K, V> implements Serializable {
 
     @Override
     public String toString() {
-        return "{\"key\":\"" + key + ", \"value\":\"" + value + "\"}";
+        return "{\"key\":\"" + key + "\", \"value\":\"" + value + "\"}";
     }
 }
