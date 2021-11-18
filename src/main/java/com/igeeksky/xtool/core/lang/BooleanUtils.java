@@ -4,7 +4,7 @@ package com.igeeksky.xtool.core.lang;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
-public abstract class BooleanUtils {
+public class BooleanUtils {
 
     private BooleanUtils() {
     }
@@ -18,7 +18,7 @@ public abstract class BooleanUtils {
             return (Boolean) value;
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Boolean.valueOf(temp);
         }

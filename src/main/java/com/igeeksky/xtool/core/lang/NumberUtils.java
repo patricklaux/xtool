@@ -22,7 +22,7 @@ package com.igeeksky.xtool.core.lang;
  * @author Patrick.Lau
  * @since 0.0.1 2017-02-28
  */
-public abstract class NumberUtils {
+public class NumberUtils {
 
     private NumberUtils() {
     }
@@ -36,7 +36,7 @@ public abstract class NumberUtils {
             return ((Number) value).longValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Long.valueOf(temp);
         }
@@ -52,7 +52,7 @@ public abstract class NumberUtils {
             return ((Number) value).intValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Integer.valueOf(temp);
         }
@@ -68,7 +68,7 @@ public abstract class NumberUtils {
             return ((Number) value).shortValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Short.valueOf(temp);
         }
@@ -84,7 +84,7 @@ public abstract class NumberUtils {
             return ((Number) value).byteValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Byte.valueOf(temp);
         }
@@ -100,7 +100,7 @@ public abstract class NumberUtils {
             return ((Number) value).doubleValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Double.valueOf(temp);
         }
@@ -116,7 +116,7 @@ public abstract class NumberUtils {
             return ((Number) value).floatValue();
         }
 
-        String temp = StringUtils.trim(value.toString());
+        String temp = StringUtils.trimToNull(value.toString());
         if (null != temp) {
             return Float.valueOf(temp);
         }

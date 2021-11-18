@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author Patrick.Lau
  * @since 0.0.4 2021-09-05
  */
-public abstract class ArrayUtils {
+public class ArrayUtils {
 
     private ArrayUtils() {
     }
@@ -33,7 +33,7 @@ public abstract class ArrayUtils {
         return src[src.length - 1];
     }
 
-    public static <T> T[] merge(T[]... arrays) {
+    public static <T> T[] merge(T[][] arrays) {
         int total = 0;
         for (T[] array : arrays) {
             total += array.length;

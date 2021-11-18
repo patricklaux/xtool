@@ -4,7 +4,7 @@ package com.igeeksky.xtool.core.lang;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
-public abstract class Pairs {
+public final class Pairs {
 
     public static final Pair<?, ?> EMPTY = new Pair<>(null, null);
 

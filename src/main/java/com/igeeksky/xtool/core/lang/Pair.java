@@ -33,12 +33,18 @@ public class Pair<K, V> implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Pair)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Pair)) {
+            return false;
+        }
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 
-        if (getKey() != null ? !getKey().equals(pair.getKey()) : pair.getKey() != null) return false;
+        if (getKey() != null ? !getKey().equals(pair.getKey()) : pair.getKey() != null) {
+            return false;
+        }
         return getValue() != null ? getValue().equals(pair.getValue()) : pair.getValue() == null;
     }
 
