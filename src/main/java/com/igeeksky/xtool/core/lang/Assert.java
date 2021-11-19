@@ -112,6 +112,7 @@ public class Assert {
      * 数组是否不为空且至少包含一个元素
      *
      * @param array 数组
+     * @param <T>   对象类型
      */
     public static <T> void notEmpty(T[] array) {
         notEmpty(array, "[Assertion failed] - this array must not be null or empty");
@@ -122,6 +123,7 @@ public class Assert {
      *
      * @param array   数组
      * @param message 异常提示信息
+     * @param <T>     对象类型
      */
     public static <T> void notEmpty(T[] array, String message) {
         if (ArrayUtils.isEmpty(array)) {
@@ -134,6 +136,7 @@ public class Assert {
      *
      * @param array    数组
      * @param supplier 异常提示信息
+     * @param <T>      对象类型
      */
     public static <T> void notEmpty(T[] array, Supplier<String> supplier) {
         if (ArrayUtils.isEmpty(array)) {
@@ -146,6 +149,7 @@ public class Assert {
      *
      * @param array 数组
      * @param e     异常
+     * @param <T>   对象类型
      */
     public static <T> void notEmpty(T[] array, RuntimeException e) {
         if (ArrayUtils.isEmpty(array)) {

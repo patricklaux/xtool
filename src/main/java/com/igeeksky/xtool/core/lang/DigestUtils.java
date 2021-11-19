@@ -378,7 +378,8 @@ public class DigestUtils {
     /**
      * 使用 SHA-224 算法生成摘要信息
      *
-     * @param bytes 字节数组
+     * @param bytes     字节数组
+     * @param upperCase 是否使用大写字符
      * @return 摘要信息
      */
     public static String sha224(byte[] bytes, boolean upperCase) {
@@ -400,7 +401,8 @@ public class DigestUtils {
     /**
      * 使用 SHA-256 算法生成摘要信息
      *
-     * @param bytes 字节数组
+     * @param bytes     字节数组
+     * @param upperCase 是否使用大写字符
      * @return 摘要信息
      */
     public static String sha256(byte[] bytes, boolean upperCase) {
@@ -422,7 +424,8 @@ public class DigestUtils {
     /**
      * 使用 SHA-384 算法生成摘要信息
      *
-     * @param bytes 字节数组
+     * @param bytes     字节数组
+     * @param upperCase 是否使用大写字符
      * @return 摘要信息
      */
     public static String sha384(byte[] bytes, boolean upperCase) {
@@ -444,7 +447,8 @@ public class DigestUtils {
     /**
      * 使用 SHA-512 算法生成摘要信息
      *
-     * @param bytes 字节数组
+     * @param bytes     字节数组
+     * @param upperCase 是否使用大写字符
      * @return 摘要信息
      */
     public static String sha512(byte[] bytes, boolean upperCase) {
