@@ -30,6 +30,8 @@ public class Tuple1<T1> implements Tuple {
     /**
      * 转换第一个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple1<R> mapT1(Function<T1, R> mapper) {

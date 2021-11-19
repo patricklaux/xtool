@@ -74,6 +74,8 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     /**
      * 转换第一个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple5<R, T2, T3, T4, T5> mapT1(Function<T1, R> mapper) {
@@ -83,6 +85,8 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     /**
      * 转换第二个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple5<T1, R, T3, T4, T5> mapT2(Function<T2, R> mapper) {
@@ -92,6 +96,8 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     /**
      * 转换第三个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple5<T1, T2, R, T4, T5> mapT3(Function<T3, R> mapper) {
@@ -101,6 +107,8 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     /**
      * 转换第四个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple5<T1, T2, T3, R, T5> mapT4(Function<T4, R> mapper) {
@@ -110,6 +118,8 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     /**
      * 转换第五个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple5<T1, T2, T3, T4, R> mapT5(Function<T5, R> mapper) {

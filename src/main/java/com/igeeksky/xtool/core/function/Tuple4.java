@@ -1,7 +1,6 @@
 package com.igeeksky.xtool.core.function;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -64,6 +63,8 @@ public class Tuple4<T1, T2, T3, T4> implements Tuple {
     /**
      * 转换第一个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple4<R, T2, T3, T4> mapT1(Function<T1, R> mapper) {
@@ -73,6 +74,8 @@ public class Tuple4<T1, T2, T3, T4> implements Tuple {
     /**
      * 转换第二个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple4<T1, R, T3, T4> mapT2(Function<T2, R> mapper) {
@@ -82,6 +85,8 @@ public class Tuple4<T1, T2, T3, T4> implements Tuple {
     /**
      * 转换第三个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple4<T1, T2, R, T4> mapT3(Function<T3, R> mapper) {
@@ -91,6 +96,8 @@ public class Tuple4<T1, T2, T3, T4> implements Tuple {
     /**
      * 转换第四个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple4<T1, T2, T3, R> mapT4(Function<T4, R> mapper) {

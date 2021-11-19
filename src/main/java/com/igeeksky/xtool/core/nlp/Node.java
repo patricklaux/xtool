@@ -282,13 +282,21 @@ public abstract class Node<V> extends BaseNode<V> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Node)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Node)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         Node<?> node = (Node<?>) o;
 
-        if (size != node.size) return false;
+        if (size != node.size) {
+            return false;
+        }
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(table, node.table);
     }

@@ -435,14 +435,24 @@ public class AvlNode<V> extends TreeNode<V> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AvlNode)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AvlNode)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         AvlNode<?> avlNode = (AvlNode<?>) o;
 
-        if (height != avlNode.height) return false;
-        if (!Objects.equals(left, avlNode.left)) return false;
+        if (height != avlNode.height) {
+            return false;
+        }
+        if (!Objects.equals(left, avlNode.left)) {
+            return false;
+        }
         return Objects.equals(right, avlNode.right);
     }
 

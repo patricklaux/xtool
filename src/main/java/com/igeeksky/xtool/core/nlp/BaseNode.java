@@ -56,12 +56,18 @@ public abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseNode)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BaseNode)) {
+            return false;
+        }
 
         BaseNode<?> baseNode = (BaseNode<?>) o;
 
-        if (getC() != baseNode.getC()) return false;
+        if (getC() != baseNode.getC()) {
+            return false;
+        }
         return getValue() != null ? getValue().equals(baseNode.getValue()) : baseNode.getValue() == null;
     }
 

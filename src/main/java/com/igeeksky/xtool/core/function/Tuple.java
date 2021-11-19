@@ -22,6 +22,11 @@ public interface Tuple extends Iterable<Object> {
      */
     Object[] toArray();
 
+    /**
+     * 获取迭代器
+     *
+     * @return 迭代器
+     */
     @Override
     default Iterator<Object> iterator() {
         return new Tuples.TupleIterator(toArray());

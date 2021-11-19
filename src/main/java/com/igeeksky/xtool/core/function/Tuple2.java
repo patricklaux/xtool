@@ -41,6 +41,8 @@ public class Tuple2<T1, T2> implements Tuple {
     /**
      * 转换第一个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple2<R, T2> mapT1(Function<T1, R> mapper) {
@@ -50,6 +52,8 @@ public class Tuple2<T1, T2> implements Tuple {
     /**
      * 转换第二个元素，并返回新的元组
      *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
     public <R> Tuple2<T1, R> mapT2(Function<T2, R> mapper) {
