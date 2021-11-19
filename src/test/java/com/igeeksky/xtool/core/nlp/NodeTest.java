@@ -277,4 +277,15 @@ public class NodeTest {
             Assert.assertEquals(i++, next.c);
         }
     }
+
+    @Test
+    public void testIterator() {
+        LinkedNode<String> parent = new LinkedNode<>('0');
+        Iterator<Node<String>> iterator = parent.iterator();
+        int i = 65;
+        while (iterator.hasNext()) {
+            Node<String> next = iterator.next();
+            Assert.assertEquals(i++, next.c);
+        }
+    }
 }

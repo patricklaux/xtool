@@ -140,7 +140,22 @@ public class ConcurrentHashTrieTest {
         trie.put("aifff", "aifff");
 
         // DFS
-        List<String> dfs = trie.search("a");
+        // 不存在该前缀
+        List<String> dfs = trie.search("b", 1, 1, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[]", dfs.toString());
+
+        // 仅返回前缀的值
+        dfs = trie.search("a", 1, 1, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[a]", dfs.toString());
+
+        dfs = trie.search("a", 10, 10, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag]", dfs.toString());
+
+        // DFS
+        dfs = trie.search("a");
         System.out.println("DFS:\t" + dfs);
         Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag, agfff, ahfff, aifff, ajfff]", dfs.toString());
 
@@ -218,6 +233,13 @@ public class ConcurrentHashTrieTest {
         System.out.println("DFS:\t" + dfs);
         Assert.assertEquals("[ab, abc, abcd, abd]", dfs.toString());
 
+        dfs = trie.search("ab", 0, 1, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[]", dfs.toString());
+
+        dfs = trie.search("ab", 1000, -1, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[]", dfs.toString());
 
         dfs = trie.search("ab", 1000, 0, true);
         System.out.println("DFS:\t" + dfs);
@@ -335,6 +357,11 @@ public class ConcurrentHashTrieTest {
         System.out.println(shortMatches2);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches2.toString());
+
+        List<Found<String>> shortMatches3 = trie.containsAll("abcdefg", true, 1);
+        System.out.println(shortMatches3);
+        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}]";
+        Assert.assertEquals(expected, shortMatches3.toString());
     }
 
     @Test
@@ -370,7 +397,7 @@ public class ConcurrentHashTrieTest {
             return true;
         });
         System.out.println(list1);
-        String expected = "[{\"t1\":\"a\", \"t2\":\"a\"}]";
+        String expected = "[[a, a]]";
         Assert.assertEquals(expected, list1.toString());
 
 
@@ -380,7 +407,7 @@ public class ConcurrentHashTrieTest {
             return true;
         });
         System.out.println(list2);
-        expected = "[{\"t1\":\"a\", \"t2\":\"a\"}, {\"t1\":\"ab\", \"t2\":\"ab\"}, {\"t1\":\"ag\", \"t2\":\"ag\"}]";
+        expected = "[[a, a], [ab, ab], [ag, ag]]";
 
         Assert.assertEquals(expected, list2.toString());
 
@@ -391,7 +418,7 @@ public class ConcurrentHashTrieTest {
             return true;
         });
         System.out.println(list3);
-        expected = "[{\"t1\":\"a\", \"t2\":\"a\"}, {\"t1\":\"ab\", \"t2\":\"ab\"}, {\"t1\":\"ach\", \"t2\":\"ach\"}, {\"t1\":\"aci\", \"t2\":\"aci\"}, {\"t1\":\"aek\", \"t2\":\"aek\"}, {\"t1\":\"afl\", \"t2\":\"afl\"}, {\"t1\":\"ag\", \"t2\":\"ag\"}]";
+        expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [ag, ag]]";
         Assert.assertEquals(expected, list3.toString());
 
 
@@ -401,7 +428,7 @@ public class ConcurrentHashTrieTest {
             return true;
         });
         System.out.println(list4);
-        expected = "[{\"t1\":\"a\", \"t2\":\"a\"}, {\"t1\":\"ab\", \"t2\":\"ab\"}, {\"t1\":\"ach\", \"t2\":\"ach\"}, {\"t1\":\"aci\", \"t2\":\"aci\"}, {\"t1\":\"adjn\", \"t2\":\"adjn\"}, {\"t1\":\"aek\", \"t2\":\"aek\"}, {\"t1\":\"afl\", \"t2\":\"afl\"}, {\"t1\":\"afmo\", \"t2\":\"afmo\"}, {\"t1\":\"ag\", \"t2\":\"ag\"}]";
+        expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]";
         Assert.assertEquals(expected, list4.toString());
 
 
@@ -411,7 +438,7 @@ public class ConcurrentHashTrieTest {
             return true;
         });
         System.out.println(list5);
-        expected = "[{\"t1\":\"a\", \"t2\":\"a\"}, {\"t1\":\"ab\", \"t2\":\"ab\"}, {\"t1\":\"ach\", \"t2\":\"ach\"}, {\"t1\":\"aci\", \"t2\":\"aci\"}, {\"t1\":\"adjn\", \"t2\":\"adjn\"}, {\"t1\":\"aek\", \"t2\":\"aek\"}, {\"t1\":\"afl\", \"t2\":\"afl\"}, {\"t1\":\"afmo\", \"t2\":\"afmo\"}, {\"t1\":\"ag\", \"t2\":\"ag\"}]";
+        expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]";
         Assert.assertEquals(expected, list5.toString());
     }
 
@@ -503,17 +530,24 @@ public class ConcurrentHashTrieTest {
     @Test
     public void remove4() {
         String key1 = "abc";
-        String key2 = "abcdef";
+        String key2 = "abcde";
+        String key3 = "abcd";
+        String key4 = "abce";
 
         trie.put(key1, key1);
         trie.put(key2, key2);
+        trie.put(key4, key4);
 
-        String remove = trie.remove(key2);
-        Assert.assertEquals(key2, remove);
-
-        List<String> values = trie.values(3);
+        List<String> values = trie.values(10);
         System.out.println(values);
-        Assert.assertEquals("[abc]", values.toString());
+        Assert.assertEquals("[abc, abcde, abce]", values.toString());
+
+        String remove3 = trie.remove(key3);
+        Assert.assertNull(key2, remove3);
+
+        values = trie.values(10);
+        System.out.println(values);
+        Assert.assertEquals("[abc, abcde, abce]", values.toString());
     }
 
     @Test

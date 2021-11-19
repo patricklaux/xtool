@@ -27,6 +27,12 @@ public class NumberUtils {
     private NumberUtils() {
     }
 
+    /**
+     * 转换值为 {@link Long} 对象
+     *
+     * @param value 值
+     * @return {@link Long}
+     */
     public static Long longValue(Object value) {
         if (value == null) {
             return null;
@@ -43,6 +49,12 @@ public class NumberUtils {
         return null;
     }
 
+    /**
+     * 转换值为 {@link Integer} 对象
+     *
+     * @param value 值
+     * @return {@link Integer}
+     */
     public static Integer intValue(Object value) {
         if (value == null) {
             return null;
@@ -59,6 +71,12 @@ public class NumberUtils {
         return null;
     }
 
+    /**
+     * 转换值为 {@link Short} 对象
+     *
+     * @param value 值
+     * @return {@link Short}
+     */
     public static Short shortValue(Object value) {
         if (value == null) {
             return null;
@@ -75,6 +93,12 @@ public class NumberUtils {
         return null;
     }
 
+    /**
+     * 转换值为 {@link Byte} 对象
+     *
+     * @param value 值
+     * @return {@link Byte}
+     */
     public static Byte byteValue(Object value) {
         if (value == null) {
             return null;
@@ -91,6 +115,12 @@ public class NumberUtils {
         return null;
     }
 
+    /**
+     * 转换值为 {@link Double} 对象
+     *
+     * @param value 值
+     * @return {@link Double}
+     */
     public static Double doubleValue(Object value) {
         if (value == null) {
             return null;
@@ -107,6 +137,12 @@ public class NumberUtils {
         return null;
     }
 
+    /**
+     * 转换值为 {@link Float} 对象
+     *
+     * @param value 值
+     * @return {@link Float}
+     */
     public static Float floatValue(Object value) {
         if (value == null) {
             return null;

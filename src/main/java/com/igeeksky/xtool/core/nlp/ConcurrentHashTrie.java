@@ -171,9 +171,6 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
                 return values;
             }
             BaseNode<V> root0 = found.getNode();
-            if (null == root0) {
-                return values;
-            }
             V val = root0.getValue();
             if (val != null) {
                 if (!function.apply(prefix, val)) {

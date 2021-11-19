@@ -1,10 +1,7 @@
 package com.igeeksky.xtool.core.nlp;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Patrick.Lau
@@ -266,14 +263,10 @@ public abstract class Node<V> extends BaseNode<V> {
                 }
             }
 
-            if (root != null) {
-                List<Node<V>> nodes = new ArrayList<>(count);
-                root.inorderTraversalValue(nodes);
-                this.list = nodes;
-                return;
-            }
-
-            this.list = Collections.emptyList();
+            assert root != null;
+            List<Node<V>> nodes = new ArrayList<>(count);
+            root.inorderTraversalValue(nodes);
+            this.list = nodes;
         }
 
         @Override
@@ -285,5 +278,26 @@ public abstract class Node<V> extends BaseNode<V> {
         public Node<V> next() {
             return list.get(index++);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+        if (!super.equals(o)) return false;
+
+        Node<?> node = (Node<?>) o;
+
+        if (size != node.size) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(table, node.table);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + size;
+        result = 31 * result + Arrays.hashCode(table);
+        return result;
     }
 }

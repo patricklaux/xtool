@@ -1,12 +1,14 @@
 package com.igeeksky.xtool.core.lang;
 
 /**
+ * 键值对工具类
+ *
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
 public final class Pairs {
 
-    public static final Pair<?, ?> EMPTY = new Pair<>(null, null);
+    private static final Pair<?, ?> EMPTY = new Pair<>(null, null);
 
     /**
      * 静态工厂：构建 {@link Pair} 对象

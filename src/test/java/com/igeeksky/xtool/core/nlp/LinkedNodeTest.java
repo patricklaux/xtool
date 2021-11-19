@@ -193,6 +193,38 @@ public class LinkedNodeTest {
         Assert.assertEquals(expected, head.toString());
     }
 
+    @Test
+    public void testJoin1() {
+        String text = "pfjlm";
+        Node<String> head = insert(text);
+
+        String text2 = "niohk";
+        Node<String> head2 = AvlNodeTest.buildAvlTree(text2, text2.length());
+
+        String text3 = "niohkpfjlm";
+        Node<String> head3 = insert(text3);
+
+        head = head.join(head2, convertor);
+
+        String expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
+        Assert.assertEquals(expected, head3.toString());
+        Assert.assertEquals(expected, head.toString());
+    }
+
+    @Test
+    public void testEquals() {
+        LinkedNode<String> root = new LinkedNode<>('a');
+        LinkedNode<String> root2 = new LinkedNode<>('a');
+        Assert.assertEquals(root, root2);
+    }
+
+    @Test
+    public void testHashCode() {
+        LinkedNode<String> root = new LinkedNode<>('a');
+        LinkedNode<String> root2 = new LinkedNode<>('a');
+        Assert.assertEquals(root.hashCode(), root2.hashCode());
+    }
+
     private Node<String> insert(String text) {
         char[] chars = text.toCharArray();
         LinkedNode<String> head = null, tail = null;

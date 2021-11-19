@@ -51,7 +51,7 @@ public class IntegerValue {
         return --value;
     }
 
-    public final long getAndDecrement() {
+    public final int getAndDecrement() {
         return value--;
     }
 }

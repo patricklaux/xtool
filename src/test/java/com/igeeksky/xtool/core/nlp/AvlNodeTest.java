@@ -295,6 +295,14 @@ public class AvlNodeTest {
     }
 
     @Test
+    public void testFind() {
+        String value = "niohkpfjlm";
+        AvlNode<String> root = buildAvlTree(value, value.length());
+        Node<String> node = root.find('a');
+        Assert.assertNull(node);
+    }
+
+    @Test
     public void findAll() {
         String value = "niohkpfjlm";
         AvlNode<String> root = buildAvlTree(value, value.length());
@@ -454,6 +462,14 @@ public class AvlNodeTest {
 
         root = (AvlNode<String>) root.delete(delete, convertor);
         findError(expected, root.toString());
+
+        delete = new AvlNode<>('z');
+        root = (AvlNode<String>) root.delete(delete, convertor);
+        expected = "{\"height\":4, \"c\":\"p\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"l\", \"left\":{\"height\":1, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"k\"}}, \"right\":{\"height\":1, \"c\":\"n\", \"left\":{\"height\":0, \"c\":\"m\"}, \"right\":{\"height\":0, \"c\":\"o\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":0, \"c\":\"y\"}}}}";
+        findError(expected, root.toString());
+
+        root = (AvlNode<String>) root.delete(delete, convertor);
+        findError(expected, root.toString());
     }
 
     @Test
@@ -480,7 +496,7 @@ public class AvlNodeTest {
         Assert.assertEquals("[aa, bb, cc, dd]", list.toString());
     }
 
-    private AvlNode<String> buildAvlTree(String value, int end) {
+    public static AvlNode<String> buildAvlTree(String value, int end) {
         char[] chars = value.toCharArray();
         AvlNode<String> root = null;
         for (int i = 0; i < end; i++) {
@@ -522,5 +538,19 @@ public class AvlNodeTest {
             }
         }
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testEquals() {
+        AvlNode<String> root = new AvlNode<>('a', "aa");
+        AvlNode<String> root2 = new AvlNode<>('a', "aa");
+        Assert.assertEquals(root, root2);
+    }
+
+    @Test
+    public void testHashCode() {
+        AvlNode<String> root = new AvlNode<>('a', "aa");
+        AvlNode<String> root2 = new AvlNode<>('a', "aa");
+        Assert.assertEquals(root.hashCode(), root2.hashCode());
     }
 }

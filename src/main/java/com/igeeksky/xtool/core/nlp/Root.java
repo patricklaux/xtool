@@ -68,9 +68,6 @@ public class Root<V> extends BaseNode<V> {
 
         @Override
         public boolean hasNext() {
-            if (index >= table.length) {
-                return false;
-            }
             if (next == null) {
                 next = findNext();
             }
@@ -79,9 +76,6 @@ public class Root<V> extends BaseNode<V> {
 
         @Override
         public Node<V> next() {
-            if (index >= table.length) {
-                throw new NoSuchElementException();
-            }
             Node<V> node = next;
             next = null;
             return node;

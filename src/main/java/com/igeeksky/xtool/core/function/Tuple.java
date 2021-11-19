@@ -1,51 +1,29 @@
 package com.igeeksky.xtool.core.function;
 
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.Iterator;
 
 /**
  * @author Patrick.Lau
- * @since 0.0.4 2021-11-10
+ * @since 0.0.4 2021-11-19
  */
-public class Tuple<T1> {
+public interface Tuple extends Iterable<Object> {
 
-    final T1 t1;
+    /**
+     * 元素数量
+     *
+     * @return 元素数量
+     */
+    int size();
 
-    protected Tuple(T1 t1) {
-        this.t1 = Objects.requireNonNull(t1, "t1");
-    }
-
-    public T1 getT1() {
-        return t1;
-    }
-
-    public <R> Tuple<R> mapT1(Function<T1, R> mapper) {
-        return new Tuple<>(mapper.apply(t1));
-    }
-
-    public int size() {
-        return 1;
-    }
+    /**
+     * 转换为对象数组
+     *
+     * @return 对象数组
+     */
+    Object[] toArray();
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Tuple)) {
-            return false;
-        }
-        Tuple<?> tuple = (Tuple<?>) o;
-        return getT1().equals(tuple.getT1());
-    }
-
-    @Override
-    public int hashCode() {
-        return getT1().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "{\"t1\":" + ((t1 instanceof String) ? ("\"" + t1 + "\"") : t1) + "}";
+    default Iterator<Object> iterator() {
+        return new Tuples.TupleIterator(toArray());
     }
 }

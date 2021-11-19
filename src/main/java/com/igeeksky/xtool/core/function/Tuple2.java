@@ -1,40 +1,69 @@
 package com.igeeksky.xtool.core.function;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
 /**
+ * 二元组
+ *
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-10
  */
-public class Tuple2<T1, T2> {
+public class Tuple2<T1, T2> implements Tuple {
 
     final T1 t1;
     final T2 t2;
 
-    protected Tuple2(T1 t1, T2 t2) {
+    Tuple2(T1 t1, T2 t2) {
         this.t1 = Objects.requireNonNull(t1, "t1");
         this.t2 = Objects.requireNonNull(t2, "t2");
     }
 
+    /**
+     * 获取第一个元素
+     *
+     * @return 第一个元素
+     */
     public T1 getT1() {
         return t1;
     }
 
+    /**
+     * 获取第二个元素
+     *
+     * @return 第二个元素
+     */
     public T2 getT2() {
         return t2;
     }
 
+    /**
+     * 转换第一个元素，并返回新的元组
+     *
+     * @return 包含转换后的对象的新的元组
+     */
     public <R> Tuple2<R, T2> mapT1(Function<T1, R> mapper) {
         return new Tuple2<>(mapper.apply(t1), t2);
     }
 
+    /**
+     * 转换第二个元素，并返回新的元组
+     *
+     * @return 包含转换后的对象的新的元组
+     */
     public <R> Tuple2<T1, R> mapT2(Function<T2, R> mapper) {
         return new Tuple2<>(t1, mapper.apply(t2));
     }
 
+    @Override
     public int size() {
         return 2;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[]{t1, t2};
     }
 
     @Override
@@ -63,10 +92,6 @@ public class Tuple2<T1, T2> {
 
     @Override
     public String toString() {
-        return "{\"t1\":" +
-                ((t1 instanceof String) ? ("\"" + t1 + "\"") : t1) +
-                ", \"t2\":" +
-                ((t2 instanceof String) ? ("\"" + t2 + "\"") : t2) +
-                "}";
+        return Arrays.toString(toArray());
     }
 }

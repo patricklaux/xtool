@@ -5,6 +5,8 @@ import com.igeeksky.xtool.core.annotation.ParameterNames;
 import java.io.Serializable;
 
 /**
+ * 键值对
+ *
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
@@ -19,14 +21,29 @@ public class Pair<K, V> implements Serializable {
         this.value = value;
     }
 
+    /**
+     * 获取 key
+     *
+     * @return 键
+     */
     public K getKey() {
         return key;
     }
 
+    /**
+     * 获取 value
+     *
+     * @return 值
+     */
     public V getValue() {
         return value;
     }
 
+    /**
+     * 是否包含值
+     *
+     * @return boolean
+     */
     public boolean hasValue() {
         return null != value;
     }
@@ -57,6 +74,10 @@ public class Pair<K, V> implements Serializable {
 
     @Override
     public String toString() {
-        return "{\"key\":\"" + key + "\", \"value\":\"" + value + "\"}";
+        return "{" + "\"key\":"
+                + (null != key ? ((key instanceof String ? ("\"" + key + "\"") : key)) : "")
+                + ", \"value\":"
+                + (null != value ? ((value instanceof String ? ("\"" + value + "\"") : value)) : "")
+                + "}";
     }
 }

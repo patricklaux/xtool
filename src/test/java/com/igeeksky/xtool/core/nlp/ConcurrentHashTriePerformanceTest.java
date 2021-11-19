@@ -1,6 +1,7 @@
 package com.igeeksky.xtool.core.nlp;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
 public class ConcurrentHashTriePerformanceTest {
 
     @Test
+    @Ignore
     public void get() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -85,6 +87,7 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
+    @Ignore
     public void matchAll() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -149,6 +152,7 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
+    @Ignore
     public void contains() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -199,6 +203,7 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
+    @Ignore
     public void containsAll() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();

@@ -53,4 +53,22 @@ public abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
      * @param convertor 节点转换器
      */
     public abstract void deleteChild(Node<V> child, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseNode)) return false;
+
+        BaseNode<?> baseNode = (BaseNode<?>) o;
+
+        if (getC() != baseNode.getC()) return false;
+        return getValue() != null ? getValue().equals(baseNode.getValue()) : baseNode.getValue() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getC();
+        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        return result;
+    }
 }

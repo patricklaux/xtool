@@ -2,6 +2,7 @@ package com.igeeksky.xtool.core.nlp;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Patrick.Lau
@@ -151,6 +152,24 @@ public class LinkedNode<V> extends Node<V> {
             return ((NodeConvertor<LinkedNode<V>, ? extends TreeNode<V>>) convertor).toTreeNode(head);
         }
         return head;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinkedNode)) return false;
+        if (!super.equals(o)) return false;
+
+        LinkedNode<?> that = (LinkedNode<?>) o;
+
+        return Objects.equals(next, that.next);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (next != null ? next.hashCode() : 0);
+        return result;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.igeeksky.xtool.core.lang;
 
 /**
- * 哈希字符串工具类
+ * 哈希工具类
  *
  * @author Patrick.Lau
  * @since 0.0.1 2017-01-11
@@ -15,26 +15,26 @@ public class HexUtil {
     }
 
     /**
-     * 摘要信息 byte[] 转16进制字符串
+     * 字节数组转16进制字符串
      *
-     * @param toUpperCase 是否使用大写字符
-     * @param digest      摘要信息
-     * @return HexString
+     * @param upperCase 是否使用大写字符
+     * @param data      摘要信息
+     * @return 16进制字符串
      */
-    public static String encodeHexString(boolean toUpperCase, byte[] digest) {
-        if (null == digest) {
+    public static String encodeHexString(byte[] data, boolean upperCase) {
+        if (null == data) {
             return null;
         }
         // 选择大小写
         char[] hexDigits = HEX_DIGITS_LC;
-        if (toUpperCase) {
+        if (upperCase) {
             hexDigits = HEX_DIGITS_UC;
         }
         // 转为16进制字符串
-        int length = digest.length;
+        int length = data.length;
         char[] chars = new char[length * 2];
         int k = 0;
-        for (byte byte0 : digest) {
+        for (byte byte0 : data) {
             chars[k++] = hexDigits[byte0 >>> 0x4 & 0xf];
             chars[k++] = hexDigits[byte0 & 0xf];
         }

@@ -3,6 +3,8 @@ package com.igeeksky.xtool.core.lang;
 import java.util.Arrays;
 
 /**
+ * 数组工具类
+ *
  * @author Patrick.Lau
  * @since 0.0.4 2021-09-05
  */
@@ -11,29 +13,79 @@ public class ArrayUtils {
     private ArrayUtils() {
     }
 
-    public static <T> void requireNonEmpty(T[] array, String message) {
-        if (isEmpty(array)) {
-            throw new NullPointerException(message);
-        }
-    }
-
+    /**
+     * 判断数组是否为空或不含任何元素
+     *
+     * @param bytes 字节数组
+     * @return 如果数组为空或不含任何元素，返回 {@link Boolean#TRUE} ; 否则返回{@link Boolean#FALSE}
+     */
     public static boolean isEmpty(byte[] bytes) {
         return (null == bytes || bytes.length == 0);
     }
 
+    /**
+     * 判断数组是否不为空且至少含一个元素
+     *
+     * @param bytes 字节数组
+     * @return 如果数组不为空且至少含一个元素，返回 {@link Boolean#TRUE} ; 否则返回{@link Boolean#FALSE}
+     */
     public static boolean isNotEmpty(byte[] bytes) {
-        return (null != bytes && bytes.length != 0);
+        return !isEmpty(bytes);
     }
 
+    /**
+     * 判断数组是否为空或不含任何元素
+     *
+     * @param array 对象数组
+     * @param <T>   对象类型
+     * @return 如果数组为空或不含任何元素，返回 {@link Boolean#TRUE} ; 否则返回{@link Boolean#FALSE}
+     */
     public static <T> boolean isEmpty(T[] array) {
         return (null == array || array.length == 0);
     }
 
-    public static <T> T getLast(T[] src) {
-        return src[src.length - 1];
+    /**
+     * 判断数组是否不为空且至少含一个元素
+     *
+     * @param array 对象数组
+     * @param <T>   对象类型
+     * @return 如果数组不为空且至少含一个元素，返回 {@link Boolean#TRUE} ; 否则返回{@link Boolean#FALSE}
+     */
+    public static <T> boolean isNotEmpty(T[] array) {
+        return !isEmpty(array);
     }
 
-    public static <T> T[] merge(T[][] arrays) {
+    /**
+     * 获取第一个元素
+     *
+     * @param array 对象数组
+     * @param <T>   对象类型
+     * @return 第一个元素
+     */
+    public static <T> T getFirst(T[] array) {
+        return isEmpty(array) ? null : array[0];
+    }
+
+    /**
+     * 获取最后一个元素
+     *
+     * @param array 对象数组
+     * @param <T>   对象类型
+     * @return 最后一个元素
+     */
+    public static <T> T getLast(T[] array) {
+        return isEmpty(array) ? null : array[array.length - 1];
+    }
+
+    /**
+     * 拼接多个对象数组
+     *
+     * @param arrays 多个对象数组
+     * @param <T>    值类型
+     * @return 对象数组（包含所有数组的所有元素）
+     */
+    @SafeVarargs
+    public static <T> T[] concat(T[]... arrays) {
         int total = 0;
         for (T[] array : arrays) {
             total += array.length;
@@ -53,18 +105,29 @@ public class ArrayUtils {
         return dest;
     }
 
-    public static byte[] merge(byte[] src1, byte[] src2) {
-        if (null == src1 || src1.length == 0) {
-            return src2;
-        }
-        if (null == src2 || src2.length == 0) {
-            return src1;
+    /**
+     * 拼接多个字节数组
+     *
+     * @param arrays 多个字节数组
+     * @return 字节数组（包含所有数组的所有元素）
+     */
+    public static byte[] concat(byte[]... arrays) {
+        int total = 0;
+        for (byte[] array : arrays) {
+            total += array.length;
         }
 
-        int src1Len = src1.length;
-        int src2Len = src2.length;
-        byte[] dest = Arrays.copyOf(src1, src1Len + src2Len);
-        System.arraycopy(src2, 0, dest, src1Len, src2Len);
+        byte[] first = arrays[0];
+        byte[] dest = Arrays.copyOf(first, total);
+
+        int offset = first.length;
+
+        for (int i = 1; i < arrays.length; i++) {
+            byte[] src = arrays[i];
+            System.arraycopy(src, 0, dest, offset, src.length);
+            offset += src.length;
+        }
+
         return dest;
     }
 }

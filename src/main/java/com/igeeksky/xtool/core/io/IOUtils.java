@@ -12,9 +12,17 @@ import java.io.OutputStream;
  */
 public class IOUtils {
 
+    private static final int DEFAULT_BUFFER_SIZE = 4096;
+    private static final int EOF = -1;
+
     private IOUtils() {
     }
 
+    /**
+     * 关闭流
+     *
+     * @param closeable {@link Closeable}
+     */
     public static void close(Closeable closeable) {
         if (null != closeable) {
             try {
@@ -25,12 +33,19 @@ public class IOUtils {
         }
     }
 
+    /**
+     * 复制流
+     *
+     * @param source 源
+     * @param target 目标
+     * @return 复制的字节数
+     */
     public static long copy(InputStream source, OutputStream target) {
-        byte[] buf = new byte[4096];
-        long total = 0;
         int r;
+        long total = 0;
+        byte[] buf = new byte[DEFAULT_BUFFER_SIZE];
         try {
-            while ((r = source.read(buf)) != -1) {
+            while ((r = source.read(buf)) != EOF) {
                 target.write(buf, 0, r);
                 total += r;
             }

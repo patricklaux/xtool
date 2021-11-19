@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.igeeksky</groupId>
+    <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <name>xtool</name>
-    <description>xtool is a very small java toolset.</description>
+    <description>xtool is a very small set of Java tools.</description>
     <url>https://github.com/patricklaux/xtool</url>
 
     <properties>

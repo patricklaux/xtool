@@ -2,6 +2,7 @@ package com.igeeksky.xtool.core.nlp;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Patrick.Lau
@@ -430,6 +431,28 @@ public class AvlNode<V> extends TreeNode<V> {
         if (this.right != null) {
             this.right.inorderTraversalValue(list);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AvlNode)) return false;
+        if (!super.equals(o)) return false;
+
+        AvlNode<?> avlNode = (AvlNode<?>) o;
+
+        if (height != avlNode.height) return false;
+        if (!Objects.equals(left, avlNode.left)) return false;
+        return Objects.equals(right, avlNode.right);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int) height;
+        result = 31 * result + (left != null ? left.hashCode() : 0);
+        result = 31 * result + (right != null ? right.hashCode() : 0);
+        return result;
     }
 
     @Override
