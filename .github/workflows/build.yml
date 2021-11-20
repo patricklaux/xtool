@@ -11,9 +11,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 8
@@ -24,3 +22,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Codecov
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        files: ./**/target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: codecov
