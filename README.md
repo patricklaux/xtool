@@ -1,8 +1,5 @@
 # xtool
 
-[![Coverage Status](https://coveralls.io/repos/github/patricklaux/xtool/badge.svg?branch=main)](https://coveralls.io/github/patricklaux/xtool?branch=main)
-[![Build Status](https://app.travis-ci.com/patricklaux/xtool.svg?branch=main)](https://app.travis-ci.com/patricklaux/xtool)
-
 ## 1. 简介
 
 xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不求大而全，但求小而美。主要包含：
