@@ -25,7 +25,7 @@ jobs:
     - name: Codecov
       uses: codecov/codecov-action@v2.1.0
       with:
-        directory: ./home/runner/work/xtool/xtool/target/site/jacoco/
+        directory: /home/runner/work/xtool/xtool/target/site/jacoco/
         files: jacoco.xml
         flags: unittests
         name: codecov
