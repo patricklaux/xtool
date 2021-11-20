@@ -1,6 +1,6 @@
 # xtool
 
-[![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)
+[![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.igeeksky/xtool/badge.svg)](https://search.maven.org/artifact/com.igeeksky/xtool) [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## 1. 简介
 
