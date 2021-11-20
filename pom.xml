@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.igeeksky.xtool</groupId>
+    <groupId>com.igeeksky</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>xtool</name>
     <description>xtool is a very small set of Java tools.</description>
     <url>https://github.com/patricklaux/xtool</url>
@@ -59,6 +59,28 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                    <!-- Prepares the property pointing to the JaCoCo runtime agent
+                    which is passed as VM argument when Maven the Surefire plugin is executed. -->
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Ensures that the code coverage report is created after
+                    all tests have been run. -->
+                    <execution>
+                        <id>generate-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

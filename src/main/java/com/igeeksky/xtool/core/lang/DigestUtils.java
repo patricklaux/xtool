@@ -20,7 +20,7 @@ public class DigestUtils {
     /**
      * 使用 MD5 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息；默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -32,7 +32,7 @@ public class DigestUtils {
     /**
      * 使用 MD5 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -48,11 +48,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String md5(String text, boolean upperCase) {
-        return md5(text, DEFAULT_CHARSET, upperCase);
+    public static String md5(String text, boolean lowerCase) {
+        return md5(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -60,17 +60,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String md5(String text, Charset charset, boolean upperCase) {
-        return md5(text.getBytes(charset), upperCase);
+    public static String md5(String text, Charset charset, boolean lowerCase) {
+        return md5(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 SHA-1 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -82,7 +82,7 @@ public class DigestUtils {
     /**
      * 使用 SHA-1 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -98,11 +98,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha1(String text, boolean upperCase) {
-        return sha1(text, DEFAULT_CHARSET, upperCase);
+    public static String sha1(String text, boolean lowerCase) {
+        return sha1(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -110,17 +110,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha1(String text, Charset charset, boolean upperCase) {
-        return sha1(text.getBytes(charset), upperCase);
+    public static String sha1(String text, Charset charset, boolean lowerCase) {
+        return sha1(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 SHA-224 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -132,7 +132,7 @@ public class DigestUtils {
     /**
      * 使用 SHA-224 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -148,11 +148,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha224(String text, boolean upperCase) {
-        return sha224(text, DEFAULT_CHARSET, upperCase);
+    public static String sha224(String text, boolean lowerCase) {
+        return sha224(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -160,17 +160,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha224(String text, Charset charset, boolean upperCase) {
-        return sha224(text.getBytes(charset), upperCase);
+    public static String sha224(String text, Charset charset, boolean lowerCase) {
+        return sha224(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 SHA-256 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息；默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -182,7 +182,7 @@ public class DigestUtils {
     /**
      * 使用 SHA-256 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -198,11 +198,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha256(String text, boolean upperCase) {
-        return sha256(text, DEFAULT_CHARSET, upperCase);
+    public static String sha256(String text, boolean lowerCase) {
+        return sha256(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -210,17 +210,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha256(String text, Charset charset, boolean upperCase) {
-        return sha256(text.getBytes(charset), upperCase);
+    public static String sha256(String text, Charset charset, boolean lowerCase) {
+        return sha256(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 SHA-384 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -232,7 +232,7 @@ public class DigestUtils {
     /**
      * 使用 SHA-384 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -248,11 +248,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha384(String text, boolean upperCase) {
-        return sha384(text, DEFAULT_CHARSET, upperCase);
+    public static String sha384(String text, boolean lowerCase) {
+        return sha384(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -260,17 +260,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha384(String text, Charset charset, boolean upperCase) {
-        return sha384(text.getBytes(charset), upperCase);
+    public static String sha384(String text, Charset charset, boolean lowerCase) {
+        return sha384(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 SHA-512 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
+     * 默认返回小写的摘要信息，默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text 字符串
      * @return 摘要信息
@@ -282,7 +282,7 @@ public class DigestUtils {
     /**
      * 使用 SHA-512 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param text    字符串
      * @param charset 字符编码
@@ -298,11 +298,11 @@ public class DigestUtils {
      * 默认字符编码为 {@link StandardCharsets#UTF_8}
      *
      * @param text      字符串
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha512(String text, boolean upperCase) {
-        return sha512(text, DEFAULT_CHARSET, upperCase);
+    public static String sha512(String text, boolean lowerCase) {
+        return sha512(text, DEFAULT_CHARSET, lowerCase);
     }
 
     /**
@@ -310,17 +310,17 @@ public class DigestUtils {
      *
      * @param text      字符串
      * @param charset   字符编码
-     * @param upperCase 是否返回大写的摘要信息
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha512(String text, Charset charset, boolean upperCase) {
-        return sha512(text.getBytes(charset), upperCase);
+    public static String sha512(String text, Charset charset, boolean lowerCase) {
+        return sha512(text.getBytes(charset), lowerCase);
     }
 
     /**
      * 使用 MD5 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -333,17 +333,17 @@ public class DigestUtils {
      * 使用 MD5 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String md5(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.MD5, bytes, upperCase);
+    public static String md5(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.MD5, bytes, lowerCase);
     }
 
     /**
      * 使用 SHA-1 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -356,17 +356,17 @@ public class DigestUtils {
      * 使用 SHA-1 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha1(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.SHA_1, bytes, upperCase);
+    public static String sha1(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.SHA_1, bytes, lowerCase);
     }
 
     /**
      * 使用 SHA-224 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -379,17 +379,17 @@ public class DigestUtils {
      * 使用 SHA-224 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha224(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.SHA_224, bytes, upperCase);
+    public static String sha224(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.SHA_224, bytes, lowerCase);
     }
 
     /**
      * 使用 SHA-256 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -402,17 +402,17 @@ public class DigestUtils {
      * 使用 SHA-256 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha256(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.SHA_256, bytes, upperCase);
+    public static String sha256(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.SHA_256, bytes, lowerCase);
     }
 
     /**
      * 使用 SHA-384 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -425,17 +425,17 @@ public class DigestUtils {
      * 使用 SHA-384 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha384(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.SHA_384, bytes, upperCase);
+    public static String sha384(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.SHA_384, bytes, lowerCase);
     }
 
     /**
      * 使用 SHA-512 算法生成摘要信息
      * <p>
-     * 默认返回大写的摘要信息
+     * 默认返回小写的摘要信息
      *
      * @param bytes 字节数组
      * @return 摘要信息
@@ -448,11 +448,11 @@ public class DigestUtils {
      * 使用 SHA-512 算法生成摘要信息
      *
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    public static String sha512(byte[] bytes, boolean upperCase) {
-        return digest(Algorithm.SHA_512, bytes, upperCase);
+    public static String sha512(byte[] bytes, boolean lowerCase) {
+        return digest(Algorithm.SHA_512, bytes, lowerCase);
     }
 
     /**
@@ -460,10 +460,10 @@ public class DigestUtils {
      *
      * @param algorithm 摘要算法
      * @param bytes     字节数组
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @return 摘要信息
      */
-    private static String digest(Algorithm algorithm, byte[] bytes, boolean upperCase) {
+    private static String digest(Algorithm algorithm, byte[] bytes, boolean lowerCase) {
         try {
             //获取算法实例
             MessageDigest instance = MessageDigest.getInstance(algorithm.getName());
@@ -473,7 +473,7 @@ public class DigestUtils {
             byte[] digest = instance.digest();
 
             //转换成16进制字符
-            return HexUtil.encodeHexString(digest, upperCase);
+            return HexUtil.encodeHexString(digest, lowerCase);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

@@ -15,16 +15,16 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 ```xml
 
 <dependency>
-    <groupId>com.igeeksky.xtool</groupId>
+    <groupId>com.igeeksky</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.2'
+implementation 'com.igeeksky:xtool:1.0.3'
 ```
 
 ### 2.3.编译安装
@@ -76,6 +76,7 @@ mvn clean install
 
 | 版本  | 说明                                                     |
 | ----- | -------------------------------------------------------- |
+| 1.0.3 | 1. 调整DigestUtils默认小写 |
 | 1.0.2 | 1. 补充完整注释 |
 | 1.0.1 | 1. 增加测试用例<br />2. 删除 Lists类 |
 | 1.0.0 | 1. 添加常用工具类<br />2. 添加 ConcurrentHashTrie 字典树 |

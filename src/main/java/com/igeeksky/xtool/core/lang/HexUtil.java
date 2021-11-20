@@ -17,18 +17,30 @@ public class HexUtil {
     /**
      * 字节数组转16进制字符串
      *
-     * @param upperCase 是否使用大写字符
+     * @param lowerCase 是否返回小写的摘要信息
      * @param data      摘要信息
      * @return 16进制字符串
      */
-    public static String encodeHexString(byte[] data, boolean upperCase) {
+    public static String encodeHexString(byte[] data, boolean lowerCase) {
+        char[] chars = encodeHex(data, lowerCase);
+        return (chars == null) ? null : new String(chars);
+    }
+
+    /**
+     * 字节数组转16进制字符数组
+     *
+     * @param lowerCase 是否返回小写的摘要信息
+     * @param data      摘要信息
+     * @return 16进制字符数组
+     */
+    public static char[] encodeHex(byte[] data, boolean lowerCase) {
         if (null == data) {
             return null;
         }
         // 选择大小写
-        char[] hexDigits = HEX_DIGITS_LC;
-        if (upperCase) {
-            hexDigits = HEX_DIGITS_UC;
+        char[] hexDigits = HEX_DIGITS_UC;
+        if (lowerCase) {
+            hexDigits = HEX_DIGITS_LC;
         }
         // 转为16进制字符串
         int length = data.length;
@@ -38,6 +50,6 @@ public class HexUtil {
             chars[k++] = hexDigits[byte0 >>> 0x4 & 0xf];
             chars[k++] = hexDigits[byte0 & 0xf];
         }
-        return new String(chars);
+        return chars;
     }
 }

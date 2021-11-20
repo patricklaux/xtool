@@ -12,13 +12,13 @@ public class HexUtilTest {
     @Test
     public void encodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6E6F707172737475", HexUtil.encodeHexString(bytes, true));
+        Assert.assertEquals("6e6f707172737475", HexUtil.encodeHexString(bytes, true));
     }
 
     @Test
     public void testEncodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6e6f707172737475", HexUtil.encodeHexString(bytes, false));
+        Assert.assertEquals("6E6F707172737475", HexUtil.encodeHexString(bytes, false));
     }
 
     @Test
