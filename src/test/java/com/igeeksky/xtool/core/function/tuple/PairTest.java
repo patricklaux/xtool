@@ -68,5 +68,23 @@ public class PairTest {
         Assert.assertEquals("{\"key\":{\"key\":\"key\", \"value\":\"value\"}, \"value\":{\"key\":\"key\", \"value\":\"value\"}}", pair.toString());
     }
 
+    @Test
+    public void mapKey() {
+        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<Integer, String> newPair = pair.mapKey((k) -> 1);
+        Assert.assertEquals(Integer.valueOf(1), newPair.getKey());
+    }
 
+    @Test
+    public void mapValue() {
+        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, Integer> newPair = pair.mapValue((k) -> 1);
+        Assert.assertEquals(Integer.valueOf(1), newPair.getValue());
+    }
+
+    @Test
+    public void hasKey() {
+        Pair<String, String> pair = Pairs.of("key", "value");
+        Assert.assertTrue(pair.hasKey());
+    }
 }

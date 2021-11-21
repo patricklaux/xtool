@@ -473,7 +473,7 @@ public class DigestUtils {
             byte[] digest = instance.digest();
 
             //转换成16进制字符
-            return HexUtil.encodeHexStr(digest, lowerCase);
+            return HexUtils.encodeHexStr(digest, lowerCase);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -483,7 +483,7 @@ public class DigestUtils {
      * 摘要算法类型
      *
      * @author Patrick.Lau
-     * @since 0.0.4 2017-01-12 00:00:22
+     * @since 0.0.1 2017-01-12 00:00:22
      */
     private enum Algorithm {
 

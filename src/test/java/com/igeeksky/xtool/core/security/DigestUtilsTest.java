@@ -11,59 +11,38 @@ import java.nio.charset.StandardCharsets;
  */
 public class DigestUtilsTest {
 
+    // 测试 String text
     @Test
     public void md5() {
         String text = "Less is more";
         String hex = DigestUtils.md5(text);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
+
+        hex = DigestUtils.md5(text, StandardCharsets.UTF_8);
+        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
+
+        hex = DigestUtils.md5(text, true);
+        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
+
+        hex = DigestUtils.md5(text, StandardCharsets.UTF_8, true);
+        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
+
+        hex = DigestUtils.md5(text, StandardCharsets.UTF_8, false);
+        Assert.assertEquals("DF6AE335A4F5CF721002EAA9299F4A9D", hex);
     }
 
+    // 测试 byte[] bytes
     @Test
     public void testMd5() {
-        String text = "Less is more";
-        String hex = DigestUtils.md5(text, StandardCharsets.UTF_8);
-        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
-    }
-
-    @Test
-    public void testMd51() {
-        String text = "Less is more";
-        String hex = DigestUtils.md5(text, true);
-        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
-    }
-
-    @Test
-    public void testMd52() {
-        String text = "Less is more";
-        String hex = DigestUtils.md5(text, StandardCharsets.UTF_8, true);
-        Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
-    }
-
-    @Test
-    public void testMd53() {
         byte[] bytes = "Less is more".getBytes(StandardCharsets.UTF_8);
+
         String hex = DigestUtils.md5(bytes, true);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
-    }
 
-    @Test
-    public void testMd54() {
-        byte[] bytes = "Less is more".getBytes(StandardCharsets.UTF_8);
-        String hex = DigestUtils.md5(bytes, false);
+        hex = DigestUtils.md5(bytes, false);
         Assert.assertEquals("DF6AE335A4F5CF721002EAA9299F4A9D", hex);
-    }
 
-    @Test
-    public void testMd55() {
-        String text = "Less is more";
-        String hex = DigestUtils.md5(text, StandardCharsets.UTF_8, false);
-        Assert.assertEquals("DF6AE335A4F5CF721002EAA9299F4A9D", hex);
-    }
-
-    @Test
-    public void testMd56() {
-        byte[] bytes = "Less is more".getBytes(StandardCharsets.UTF_8);
-        String hex = DigestUtils.md5(bytes);
+        hex = DigestUtils.md5(bytes);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
     }
 

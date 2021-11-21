@@ -67,6 +67,16 @@ public class ArrayUtils {
     }
 
     /**
+     * 获取第一个元素
+     *
+     * @param array byte数组
+     * @return 第一个元素
+     */
+    public static Byte getFirst(byte[] array) {
+        return isEmpty(array) ? null : array[0];
+    }
+
+    /**
      * 获取最后一个元素
      *
      * @param array 对象数组
@@ -74,6 +84,16 @@ public class ArrayUtils {
      * @return 最后一个元素
      */
     public static <T> T getLast(T[] array) {
+        return isEmpty(array) ? null : array[array.length - 1];
+    }
+
+    /**
+     * 获取最后一个元素
+     *
+     * @param array 对象数组
+     * @return 最后一个元素
+     */
+    public static Byte getLast(byte[] array) {
         return isEmpty(array) ? null : array[array.length - 1];
     }
 

@@ -1,7 +1,5 @@
 package com.igeeksky.xtool.core.function.tuple;
 
-import com.igeeksky.xtool.core.function.tuple.Tuple5;
-import com.igeeksky.xtool.core.function.tuple.Tuples;
 import org.junit.Assert;
 import org.junit.Test;
 

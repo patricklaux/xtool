@@ -74,11 +74,31 @@ public class StringUtilsTest {
 
     @Test
     public void toLowerCase() {
-        Assert.assertEquals("you raise me up, so i can stand on mountains.", StringUtils.toLowerCase("You raise me up, so i can stand on mountains."));
+        // 情形一：字符串为空对象，lowerCase == null
+        String lowerCase = StringUtils.toLowerCase(null);
+        Assert.assertNull(lowerCase);
+
+        // 情形二：字符串无字符，lowerCase == null
+        lowerCase = StringUtils.toLowerCase("");
+        Assert.assertNull(lowerCase);
+
+        // 情形三：字符串只有空白字符，lowerCase == null
+        lowerCase = StringUtils.toLowerCase("   ");
+        Assert.assertNull(lowerCase);
+
+        // 情形四：字符串有非空白字符，lowerCase == "aaa"
+        lowerCase = StringUtils.toLowerCase("AAA");
+        Assert.assertEquals("aaa", lowerCase);
+
+        // 情形五：字符串有非空白字符，lowerCase == "aaa"
+        lowerCase = StringUtils.toLowerCase(" AAA ");
+        Assert.assertEquals("aaa", lowerCase);
     }
 
     @Test
     public void unCapitalize() {
+        Assert.assertNull(StringUtils.unCapitalize(nullString()));
+        Assert.assertEquals("", StringUtils.unCapitalize(""));
         Assert.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("Practice Is Perfect."));
         Assert.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("practice Is Perfect."));
     }
@@ -104,9 +124,44 @@ public class StringUtilsTest {
     }
 
     @Test
+    public void testUnCapitalize2() {
+        char[] unCapitalize = StringUtils.unCapitalize("".toCharArray());
+        Assert.assertEquals(0, unCapitalize.length);
+
+        unCapitalize = StringUtils.unCapitalize(nullArray());
+        Assert.assertNull(unCapitalize);
+    }
+
+    private char[] nullArray() {
+        return null;
+    }
+
+    @Test
     public void capitalize() {
-        Assert.assertEquals("Practice Is Perfect.", StringUtils.capitalize("practice Is Perfect."));
-        Assert.assertEquals("Practice Is Perfect.", StringUtils.capitalize("Practice Is Perfect."));
+        // 情形一：字符串为空对象，capitalize == null
+        String original = null;
+        String capitalize = StringUtils.capitalize(original);
+        Assert.assertNull(capitalize);
+
+        // 情形二：字符串无字符，capitalize == ""
+        capitalize = StringUtils.capitalize("");
+        Assert.assertEquals("", capitalize);
+
+        // 情形三：字符串只有空白字符，capitalize == "   "
+        capitalize = StringUtils.capitalize("   ");
+        Assert.assertEquals("   ", capitalize);
+
+        // 情形四：字符串有非空白字符，首字符为字母且为小写，capitalize == "Aaa"
+        capitalize = StringUtils.capitalize("aaa");
+        Assert.assertEquals("Aaa", capitalize);
+
+        // 情形五：字符串有非空白字符，首字符为字母且为大写，capitalize == "Aaa"
+        capitalize = StringUtils.capitalize("Aaa");
+        Assert.assertEquals("Aaa", capitalize);
+
+        // 情形六：字符串有非空白字符，首字符为非字母，capitalize == " aaa "
+        capitalize = StringUtils.capitalize(" aaa ");
+        Assert.assertEquals(" aaa ", capitalize);
     }
 
     @Test
@@ -127,5 +182,14 @@ public class StringUtilsTest {
         for (int i = 0; i < maxLen; i++) {
             Assert.assertEquals(expected[i], actual[i]);
         }
+    }
+
+    @Test
+    public void testCapitalize2() {
+        char[] capitalize = StringUtils.capitalize("".toCharArray());
+        Assert.assertEquals(0, capitalize.length);
+
+        capitalize = StringUtils.capitalize(nullArray());
+        Assert.assertNull(capitalize);
     }
 }

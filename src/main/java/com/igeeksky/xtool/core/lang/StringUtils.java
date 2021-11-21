@@ -8,12 +8,6 @@ package com.igeeksky.xtool.core.lang;
  */
 public class StringUtils {
 
-    private static final char UPPER_CASE_BEGIN = 'A';
-    private static final char UPPER_CASE_END = 'Z';
-
-    private static final char LOWER_CASE_BEGIN = 'a';
-    private static final char LOWER_CASE_END = 'z';
-
     private StringUtils() {
     }
 
@@ -136,13 +130,15 @@ public class StringUtils {
      * @return 首字符转小写后的字符串
      */
     public static String unCapitalize(String text) {
-        char first = text.charAt(0);
-        if (first >= UPPER_CASE_BEGIN && first <= UPPER_CASE_END) {
-            char[] chars = text.toCharArray();
-            chars[0] = Character.toLowerCase(chars[0]);
-            return String.copyValueOf(chars);
+        if (!hasLength(text)) {
+            return text;
         }
-        return text;
+        char first = text.charAt(0);
+        char lower = Character.toLowerCase(first);
+        if (first == lower) {
+            return text;
+        }
+        return replaceFirst(lower, text);
     }
 
     /**
@@ -152,10 +148,10 @@ public class StringUtils {
      * @return 首字符转小写后的字符串
      */
     public static char[] unCapitalize(char[] chars) {
-        char first = chars[0];
-        if (first >= UPPER_CASE_BEGIN && first <= UPPER_CASE_END) {
-            chars[0] = Character.toLowerCase(chars[0]);
+        if (chars == null || chars.length == 0) {
+            return chars;
         }
+        chars[0] = Character.toLowerCase(chars[0]);
         return chars;
     }
 
@@ -166,13 +162,15 @@ public class StringUtils {
      * @return 首字符转小写后的字符串
      */
     public static String capitalize(String text) {
-        char first = text.charAt(0);
-        if (first >= LOWER_CASE_BEGIN && first <= LOWER_CASE_END) {
-            char[] chars = text.toCharArray();
-            chars[0] = Character.toUpperCase(chars[0]);
-            return String.copyValueOf(chars);
+        if (!hasLength(text)) {
+            return text;
         }
-        return text;
+        char first = text.charAt(0);
+        char upper = Character.toUpperCase(first);
+        if (first == upper) {
+            return text;
+        }
+        return replaceFirst(upper, text);
     }
 
     /**
@@ -182,10 +180,20 @@ public class StringUtils {
      * @return 首字符转小写后的字符串
      */
     public static char[] capitalize(char[] chars) {
-        char first = chars[0];
-        if (first >= LOWER_CASE_BEGIN && first <= LOWER_CASE_END) {
-            chars[0] = Character.toUpperCase(chars[0]);
+        if (chars == null || chars.length == 0) {
+            return chars;
         }
+        chars[0] = Character.toUpperCase(chars[0]);
         return chars;
+    }
+
+    private static String replaceFirst(char first, String text) {
+        int length = text.length();
+        char[] chars = new char[length];
+        chars[0] = first;
+        for (int i = 1; i < length; i++) {
+            chars[i] = text.charAt(i);
+        }
+        return String.copyValueOf(chars);
     }
 }

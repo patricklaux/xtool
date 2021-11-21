@@ -20,6 +20,8 @@ public class IOUtils {
 
     /**
      * 关闭流
+     * <p>
+     * 如果出现 {@link java.io.IOException}，转换为{@link IOException} 再抛出
      *
      * @param closeable {@link Closeable}
      */
@@ -35,6 +37,8 @@ public class IOUtils {
 
     /**
      * 复制流
+     * <p>
+     * 如果出现 {@link java.io.IOException}，转换为{@link IOException} 再抛出
      *
      * @param source 源
      * @param target 目标

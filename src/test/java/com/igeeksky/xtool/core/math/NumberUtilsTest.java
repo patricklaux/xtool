@@ -10,16 +10,99 @@ import org.junit.Test;
 public class NumberUtilsTest {
 
     @Test
-    public void longValue() {
-        Long expected = 10000000000000L;
-        Assert.assertEquals(expected, NumberUtils.toLong("10000000000000"));
-        Assert.assertEquals(expected, NumberUtils.toLong(10000000000000L));
-        Assert.assertNull(NumberUtils.toLong(""));
-        Assert.assertNull(NumberUtils.toLong(null));
+    public void toLong() {
+        Long expected = 123456L;
+
+        // 情形一：数值字符串转Long，toLong == 123456L
+        Long toLong = NumberUtils.toLong("123456");
+        Assert.assertEquals(expected, toLong);
+
+        // 情形二：空字符串转Long，toLong == null
+        toLong = NumberUtils.toLong("");
+        Assert.assertNull(toLong);
+
+        // 情形三：空白字符串转Long，toLong == null
+        toLong = NumberUtils.toLong("   ");
+        Assert.assertNull(toLong);
+
+        // 情形四：含空白的数值字符串转Long，toLong == 123456L
+        toLong = NumberUtils.toLong("  123456  ");
+        Assert.assertEquals(expected, toLong);
+
+        // 情形五：空对象转Long，toLong == null
+        toLong = NumberUtils.toLong(nullObject());
+        Assert.assertNull(toLong);
+
+        // 情形六：非数值字符串转Long，异常
+        String message = null;
+        try {
+            toLong = NumberUtils.toLong("error");
+            Assert.assertNull(toLong);
+        } catch (NumberFormatException e) {
+            message = e.getMessage();
+        }
+        Assert.assertEquals("For input string: \"error\"", message);
+
+        // 情形七：Long转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456L);
+        Assert.assertEquals(expected, toLong);
+
+        // 情形八：Integer转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456);
+        Assert.assertEquals(expected, toLong);
+
+        // 情形九：Double转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456.1D);
+        Assert.assertEquals(expected, toLong);
+    }
+
+    private Object nullObject() {
+        return null;
     }
 
     @Test
-    public void intValue() {
+    public void testToLong() {
+        long defaultValue = 100000L;
+
+        // 情形一：数值字符串转Long，toLong == 123456L
+        long toLong = NumberUtils.toLong("123456", defaultValue);
+        Assert.assertEquals(123456L, toLong);
+
+        // 情形二：空字符串转Long，toLong == defaultValue
+        toLong = NumberUtils.toLong("", defaultValue);
+        Assert.assertEquals(defaultValue, toLong);
+
+        // 情形三：空白字符串转Long，toLong == defaultValue
+        toLong = NumberUtils.toLong("   ", defaultValue);
+        Assert.assertEquals(defaultValue, toLong);
+
+        // 情形四：含空白的数值字符串转Long，toLong == 123456L
+        toLong = NumberUtils.toLong("  123456  ", defaultValue);
+        Assert.assertEquals(123456L, toLong);
+
+        // 情形五：空对象转Long，toLong == defaultValue
+        toLong = NumberUtils.toLong(null, defaultValue);
+        Assert.assertEquals(defaultValue, toLong);
+
+        // 情形六：非数值字符串转Long，toLong == defaultValue
+        toLong = NumberUtils.toLong("error", defaultValue);
+        Assert.assertEquals(defaultValue, toLong);
+
+        // 情形七：Long转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456L, defaultValue);
+        Assert.assertEquals(123456L, toLong);
+
+        // 情形八：Integer转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456, defaultValue);
+        Assert.assertEquals(123456L, toLong);
+
+        // 情形九：Double转Long，toLong == 123456L
+        toLong = NumberUtils.toLong(123456.1D, defaultValue);
+        Assert.assertEquals(123456L, toLong);
+    }
+
+    @Test
+    public void toInteger() {
         Integer expected = 1000000;
         Assert.assertEquals(expected, NumberUtils.toInteger("1000000"));
         Assert.assertEquals(expected, NumberUtils.toInteger(1000000));
@@ -28,7 +111,7 @@ public class NumberUtilsTest {
     }
 
     @Test
-    public void shortValue() {
+    public void toShort() {
         Short expected = 10000;
         Assert.assertEquals(expected, NumberUtils.toShort("10000"));
         Assert.assertEquals(expected, NumberUtils.toShort(10000));
@@ -37,7 +120,7 @@ public class NumberUtilsTest {
     }
 
     @Test
-    public void byteValue() {
+    public void toByte() {
         Byte expected = 100;
         Assert.assertEquals(expected, NumberUtils.toByte("100"));
         Assert.assertEquals(expected, NumberUtils.toByte(100));
@@ -46,7 +129,7 @@ public class NumberUtilsTest {
     }
 
     @Test
-    public void doubleValue() {
+    public void toDouble() {
         Double expected = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.22D;
         Assert.assertEquals(expected, NumberUtils.toDouble("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.22"));
         Assert.assertEquals(expected, NumberUtils.toDouble(100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.22D));
@@ -55,7 +138,7 @@ public class NumberUtilsTest {
     }
 
     @Test
-    public void floatValue() {
+    public void toFloat() {
         Float expected = 100000000000000000000000000000000000000.22F;
         Assert.assertEquals(expected, NumberUtils.toFloat("100000000000000000000000000000000000000.22"));
         Assert.assertEquals(expected, NumberUtils.toFloat(100000000000000000000000000000000000000.22F));

@@ -15,7 +15,7 @@ public class BooleanUtils {
      * 转换值为 {@link Boolean}
      *
      * @param original 原对象
-     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值（不捕捉转换异常）
      */
     public static Boolean toBoolean(Object original) {
         if (original == null) {
@@ -37,13 +37,13 @@ public class BooleanUtils {
     }
 
     /**
-     * 转换值为 {@link Boolean}
+     * 转换值为 boolean
      *
      * @param original     原对象
      * @param defaultValue 默认值
-     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值（捕捉转换异常，异常时返回默认值）
      */
-    public static Boolean toBoolean(Object original, Boolean defaultValue) {
+    public static boolean toBoolean(Object original, boolean defaultValue) {
         try {
             Boolean value = toBoolean(original);
             return (value == null) ? defaultValue : value;

@@ -43,12 +43,20 @@ public class ArrayUtilsTest {
     public void getFirst() {
         String[] array = new String[]{"a", "b", "c", "d"};
         Assert.assertEquals("a", ArrayUtils.getFirst(array));
+
+        Byte expected = 1;
+        byte[] bytes = new byte[]{1, 2, 3, 4};
+        Assert.assertEquals(expected, ArrayUtils.getFirst(bytes));
     }
 
     @Test
     public void getLast() {
         String[] array = new String[]{"a", "b", "c", "d"};
         Assert.assertEquals("d", ArrayUtils.getLast(array));
+
+        Byte expected = 4;
+        byte[] bytes = new byte[]{1, 2, 3, 4};
+        Assert.assertEquals(expected, ArrayUtils.getLast(bytes));
     }
 
     @Test

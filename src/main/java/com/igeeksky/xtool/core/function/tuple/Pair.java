@@ -3,6 +3,7 @@ package com.igeeksky.xtool.core.function.tuple;
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * 键值对
@@ -37,6 +38,37 @@ public class Pair<K, V> implements Serializable {
      */
     public V getValue() {
         return value;
+    }
+
+    /**
+     * 转换 key，并返回新的 Pair
+     *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
+     * @return 包含转换后的对象的新的 Pair
+     */
+    public <R> Pair<R, V> mapKey(Function<K, R> mapper) {
+        return new Pair<>(mapper.apply(key), value);
+    }
+
+    /**
+     * 转换 value，并返回新的 Pair
+     *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
+     * @return 包含转换后的对象的新的 Pair
+     */
+    public <R> Pair<K, R> mapValue(Function<V, R> mapper) {
+        return new Pair<>(key, mapper.apply(value));
+    }
+
+    /**
+     * 是否包含键
+     *
+     * @return boolean
+     */
+    public boolean hasKey() {
+        return null != key;
     }
 
     /**

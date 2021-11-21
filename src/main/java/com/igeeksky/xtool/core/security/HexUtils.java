@@ -6,12 +6,12 @@ package com.igeeksky.xtool.core.security;
  * @author Patrick.Lau
  * @since 0.0.1 2017-01-11
  */
-public class HexUtil {
+public class HexUtils {
 
     private static final char[] HEX_DIGITS_UC = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final char[] HEX_DIGITS_LC = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    private HexUtil() {
+    private HexUtils() {
     }
 
     /**
