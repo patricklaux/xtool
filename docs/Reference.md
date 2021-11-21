@@ -1057,7 +1057,7 @@ public class Tuple3Test {
 
 ------
 
-## 7. 数值类
+## 6. 数值类
 
 xtool 提供了两个数值类：
 
@@ -1070,9 +1070,9 @@ Java 已经有了 AtomicInteger ……等原子操作的数值类型，为什么
 
 但 Integer 和 Long 类型又没有递增、递减这些方法，因此写了这两个类。
 
-### 7.1. IntegerValue 与 LongValue
+### 6.1. IntegerValue 与 LongValue
 
-#### 7.1.1. 主要方法
+#### 6.1.1. 主要方法
 
 - get  获取值
 - set  设置新值
@@ -1084,7 +1084,7 @@ Java 已经有了 AtomicInteger ……等原子操作的数值类型，为什么
 - decrementAndGet  递减，并返回递减后的新值
 - getAndDecrement  递减，并返回递减前的旧值
 
-#### 7.1.2. 代码示例
+#### 6.1.2. 代码示例
 
 ```java
 public class IntegerValueTest {
@@ -1182,9 +1182,17 @@ public class IntegerValueTest {
 
 ------
 
-## 8. NLP 相关
+## 7. NLP 相关
+
+### 7.1. 字典树 ConcurrentHashTrie
+
+#### 7.1.1. 背景
+
+2017年时曾花了一个周末的时间写了一个字典树，当时是基于 Hash + 单链表实现，也没有考虑线程安全的问题。现在在回头看当时的代码，代码的结构实在是不堪入目。因此趁着这次开发 xtool，就用 Hash + 单链表 + AVLTree 重写了一遍，同时增加了许多常用的方法，并且加上了读写锁来保证线程安全。
+
+7.1.2. 什么是字典树？
+
+定义和介绍：https://baike.baidu.com/item/%E5%AD%97%E5%85%B8%E6%A0%91
 
 
-
-#### 字典树 ConcurrentHashTrie
 
