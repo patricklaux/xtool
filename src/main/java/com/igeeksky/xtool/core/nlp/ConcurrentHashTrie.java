@@ -2,7 +2,7 @@ package com.igeeksky.xtool.core.nlp;
 
 import com.igeeksky.xtool.core.annotation.Perfect;
 import com.igeeksky.xtool.core.lang.Assert;
-import com.igeeksky.xtool.core.lang.IntegerValue;
+import com.igeeksky.xtool.core.math.IntegerValue;
 
 import java.util.Arrays;
 import java.util.LinkedList;

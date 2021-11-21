@@ -51,7 +51,25 @@ public class StringUtilsTest {
 
     @Test
     public void toUpperCase() {
-        Assert.assertEquals("TALK IS CHEAP. SHOW ME THE CODE.", StringUtils.toUpperCase("talk is cheap. show me the code."));
+        // 情形一：字符串为空对象，upperCase == null
+        String upperCase = StringUtils.toUpperCase(null);
+        Assert.assertNull(upperCase);
+
+        // 情形二：字符串无字符，upperCase == null
+        upperCase = StringUtils.toUpperCase("");
+        Assert.assertNull(upperCase);
+
+        // 情形三：字符串只有空白字符，upperCase == null
+        upperCase = StringUtils.toUpperCase("   ");
+        Assert.assertNull(upperCase);
+
+        // 情形四：字符串有非空白字符，upperCase == "AAA"
+        upperCase = StringUtils.toUpperCase("aaa");
+        Assert.assertEquals("AAA", upperCase);
+
+        // 情形五：字符串有非空白字符，upperCase == "AAA"
+        upperCase = StringUtils.toUpperCase(" aaa ");
+        Assert.assertEquals("AAA", upperCase);
     }
 
     @Test

@@ -473,7 +473,7 @@ public class DigestUtils {
             byte[] digest = instance.digest();
 
             //转换成16进制字符
-            return HexUtil.encodeHexString(digest, lowerCase);
+            return HexUtil.encodeHexStr(digest, lowerCase);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

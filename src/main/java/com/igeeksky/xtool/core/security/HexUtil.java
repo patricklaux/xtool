@@ -21,7 +21,7 @@ public class HexUtil {
      * @param data      摘要信息
      * @return 16进制字符串
      */
-    public static String encodeHexString(byte[] data, boolean lowerCase) {
+    public static String encodeHexStr(byte[] data, boolean lowerCase) {
         char[] chars = encodeHex(data, lowerCase);
         return (chars == null) ? null : new String(chars);
     }

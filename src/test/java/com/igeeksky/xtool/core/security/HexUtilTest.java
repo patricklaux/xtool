@@ -12,24 +12,24 @@ public class HexUtilTest {
     @Test
     public void encodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6e6f707172737475", HexUtil.encodeHexString(bytes, true));
+        Assert.assertEquals("6e6f707172737475", HexUtil.encodeHexStr(bytes, true));
     }
 
     @Test
     public void testEncodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6E6F707172737475", HexUtil.encodeHexString(bytes, false));
+        Assert.assertEquals("6E6F707172737475", HexUtil.encodeHexStr(bytes, false));
     }
 
     @Test
     public void testEncodeHexString1() {
         byte[] bytes = new byte[0];
-        Assert.assertEquals("", HexUtil.encodeHexString(bytes, false));
+        Assert.assertEquals("", HexUtil.encodeHexStr(bytes, false));
     }
 
     @Test
     public void testEncodeHexString2() {
-        Assert.assertNull(HexUtil.encodeHexString(nullBytes(), false));
+        Assert.assertNull(HexUtil.encodeHexStr(nullBytes(), false));
     }
 
     private byte[] nullBytes() {

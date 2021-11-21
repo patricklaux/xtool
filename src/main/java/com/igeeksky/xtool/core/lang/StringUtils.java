@@ -18,13 +18,13 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串是否为空或空白
+     * 判断字符串是否有非空白字符
      * <pre>
-     *     hasText(null) = false;
-     *     hasText("") = false;
-     *     hasText(" ") = false;
-     *     hasText("a") = true;
-     *     hasText(" a ") = true;
+     *     StringUtils.hasText(null) == false;
+     *     StringUtils.hasText("") == false;
+     *     StringUtils.hasText(" ") == false;
+     *     StringUtils.hasText("a") == true;
+     *     StringUtils.hasText(" a ") == true;
      * </pre>
      *
      * @param text 字符串对象
@@ -35,13 +35,13 @@ public class StringUtils {
     }
 
     /**
-     * 判断字符串是否为空或空白
+     * 判断字符串是否有长度
      * <pre>
-     *     hasLength(null) = false;
-     *     hasLength("") = false;
-     *     hasLength(" ") = true;
-     *     hasLength("a") = true;
-     *     hasLength(" a ") = true;
+     *     StringUtils.hasLength(null) == false;
+     *     StringUtils.hasLength("") == false;
+     *     StringUtils.hasLength(" ") == true;
+     *     StringUtils.hasLength("a") == true;
+     *     StringUtils.hasLength(" a ") == true;
      * </pre>
      *
      * @param text 字符串对象
@@ -83,7 +83,30 @@ public class StringUtils {
     }
 
     /**
-     * 转大写
+     * 先去除空白，然后转大写
+     * <p>
+     * 转大写之前会先调用{@link StringUtils#trimToNull}方法，因此如果字符串没有非空白字符，返回结果为 null
+     * <pre>
+     *     情形一：字符串为空对象，upperCase == null
+     *     String upperCase = StringUtils.toUpperCase(null);
+     *     Assert.assertNull(upperCase);
+     *
+     *     情形二：字符串无字符，upperCase == null
+     *     upperCase = StringUtils.toUpperCase("");
+     *     Assert.assertNull(upperCase);
+     *
+     *     情形三：字符串只有空白字符，upperCase == null
+     *     upperCase = StringUtils.toUpperCase("   ");
+     *     Assert.assertNull(upperCase);
+     *
+     *     情形四：字符串有非空白字符，upperCase == "AAA"
+     *     upperCase = StringUtils.toUpperCase("aaa");
+     *     Assert.assertEquals("AAA", upperCase);
+     *
+     *     情形五：字符串有非空白字符，upperCase == "AAA"
+     *     upperCase = StringUtils.toUpperCase(" aaa ");
+     *     Assert.assertEquals("AAA", upperCase);
+     * </pre>
      *
      * @param text 字符串
      * @return 转大写后的字符串
@@ -94,7 +117,9 @@ public class StringUtils {
     }
 
     /**
-     * 转小写
+     * 先去除空白，然后转小写
+     * <p>
+     * 转大写之前会先调用{@link StringUtils#trimToNull}方法，因此如果字符串没有非空白字符，返回结果为 null
      *
      * @param text 字符串
      * @return 转小写后的字符串
@@ -130,7 +155,6 @@ public class StringUtils {
         char first = chars[0];
         if (first >= UPPER_CASE_BEGIN && first <= UPPER_CASE_END) {
             chars[0] = Character.toLowerCase(chars[0]);
-            return chars;
         }
         return chars;
     }
@@ -161,7 +185,6 @@ public class StringUtils {
         char first = chars[0];
         if (first >= LOWER_CASE_BEGIN && first <= LOWER_CASE_END) {
             chars[0] = Character.toUpperCase(chars[0]);
-            return chars;
         }
         return chars;
     }

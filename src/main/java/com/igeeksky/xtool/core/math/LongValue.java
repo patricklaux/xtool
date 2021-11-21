@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.math;
 
 /**
  * long 值包装类，！！非原子操作

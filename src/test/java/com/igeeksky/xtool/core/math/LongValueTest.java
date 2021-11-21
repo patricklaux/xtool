@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.math;
 
 
 import org.junit.Assert;

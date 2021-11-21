@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package com.igeeksky.xtool.core.lang;
+
+package com.igeeksky.xtool.core.math;
+
+import com.igeeksky.xtool.core.lang.StringUtils;
 
 /**
  * 数值工具类
