@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-24
  */
-@Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface Perfect {

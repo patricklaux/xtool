@@ -1,5 +1,6 @@
 package com.igeeksky.xtool.core.nlp;
 
+import com.igeeksky.xtool.core.annotation.Perfect;
 import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.lang.IntegerValue;
 
@@ -19,6 +20,7 @@ import java.util.function.BiFunction;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-23
  */
+@Perfect
 public class ConcurrentHashTrie<V> implements Trie<V> {
 
     private volatile int size = 0;

@@ -12,25 +12,43 @@ public class BooleanUtils {
     }
 
     /**
-     * 转换值为 {@link Boolean} 对象
+     * 转换值为 {@link Boolean}
      *
-     * @param value 值
-     * @return {@link Boolean}
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值
      */
-    public static Boolean booleanValue(Object value) {
-        if (value == null) {
+    public static Boolean toBoolean(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Boolean) {
-            return (Boolean) value;
+        if (original instanceof Boolean) {
+            return (Boolean) original;
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
-        if (null != temp) {
-            return Boolean.valueOf(temp);
+        String temp = StringUtils.trimToNull(original.toString());
+        if (temp != null) {
+            if (temp.equalsIgnoreCase("true") || temp.equalsIgnoreCase("false")) {
+                return Boolean.valueOf(temp);
+            }
+            throw new IllegalArgumentException("For input string: \"" + temp + "\"");
         }
         return null;
     }
 
+    /**
+     * 转换值为 {@link Boolean}
+     *
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
+     */
+    public static Boolean toBoolean(Object original, Boolean defaultValue) {
+        try {
+            Boolean value = toBoolean(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
 }

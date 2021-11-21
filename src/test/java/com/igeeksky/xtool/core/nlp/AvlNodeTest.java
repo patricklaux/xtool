@@ -542,9 +542,19 @@ public class AvlNodeTest {
 
     @Test
     public void testEquals() {
-        AvlNode<String> root = new AvlNode<>('a', "aa");
-        AvlNode<String> root2 = new AvlNode<>('a', "aa");
-        Assert.assertEquals(root, root2);
+        AvlNode<String> avl = new AvlNode<>('c', "cc");
+        AvlNode<String> avl1 = new AvlNode<>('c', "dd");
+        AvlNode<String> avl2 = new AvlNode<>('c', "cc");
+        AvlNode<String> avl3 = new AvlNode<>('c', "cc");
+        Root<String> root = new Root<>('c');
+        LinkedNode<String> linked = new LinkedNode<>('a', "bb", 0, null);
+        Assert.assertEquals(avl, avl);
+        Assert.assertNotEquals(avl, AvlNode.insertAndBalance(avl1, new AvlNode<>('b')));
+        Assert.assertNotEquals(avl, AvlNode.insertAndBalance(avl2, new AvlNode<>('b')));
+        Assert.assertNotEquals(AvlNode.insertAndBalance(avl, new AvlNode<>('b')), AvlNode.insertAndBalance(avl3, new AvlNode<>('d')));
+        Assert.assertNotEquals(avl, avl1);
+        Assert.assertNotEquals(avl, root);
+        Assert.assertNotEquals(avl, linked);
     }
 
     @Test

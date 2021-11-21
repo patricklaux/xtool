@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.security;
 
 /**
  * 哈希工具类

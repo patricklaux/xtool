@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.function.tuple;
 
 /**
  * 键值对工具类

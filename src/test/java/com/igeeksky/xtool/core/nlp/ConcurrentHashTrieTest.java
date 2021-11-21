@@ -1,7 +1,7 @@
 package com.igeeksky.xtool.core.nlp;
 
-import com.igeeksky.xtool.core.function.Tuple2;
-import com.igeeksky.xtool.core.function.Tuples;
+import com.igeeksky.xtool.core.function.tuple.Tuple2;
+import com.igeeksky.xtool.core.function.tuple.Tuples;
 import org.junit.Assert;
 import org.junit.Test;
 

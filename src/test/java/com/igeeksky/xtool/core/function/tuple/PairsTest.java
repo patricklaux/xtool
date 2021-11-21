@@ -1,9 +1,7 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.function.tuple;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Patrick.Lau

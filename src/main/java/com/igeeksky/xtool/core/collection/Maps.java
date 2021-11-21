@@ -1,11 +1,12 @@
 package com.igeeksky.xtool.core.collection;
 
+import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.lang.BooleanUtils;
 import com.igeeksky.xtool.core.lang.NumberUtils;
-import com.igeeksky.xtool.core.lang.StringUtils;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Map 工具类
@@ -39,192 +40,248 @@ public class Maps {
     }
 
     /**
-     * 将源对象的键值对合并到目标对象
+     * 合并两个 map，sourceMap 的 key-value 合并到 targetMap
      *
      * <pre>
-     *     if(!target.containsKey(key)) {
-     *         target.put(key, value);
+     *     if (!targetMap.containsKey(key)) {
+     *         targetMap.put(key, value);
      *     }
      * </pre>
      *
-     * @param target 目标对象（目标对象 需要能够保存元素，不能为 {@link Collections#emptyMap} || {@link Collections#singletonMap} ……等无法保存元素的容器
-     * @param source 源对象
-     * @param <K>    Key 类型
-     * @param <V>    Value 类型
-     * @return target
+     * @param targetMap 目标对象（目标对象 需要能够保存元素，不能为 {@link Collections#emptyMap} || {@link Collections#singletonMap} ……等无法保存元素的容器
+     * @param sourceMap 源对象
+     * @param <K>       Key 类型
+     * @param <V>       Value 类型
+     * @return target 合并后的 Map
      */
-    public static <K, V> Map<K, V> merge(Map<K, V> target, Map<K, V> source) {
-        source.forEach((key, value) -> target.computeIfAbsent(key, k -> value));
-        return target;
+    public static <K, V> Map<K, V> merge(Map<K, V> targetMap, Map<K, V> sourceMap) {
+        Set<Map.Entry<K, V>> entrySet = sourceMap.entrySet();
+        for (Map.Entry<K, V> entry : entrySet) {
+            K key = entry.getKey();
+            if (!targetMap.containsKey(key)) {
+                targetMap.put(key, entry.getValue());
+            }
+        }
+        return targetMap;
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Long}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Long 并返回；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Long}并返回；否则返回空（转换异常，则抛出异常信息）
      */
     public static <K, V> Long getLong(Map<K, V> map, K key) {
-        return NumberUtils.longValue(getValue(map, key));
+        return NumberUtils.toLong(getValue(map, key));
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Long}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Long 并返回；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Long}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
      */
-    public static <K, V> Long getLong(Map<K, V> map, K key, Long defaultValue) {
-        Long value = getLong(map, key);
-        return null != value ? value : defaultValue;
+    public static <K, V> long getLong(Map<K, V> map, K key, long defaultValue) {
+        return NumberUtils.toLong(getValue(map, key), defaultValue);
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Integer}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Integer 并返回；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Integer}并返回；否则返回空（转换异常，则抛出异常信息）
      */
     public static <K, V> Integer getInteger(Map<K, V> map, K key) {
-        return NumberUtils.intValue(getValue(map, key));
+        return NumberUtils.toInteger(getValue(map, key));
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Integer}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Integer 并返回；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Integer}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
      */
-    public static <K, V> Integer getInteger(Map<K, V> map, K key, Integer defaultValue) {
-        Integer value = getInteger(map, key);
-        return null != value ? value : defaultValue;
+    public static <K, V> int getInteger(Map<K, V> map, K key, int defaultValue) {
+        return NumberUtils.toInteger(getValue(map, key), defaultValue);
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Short}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Short 并返回；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Short}并返回；否则返回空（转换异常，则抛出异常信息）
      */
     public static <K, V> Short getShort(Map<K, V> map, K key) {
-        return NumberUtils.shortValue(getValue(map, key));
+        return NumberUtils.toShort(getValue(map, key));
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Short}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Short 并返回；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Short}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
      */
-    public static <K, V> Short getShort(Map<K, V> map, K key, Short defaultValue) {
-        Short value = getShort(map, key);
-        return null != value ? value : defaultValue;
+    public static <K, V> short getShort(Map<K, V> map, K key, short defaultValue) {
+        return NumberUtils.toShort(getValue(map, key), defaultValue);
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Byte}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Byte 并返回；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Byte}并返回；否则返回空（转换异常，则抛出异常信息）
      */
     public static <K, V> Byte getByte(Map<K, V> map, K key) {
-        return NumberUtils.byteValue(getValue(map, key));
+        return NumberUtils.toByte(getValue(map, key));
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Byte}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Byte 并返回；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Byte}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
      */
-    public static <K, V> Byte getByte(Map<K, V> map, K key, Byte defaultValue) {
-        Byte value = getByte(map, key);
-        return null != value ? value : defaultValue;
+    public static <K, V> byte getByte(Map<K, V> map, K key, byte defaultValue) {
+        return NumberUtils.toByte(getValue(map, key), defaultValue);
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Double}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Boolean 并返回；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Double}并返回；否则返回空（转换异常，则抛出异常信息）
+     */
+    public static <K, V> Double getDouble(Map<K, V> map, K key) {
+        return NumberUtils.toDouble(getValue(map, key));
+    }
+
+    /**
+     * 获取 Map 中 key 对应的值，并转换为 {@link Double}
+     *
+     * @param map          map
+     * @param key          键
+     * @param defaultValue 默认值
+     * @param <K>          键类型
+     * @param <V>          值类型
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Double}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
+     */
+    public static <K, V> double getDouble(Map<K, V> map, K key, double defaultValue) {
+        return NumberUtils.toDouble(getValue(map, key), defaultValue);
+    }
+
+    /**
+     * 获取 Map 中 key 对应的值，并转换为 {@link Float}
+     *
+     * @param map map
+     * @param key 键
+     * @param <K> 键类型
+     * @param <V> 值类型
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Float}并返回；否则返回空（转换异常，则抛出异常信息）
+     */
+    public static <K, V> Float getFloat(Map<K, V> map, K key) {
+        return NumberUtils.toFloat(getValue(map, key));
+    }
+
+    /**
+     * 获取 Map 中 key 对应的值，并转换为 {@link Float}
+     *
+     * @param map          map
+     * @param key          键
+     * @param defaultValue 默认值
+     * @param <K>          键类型
+     * @param <V>          值类型
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Float}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
+     */
+    public static <K, V> float getFloat(Map<K, V> map, K key, float defaultValue) {
+        return NumberUtils.toFloat(getValue(map, key), defaultValue);
+    }
+
+    /**
+     * 获取 Map 中 key 对应的值，并转换为 {@link Boolean}
+     *
+     * @param map map
+     * @param key 键
+     * @param <K> 键类型
+     * @param <V> 值类型
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为 {@link Boolean} 并返回；否则返回空（转换异常，抛出异常信息）
      */
     public static <K, V> Boolean getBoolean(Map<K, V> map, K key) {
-        return BooleanUtils.booleanValue(getValue(map, key));
+        return BooleanUtils.toBoolean(getValue(map, key));
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link Boolean}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在，将该值转换为 Boolean 并返回；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，将 value 转换为{@link Boolean}并返回；否则返回 defaultValue（转换异常，返回 defaultValue）
      */
-    public static <K, V> Boolean getBoolean(Map<K, V> map, K key, Boolean defaultValue) {
-        Boolean value = getBoolean(map, key);
-        return null != value ? value : defaultValue;
+    public static <K, V> boolean getBoolean(Map<K, V> map, K key, boolean defaultValue) {
+        return BooleanUtils.toBoolean(getValue(map, key), defaultValue);
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link String}
      *
      * @param map map
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 为空或该值不存在，返回空；如果 map 不为空且该值存在，将该值转换为 String并去除空白字符，如果为空白字符串，返回空，否则返回去除空白后的字符串
+     * @return 如果 map 不为空且 key 对应的 value 存在，将该 value 转换为{@link String}并返回；否则返回空
      */
     public static <K, V> String getString(Map<K, V> map, K key) {
         V value = getValue(map, key);
-        return (null == value) ? null : StringUtils.trimToNull(value.toString());
+        return (value == null) ? null : value.toString();
     }
 
     /**
-     * 获取 Map 中 key 对应的值
+     * 获取 Map 中 key 对应的值，并转换为 {@link String}
      *
      * @param map          map
      * @param key          键
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 为空或该值不存在，返回 defaultValue；如果 map 不为空且该值存在，将该值转换为 String并去除空白字符，如果为空白字符串，返回 defaultValue，否则返回去除空白后的字符串
+     * @return 如果 map 不为空且 key 对应的 value 存在，将该 value 转换为{@link String}并返回；否则返回 defaultValue
      */
     public static <K, V> String getString(Map<K, V> map, K key, String defaultValue) {
+        Assert.notNull(defaultValue, "defaultValue must not be null");
         String value = getString(map, key);
-        return (null != value) ? value : defaultValue;
+        return (value == null) ? defaultValue : value;
     }
 
     /**
@@ -234,7 +291,7 @@ public class Maps {
      * @param key 键
      * @param <K> 键类型
      * @param <V> 值类型
-     * @return 如果 map 不为空且该值存在则返回该值；否则返回空
+     * @return 如果 map 不为空且 key 对应的 value 存在，返回 value；否则返回空
      */
     public static <K, V> V getValue(Map<K, V> map, K key) {
         return (null == map) ? null : map.get(key);
@@ -248,10 +305,11 @@ public class Maps {
      * @param defaultValue 默认值
      * @param <K>          键类型
      * @param <V>          值类型
-     * @return 如果 map 不为空且该值存在则返回该值；否则返回 defaultValue
+     * @return 如果 map 不为空且 key 对应的 value 存在，返回 value；否则返回 defaultValue
      */
     public static <K, V> V getValue(Map<K, V> map, K key, V defaultValue) {
+        Assert.notNull(defaultValue, "defaultValue must not be null");
         V value = getValue(map, key);
-        return (null != value) ? value : defaultValue;
+        return (value == null) ? defaultValue : value;
     }
 }

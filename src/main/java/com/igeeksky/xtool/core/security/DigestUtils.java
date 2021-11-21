@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.security;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

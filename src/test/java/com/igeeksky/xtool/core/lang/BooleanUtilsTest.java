@@ -11,14 +11,14 @@ public class BooleanUtilsTest {
 
     @Test
     public void booleanValue() {
-        Assert.assertTrue(BooleanUtils.booleanValue(Boolean.TRUE));
-        Assert.assertNull(BooleanUtils.booleanValue(null));
-        Assert.assertTrue(BooleanUtils.booleanValue("true"));
-        Assert.assertNull(BooleanUtils.booleanValue(""));
+        Assert.assertTrue(BooleanUtils.toBoolean(Boolean.TRUE));
+        Assert.assertNull(BooleanUtils.toBoolean(null));
+        Assert.assertTrue(BooleanUtils.toBoolean("true"));
+        Assert.assertNull(BooleanUtils.toBoolean(""));
     }
 
     @Test
     public void testBooleanValue() {
-        Assert.assertFalse(BooleanUtils.booleanValue("false"));
+        Assert.assertFalse(BooleanUtils.toBoolean("false"));
     }
 }

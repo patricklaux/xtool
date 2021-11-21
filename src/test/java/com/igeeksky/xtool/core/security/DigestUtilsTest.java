@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.security;
 
 import org.junit.Assert;
 import org.junit.Test;

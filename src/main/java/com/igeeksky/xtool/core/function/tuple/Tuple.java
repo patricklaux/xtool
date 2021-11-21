@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.function;
+package com.igeeksky.xtool.core.function.tuple;
 
 import java.util.Iterator;
 

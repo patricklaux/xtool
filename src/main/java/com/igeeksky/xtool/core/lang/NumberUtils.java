@@ -28,21 +28,21 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Long} 对象
+     * 转换值为 {@link Long}
      *
-     * @param value 值
-     * @return {@link Long}
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
      */
-    public static Long longValue(Object value) {
-        if (value == null) {
+    public static Long toLong(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).longValue();
+        if (original instanceof Number) {
+            return ((Number) original).longValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Long.valueOf(temp);
         }
@@ -50,21 +50,37 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Integer} 对象
+     * 转换值为 {@link Long}
      *
-     * @param value 值
-     * @return {@link Integer}
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
      */
-    public static Integer intValue(Object value) {
-        if (value == null) {
+    public static long toLong(Object original, long defaultValue) {
+        try {
+            Long value = toLong(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换值为 {@link Integer}
+     *
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
+     */
+    public static Integer toInteger(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).intValue();
+        if (original instanceof Number) {
+            return ((Number) original).intValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Integer.valueOf(temp);
         }
@@ -72,21 +88,37 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Short} 对象
+     * 转换值为 {@link Integer}
      *
-     * @param value 值
-     * @return {@link Short}
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
      */
-    public static Short shortValue(Object value) {
-        if (value == null) {
+    public static int toInteger(Object original, int defaultValue) {
+        try {
+            Integer value = toInteger(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换值为 {@link Short}
+     *
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
+     */
+    public static Short toShort(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).shortValue();
+        if (original instanceof Number) {
+            return ((Number) original).shortValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Short.valueOf(temp);
         }
@@ -94,21 +126,37 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Byte} 对象
+     * 转换值为 {@link Short}
      *
-     * @param value 值
-     * @return {@link Byte}
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
      */
-    public static Byte byteValue(Object value) {
-        if (value == null) {
+    public static short toShort(Object original, short defaultValue) {
+        try {
+            Short value = toShort(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换值为 {@link Byte}
+     *
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
+     */
+    public static Byte toByte(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).byteValue();
+        if (original instanceof Number) {
+            return ((Number) original).byteValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Byte.valueOf(temp);
         }
@@ -116,21 +164,37 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Double} 对象
+     * 转换值为 {@link Byte}
      *
-     * @param value 值
-     * @return {@link Double}
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
      */
-    public static Double doubleValue(Object value) {
-        if (value == null) {
+    public static byte toByte(Object original, byte defaultValue) {
+        try {
+            Byte value = toByte(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换值为 {@link Double}
+     *
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
+     */
+    public static Double toDouble(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).doubleValue();
+        if (original instanceof Number) {
+            return ((Number) original).doubleValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Double.valueOf(temp);
         }
@@ -138,24 +202,56 @@ public class NumberUtils {
     }
 
     /**
-     * 转换值为 {@link Float} 对象
+     * 转换值为 {@link Double}
      *
-     * @param value 值
-     * @return {@link Float}
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
      */
-    public static Float floatValue(Object value) {
-        if (value == null) {
+    public static double toDouble(Object original, double defaultValue) {
+        try {
+            Double value = toDouble(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换值为 {@link Float}
+     *
+     * @param original 原对象
+     * @return 如果原对象为空，返回空；如果转换正常，返回转换后的值，否则抛出异常信息
+     */
+    public static Float toFloat(Object original) {
+        if (original == null) {
             return null;
         }
 
-        if (value instanceof Number) {
-            return ((Number) value).floatValue();
+        if (original instanceof Number) {
+            return ((Number) original).floatValue();
         }
 
-        String temp = StringUtils.trimToNull(value.toString());
+        String temp = StringUtils.trimToNull(original.toString());
         if (null != temp) {
             return Float.valueOf(temp);
         }
         return null;
+    }
+
+    /**
+     * 转换值为 {@link Float}
+     *
+     * @param original     原对象
+     * @param defaultValue 默认值
+     * @return 如果原对象为空或转换异常，返回 defaultValue；否则返回转换后的值
+     */
+    public static float toFloat(Object original, float defaultValue) {
+        try {
+            Float value = toFloat(original);
+            return (value == null) ? defaultValue : value;
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 }

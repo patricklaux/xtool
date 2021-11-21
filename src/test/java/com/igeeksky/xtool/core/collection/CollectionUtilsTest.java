@@ -16,16 +16,32 @@ public class CollectionUtilsTest {
 
     @Test
     public void isEmpty() {
-        Assert.assertTrue(CollectionUtils.isEmpty(nullList()));
-        Assert.assertTrue(CollectionUtils.isEmpty(emptyList()));
-        Assert.assertFalse(CollectionUtils.isEmpty(singletonList()));
+        // 场景一：集合不含元素，isEmpty == true
+        boolean isEmpty = CollectionUtils.isEmpty(Collections.emptyList());
+        Assert.assertTrue(isEmpty);
+
+        // 场景二：集合为空对象，isEmpty == true
+        isEmpty = CollectionUtils.isEmpty(nullList());
+        Assert.assertTrue(isEmpty);
+
+        // 场景三：集合含有至少一个元素，isEmpty == false
+        isEmpty = CollectionUtils.isEmpty(Collections.singletonList("a"));
+        Assert.assertFalse(isEmpty);
     }
 
     @Test
     public void isNotEmpty() {
-        Assert.assertFalse(CollectionUtils.isNotEmpty(nullList()));
-        Assert.assertFalse(CollectionUtils.isNotEmpty(emptyList()));
-        Assert.assertTrue(CollectionUtils.isNotEmpty(singletonList()));
+        // 场景一：集合不含元素，isNotEmpty == false
+        boolean isNotEmpty = CollectionUtils.isNotEmpty(Collections.emptyList());
+        Assert.assertFalse(isNotEmpty);
+
+        // 场景二：集合为空对象，isNotEmpty == false
+        isNotEmpty = CollectionUtils.isNotEmpty(nullList());
+        Assert.assertFalse(isNotEmpty);
+
+        // 场景三：集合含有至少一个元素，isNotEmpty == true
+        isNotEmpty = CollectionUtils.isNotEmpty(Collections.singletonList("a"));
+        Assert.assertTrue(isNotEmpty);
     }
 
     @Test

@@ -5,6 +5,8 @@ package com.igeeksky.xtool.core.nlp;
  * @since 0.0.4 2021-10-29
  */
 public class TrieConstants {
+    private TrieConstants() {
+    }
 
     public static final int TABLE_MAX_CAPACITY = 1 << 16;
     public static final int TABLE_MAX_MASK = TABLE_MAX_CAPACITY - 1;

@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.lang;
+package com.igeeksky.xtool.core.function.tuple;
 
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
