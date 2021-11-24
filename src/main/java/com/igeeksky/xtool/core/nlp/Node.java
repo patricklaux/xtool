@@ -55,10 +55,10 @@ public abstract class Node<V> extends BaseNode<V> {
         Node<V> head = table[index];
         // 如果当前数组中对应位置头节点为空
         if (head == null) {
-            Node<V> node = creator.apply(c);
-            table[index] = node;
+            head = creator.apply(c);
+            table[index] = head;
             this.increment();
-            return node;
+            return head;
         }
 
         return head.insert(this, index, c, convertor);
@@ -123,7 +123,7 @@ public abstract class Node<V> extends BaseNode<V> {
      * @param convertor 节点转换器
      */
     private void expand(NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
-        if (size <= ((table.length << 1) - 1)) {
+        if (!isNeedExpand()) {
             return;
         }
 
@@ -164,12 +164,12 @@ public abstract class Node<V> extends BaseNode<V> {
             return;
         }
 
-        Node<V>[] curTab = table;
-        int curCap = curTab.length;
-        if (!isNeedReduce(curCap)) {
+        if (!isNeedReduce()) {
             return;
         }
 
+        Node<V>[] curTab = table;
+        int curCap = curTab.length;
         int newCap = curCap >> 1;
         Node<V>[] newTab = new Node[newCap];
         for (int i = 0; i < newCap; i++) {
@@ -188,32 +188,90 @@ public abstract class Node<V> extends BaseNode<V> {
         table = newTab;
     }
 
+    private boolean isNeedExpand() {
+        if (size > TrieConstants.EXPAND_RANGE_63488) {
+            return table.length <= TrieConstants.TABLE_HALF_CAPACITY;
+        }
+        return size >= ((table.length << 1) - 1);
+    }
+
     /**
-     * 是否需要缩容
+     * <b>是否需要缩容</b>
      * <p>
-     * 根据当前 size 和 table.length 来计算判断是否需要缩容。
+     * 根据 size 和 table.length 来计算判断是否需要缩容。
      * <p>
-     * 1. 需要预留一定的缓冲，避免增加一个Key就扩容，删除一个key就缩容；
+     * 1. 预留缓冲区间，避免增加一个 Key 就扩容，删除一个 key 就缩容；
      * <p>
-     * 2. 避免空间浪费过多。
+     * 2. 缓冲区间随着 size 扩大而增加，最大为 8，避免空间浪费过多。
+     * <p>
+     * 为了避免循环乘除法导致的性能消耗，采用硬编码的方式。
+     * <p>
+     * 划分为16个step，采用折半查找，比较4次即能判断结果
      *
-     * @param curCap 当前容量
      * @return 根据缩容策略计算后得到是否需要缩容的布尔值
      */
-    private boolean isNeedReduce(int curCap) {
-        if (size > TrieConstants.REDUCE_RANGE_32) {
-            return size <= curCap - TrieConstants.REDUCE_THRESHOLD_32;
+    private boolean isNeedReduce() {
+        int curCap = table.length;
+        if (size > TrieConstants.REDUCE_RANGE_512) {
+            if (size > TrieConstants.REDUCE_RANGE_8192) {
+                if (size > TrieConstants.REDUCE_RANGE_32768) {
+                    if (size > TrieConstants.REDUCE_RANGE_63488) {
+                        return false;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_32768;
+                    }
+                } else {
+                    if (size > TrieConstants.REDUCE_RANGE_16384) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_16384;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_8192;
+                    }
+                }
+            } else {
+                if (size > TrieConstants.REDUCE_RANGE_2048) {
+                    if (size > TrieConstants.REDUCE_RANGE_4096) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_4096;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_2048;
+                    }
+                } else {
+                    if (size > TrieConstants.REDUCE_RANGE_1024) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_1024;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_512;
+                    }
+                }
+            }
+        } else {
+            if (size > TrieConstants.REDUCE_RANGE_32) {
+                if (size > TrieConstants.REDUCE_RANGE_128) {
+                    if (size > TrieConstants.REDUCE_RANGE_256) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_256;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_128;
+                    }
+                } else {
+                    if (size > TrieConstants.REDUCE_RANGE_64) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_64;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_32;
+                    }
+                }
+            } else {
+                if (size > TrieConstants.REDUCE_RANGE_8) {
+                    if (size > TrieConstants.REDUCE_RANGE_16) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_16;
+                    } else {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_8;
+                    }
+                } else {
+                    if (size > TrieConstants.REDUCE_RANGE_4) {
+                        return size <= curCap - TrieConstants.REDUCE_THRESHOLD_4;
+                    }
+                    return size < curCap;
+                }
+            }
         }
-        if (size > TrieConstants.REDUCE_RANGE_16) {
-            return size <= curCap - TrieConstants.REDUCE_THRESHOLD_16;
-        }
-        if (size > TrieConstants.REDUCE_RANGE_8) {
-            return size <= curCap - TrieConstants.REDUCE_THRESHOLD_8;
-        }
-        if (size > TrieConstants.REDUCE_RANGE_4) {
-            return size <= curCap - TrieConstants.REDUCE_THRESHOLD_4;
-        }
-        return size < curCap;
     }
 
     /**

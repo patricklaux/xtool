@@ -93,7 +93,7 @@ public class NodeTest {
             }
 
             parent.addChild(c, creator, convertor);
-            if (++i > (capacity << 1)) {
+            if (++i >= (capacity << 1)) {
                 capacity = capacity << 1;
             }
             Assert.assertEquals(i, parent.size());
@@ -106,6 +106,52 @@ public class NodeTest {
             Node<String> node = finalTab[j];
             Node<String> node2 = parent.table[j];
             Assert.assertEquals(node.toString(), node2.toString());
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void addChild3() {
+        int finalLen = 256;
+        int finalMask = finalLen - 1;
+        LinkedNode<String>[] finalTab = new LinkedNode[finalLen];
+
+        LinkedNode<String> parent = new LinkedNode<>('0');
+        int i = 0;
+        int capacity = TrieConstants.TABLE_INITIAL_CAPACITY;
+        for (int c = 0; c < 65536; c++) {
+            int index = c & finalMask;
+            if (index == 0) {
+                LinkedNode<String> head = finalTab[index];
+                if (null == head) {
+                    finalTab[index] = new LinkedNode<>((char) c);
+                } else {
+                    LinkedNode<String> tail = head;
+                    while (tail.next != null) {
+                        tail = tail.next;
+                    }
+                    tail.next = new LinkedNode<>((char) c);
+                }
+
+                parent.addChild((char) c, creator, convertor);
+                if (++i >= (capacity << 1)) {
+                    capacity = capacity << 1;
+                }
+                Assert.assertEquals(i, parent.size());
+                Assert.assertEquals(capacity, parent.table.length);
+            }
+        }
+
+        Assert.assertEquals(finalLen, parent.table.length);
+        Assert.assertEquals(finalLen, parent.size);
+
+        for (int j = 0; j < finalLen; j++) {
+            LinkedNode<String> node = finalTab[j];
+            Node<String> node2 = parent.table[j];
+            Assert.assertEquals((node != null), (node2 != null));
+            if ((node != null) && (node2 != null)) {
+                Assert.assertEquals(convertor.toTreeNode(node).toString(), node2.toString());
+            }
         }
     }
 

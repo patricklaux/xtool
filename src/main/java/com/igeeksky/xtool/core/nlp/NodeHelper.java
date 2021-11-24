@@ -17,21 +17,21 @@ public class NodeHelper {
      * 保存键值对
      *
      * @param root      根节点
-     * @param chars     key 转换的 char 数组
+     * @param key       key 转换的 char 数组
      * @param newVal    新值
      * @param creator   节点创建器
      * @param convertor 节点转换器
      * @param <V>       值类型
      * @return 如果存在旧值，返回旧值；否则返回空
      */
-    public static <V> V put(BaseNode<V> root, char[] chars, V newVal, NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
-        int last = chars.length - 1;
+    public static <V> V put(BaseNode<V> root, String key, V newVal, NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
+        int last = key.length() - 1;
         BaseNode<V> parent = root;
         for (int i = 0; i < last; i++) {
-            parent = parent.addChild(chars[i], creator, convertor);
+            parent = parent.addChild(key.charAt(i), creator, convertor);
         }
 
-        BaseNode<V> lastNode = parent.addChild(chars[last], creator, convertor);
+        BaseNode<V> lastNode = parent.addChild(key.charAt(last), creator, convertor);
         V oldVal = lastNode.value;
         lastNode.value = newVal;
         return oldVal;
@@ -41,7 +41,7 @@ public class NodeHelper {
      * 匹配键（仅返回一个值）
      *
      * @param root         根节点
-     * @param chars        key 转换的 char 数组
+     * @param word         待匹配的字符串
      * @param start        char 数组的起始匹配位置
      * @param end          char 数组的结束匹配位置
      * @param exactlyMatch 是否精确匹配
@@ -49,14 +49,14 @@ public class NodeHelper {
      * @param <V>          值类型
      * @return 匹配得到的节点
      */
-    public static <V> Found<V> match(BaseNode<V> root, char[] chars, int start, int end,
+    public static <V> Found<V> match(BaseNode<V> root, String word, int start, int end,
                                      boolean exactlyMatch, boolean longestMatch) {
         BaseNode<V> p = root;
         int last = end - 1;
 
         Found<V> f = null;
         for (int i = start; i < end; i++) {
-            char c = chars[i];
+            char c = word.charAt(i);
             BaseNode<V> ch = p.findChild(c);
             if (ch == null) {
                 return f;
@@ -84,17 +84,17 @@ public class NodeHelper {
      * 键匹配（返回多个匹配到的值）
      *
      * @param root    根节点
-     * @param chars   key 转换的 char 数组
+     * @param word    待匹配的字符串
      * @param start   char 数组的起始匹配位置
      * @param end     char 数组的结束匹配位置
      * @param maximum 结果集最大数量
      * @param founds  用于保存结果集
      * @param <V>     值类型
      */
-    public static <V> void matchAll(BaseNode<V> root, char[] chars, int start, int end, int maximum, List<Found<V>> founds) {
+    public static <V> void matchAll(BaseNode<V> root, String word, int start, int end, int maximum, List<Found<V>> founds) {
         BaseNode<V> p = root;
         for (int i = start; i < end; i++) {
-            BaseNode<V> ch = p.findChild(chars[i]);
+            BaseNode<V> ch = p.findChild(word.charAt(i));
             if (ch == null) {
                 return;
             }
@@ -226,19 +226,19 @@ public class NodeHelper {
      * </pre>
      *
      * @param root      根节点
-     * @param chars     待删除的 key 的字符数组
+     * @param key       待删除的 key
      * @param <V>       值类型
      * @param convertor 节点转换器
      * @return 如果未找到与 key 相符的节点，返回空；否则返回删除的节点。
      */
-    public static <V> BaseNode<V> remove(BaseNode<V> root, char[] chars, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
-        int charsLen = chars.length;
+    public static <V> BaseNode<V> remove(BaseNode<V> root, String key, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
+        int charsLen = key.length();
         int last = charsLen - 1;
         // del 待删除节点；dp 待删除节点的父节点
         BaseNode<V> p = root, dp = null;
         Node<V> del = null;
         for (int i = 0; i < charsLen; i++) {
-            char c = chars[i];
+            char c = key.charAt(i);
             Node<V> ch = p.findChild(c);
             if (ch == null) {
                 return null;
@@ -269,12 +269,12 @@ public class NodeHelper {
         return null;
     }
 
-    static class ValuesFunction<V> implements BiFunction<String, V, Boolean> {
+    static class ValuesCollector<V> implements BiFunction<String, V, Boolean> {
 
         private final int maximum;
         private final List<V> values;
 
-        public ValuesFunction(int maximum, List<V> values) {
+        public ValuesCollector(int maximum, List<V> values) {
             this.maximum = maximum;
             this.values = values;
         }

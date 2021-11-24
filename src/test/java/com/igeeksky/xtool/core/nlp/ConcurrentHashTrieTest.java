@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class ConcurrentHashTrieTest {
 
-    private final Trie<String> trie = new ConcurrentHashTrie<>();
 
     @Test
     public void put() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String put = trie.put("a", "a");
         Assert.assertNull(put);
 
@@ -43,6 +43,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void putAll() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         TreeMap<String, String> treeMap = new TreeMap<>();
         strings.forEach(key -> treeMap.put(key, key));
@@ -54,6 +55,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void get() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         strings.forEach(key -> trie.put(key, key));
         trie.put("aaa", "aaa");
@@ -69,6 +71,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void match() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
@@ -86,6 +89,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void match2() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "ab";
         String key2 = "abc";
         String key3 = "abd";
@@ -104,6 +108,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void matchAll() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "1234";
         String key2 = "12345";
         String key3 = "123456";
@@ -124,6 +129,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void search() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ac", "ac");
@@ -222,6 +228,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void search1() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -288,6 +295,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void contains() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -302,28 +310,28 @@ public class ConcurrentHashTrieTest {
 
         List<Found<String>> shortMatches = trie.contains("abcdefg");
         System.out.println(shortMatches);
-        String expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}]";
+        String expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches.toString());
 
 
-        List<Found<String>> shortMatches2 = trie.contains("abcdefg", false, false);
+        List<Found<String>> shortMatches2 = trie.contains("abcdefg", true, true);
         System.out.println(shortMatches2);
         Assert.assertEquals(expected, shortMatches2.toString());
 
 
-        List<Found<String>> longMatches = trie.contains("abcdefg", true, false);
+        List<Found<String>> longMatches = trie.contains("abcdefg", true, true);
         System.out.println(longMatches);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
         Assert.assertEquals(expected, longMatches.toString());
 
 
-        List<Found<String>> skipMatches2 = trie.contains("abcdefg", false, true);
+        List<Found<String>> skipMatches2 = trie.contains("abcdefg", false, false);
         System.out.println(skipMatches2);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}]";
         Assert.assertEquals(expected, skipMatches2.toString());
 
 
-        List<Found<String>> skipMatches = trie.contains("abcdefg", true, true);
+        List<Found<String>> skipMatches = trie.contains("abcdefg", true, false);
         System.out.println(skipMatches);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
         Assert.assertEquals(expected, skipMatches.toString());
@@ -331,6 +339,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void containsAll() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -348,17 +357,17 @@ public class ConcurrentHashTrieTest {
         Assert.assertEquals(expected, shortMatches.toString());
 
 
-        List<Found<String>> shortMatches1 = trie.containsAll("abcdefg", false, Integer.MAX_VALUE);
+        List<Found<String>> shortMatches1 = trie.containsAll("abcdefg", true, Integer.MAX_VALUE);
         System.out.println(shortMatches1);
         Assert.assertEquals(expected, shortMatches1.toString());
 
 
-        List<Found<String>> shortMatches2 = trie.containsAll("abcdefg", true, Integer.MAX_VALUE);
+        List<Found<String>> shortMatches2 = trie.containsAll("abcdefg", false, Integer.MAX_VALUE);
         System.out.println(shortMatches2);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches2.toString());
 
-        List<Found<String>> shortMatches3 = trie.containsAll("abcdefg", true, 1);
+        List<Found<String>> shortMatches3 = trie.containsAll("abcdefg", false, 1);
         System.out.println(shortMatches3);
         expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}]";
         Assert.assertEquals(expected, shortMatches3.toString());
@@ -366,6 +375,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void values() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -381,6 +391,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void traversal() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -444,6 +455,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void remove() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
@@ -484,6 +496,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove2() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abcdef";
         String key3 = "abcfgh";
@@ -506,6 +519,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove3() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abcd";
         String key3 = "abcf";
@@ -529,6 +543,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove4() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abcde";
         String key3 = "abcd";
@@ -552,6 +567,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void height() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -590,6 +606,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void size() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -635,6 +652,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void isEmpty() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -675,6 +693,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void clear() {
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -693,4 +712,7 @@ public class ConcurrentHashTrieTest {
         trie.clear();
         Assert.assertTrue(trie.isEmpty());
     }
+
+
+
 }

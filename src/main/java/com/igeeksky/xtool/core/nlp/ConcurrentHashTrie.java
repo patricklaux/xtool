@@ -57,19 +57,18 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     public V put(String key, V value) {
         Assert.notNull(value, "value must not be null");
         Assert.hasLength(key, "key must not be null or blank");
-        char[] chars = key.toCharArray();
-        Lock writeLock = getWriteLock(chars[0]);
+        Lock writeLock = getWriteLock(key.charAt(0));
         writeLock.lock();
         try {
-            V oldVal = NodeHelper.put(root, chars, value, creator, convertor);
+            V oldVal = NodeHelper.put(root, key, value, creator, convertor);
             if (null == oldVal) {
-                int charsLen = chars.length;
+                int length = key.length();
                 synchronized (lock) {
                     ++size;
-                    if (charsLen > height) {
-                        height = charsLen;
+                    if (length > height) {
+                        height = length;
                     }
-                    heightCache.computeIfAbsent(charsLen, lenKey -> new IntegerValue()).increment();
+                    heightCache.computeIfAbsent(length, lenKey -> new IntegerValue()).increment();
                 }
             }
             return oldVal;
@@ -104,13 +103,11 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     private Found<V> match(String word, boolean exactlyMatch, boolean longestMatch) {
         Assert.hasLength(word, "word must not be null or blank");
 
-        char[] chars = word.toCharArray();
-        int charsLen = chars.length;
-
-        Lock readLock = getReadLock(chars[0]);
+        int length = word.length();
+        Lock readLock = getReadLock(word.charAt(0));
         readLock.lock();
         try {
-            return NodeHelper.match(root, chars, 0, charsLen, exactlyMatch, longestMatch);
+            return NodeHelper.match(root, word, 0, length, exactlyMatch, longestMatch);
         } finally {
             readLock.unlock();
         }
@@ -124,15 +121,13 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     @Override
     public List<V> matchAll(String word, int maximum) {
         Assert.hasLength(word, "word must not be null or blank");
-        char[] chars = word.toCharArray();
-        int charsLen = chars.length;
-
+        int charsLen = word.length();
         List<Found<V>> founds = new LinkedList<>();
 
-        Lock readLock = getReadLock(chars[0]);
+        Lock readLock = getReadLock(word.charAt(0));
         readLock.lock();
         try {
-            NodeHelper.matchAll(root, chars, 0, charsLen, maximum, founds);
+            NodeHelper.matchAll(root, word, 0, charsLen, maximum, founds);
         } finally {
             readLock.unlock();
         }
@@ -154,21 +149,19 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
             return new LinkedList<>();
         }
 
-        char[] chars = prefix.toCharArray();
-        int charsLen = chars.length;
-
-        depth = Math.min(height - charsLen, depth);
+        int length = prefix.length();
+        depth = Math.min(height - length, depth);
         if (depth < 0) {
             return new LinkedList<>();
         }
 
         List<V> values = new LinkedList<>();
-        NodeHelper.ValuesFunction<V> function = new NodeHelper.ValuesFunction<>(maximum, values);
+        NodeHelper.ValuesCollector<V> function = new NodeHelper.ValuesCollector<>(maximum, values);
 
-        Lock readLock = getReadLock(chars[0]);
+        Lock readLock = getReadLock(prefix.charAt(0));
         readLock.lock();
         try {
-            Found<V> found = NodeHelper.match(root, chars, 0, charsLen, true, true);
+            Found<V> found = NodeHelper.match(root, prefix, 0, length, true, true);
             if (null == found) {
                 return values;
             }
@@ -182,7 +175,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
             if (depth == 0) {
                 return values;
             }
-            NodeHelper.search(root0, chars, depth, dfs, function);
+            NodeHelper.search(root0, prefix.toCharArray(), depth, dfs, function);
         } finally {
             readLock.unlock();
         }
@@ -191,27 +184,27 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
 
     @Override
     public List<Found<V>> contains(String text) {
-        return contains(text, false, false);
+        return contains(text, true, true);
     }
 
     @Override
-    public List<Found<V>> contains(String text, boolean longestMatch, boolean skipFound) {
+    public List<Found<V>> contains(String text, boolean longestMatch, boolean oneByOne) {
         Assert.hasLength(text, "text must not be null or empty");
-        char[] chars = text.toCharArray();
-        int charsLen = chars.length;
+
+        int length = text.length();
         List<Found<V>> founds = new LinkedList<>();
-        for (int i = 0; i < charsLen; i++) {
+        for (int i = 0; i < length; i++) {
             Found<V> found;
-            Lock readLock = getReadLock(chars[i]);
+            Lock readLock = getReadLock(text.charAt(i));
             readLock.lock();
             try {
-                found = NodeHelper.match(root, chars, i, charsLen, false, longestMatch);
+                found = NodeHelper.match(root, text, i, length, false, longestMatch);
             } finally {
                 readLock.unlock();
             }
             if (null != found) {
                 founds.add(found);
-                if (skipFound) {
+                if (!oneByOne) {
                     i = found.getEnd();
                 }
             }
@@ -221,22 +214,21 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
 
     @Override
     public List<Found<V>> containsAll(String text) {
-        return containsAll(text, false, Integer.MAX_VALUE);
+        return containsAll(text, true, Integer.MAX_VALUE);
     }
 
     @Override
-    public List<Found<V>> containsAll(String text, boolean skipFound, int maximum) {
+    public List<Found<V>> containsAll(String text, boolean oneByOne, int maximum) {
         Assert.hasLength(text, "text must not be null or empty");
-        char[] chars = text.toCharArray();
-        int charsLen = chars.length;
 
+        int charsLen = text.length();
         LinkedList<Found<V>> founds = new LinkedList<>();
         Found<V> last = null;
         for (int i = 0; i < charsLen; i++) {
-            Lock readLock = getReadLock(chars[i]);
+            Lock readLock = getReadLock(text.charAt(i));
             readLock.lock();
             try {
-                NodeHelper.matchAll(root, chars, i, charsLen, maximum, founds);
+                NodeHelper.matchAll(root, text, i, charsLen, maximum, founds);
             } finally {
                 readLock.unlock();
             }
@@ -244,7 +236,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
             if (size >= maximum) {
                 return toResult(founds);
             }
-            if (skipFound && size > 0) {
+            if (!oneByOne && size > 0) {
                 if (founds.getLast() != last) {
                     last = founds.getLast();
                     i = last.getEnd();
@@ -272,7 +264,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     @Override
     public List<V> values(int depth) {
         List<V> values = new LinkedList<>();
-        NodeHelper.ValuesFunction<V> function = new NodeHelper.ValuesFunction<>(Integer.MAX_VALUE, values);
+        NodeHelper.ValuesCollector<V> function = new NodeHelper.ValuesCollector<>(Integer.MAX_VALUE, values);
         traversal(depth, function);
         return values;
     }
@@ -325,24 +317,22 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     @Override
     public V remove(String key) {
         Assert.hasLength(key, "key must not be null or blank");
-        char[] chars = key.toCharArray();
-
-        Lock writeLock = getWriteLock(chars[0]);
+        Lock writeLock = getWriteLock(key.charAt(0));
         writeLock.lock();
         try {
-            BaseNode<V> found = NodeHelper.remove(root, chars, convertor);
+            BaseNode<V> found = NodeHelper.remove(root, key, convertor);
             if (null != found) {
                 V oldVal = found.value;
                 if (oldVal != null) {
                     found.value = null;
-                    int charsLen = chars.length;
+                    int length = key.length();
                     synchronized (lock) {
                         --size;
-                        long heightSize = heightCache.get(charsLen).decrementAndGet();
+                        long heightSize = heightCache.get(length).decrementAndGet();
                         if (heightSize <= 0) {
-                            heightCache.remove(charsLen);
-                            if (charsLen == height) {
-                                Integer lowHeight = heightCache.lowerKey(charsLen);
+                            heightCache.remove(length);
+                            if (length == height) {
+                                Integer lowHeight = heightCache.lowerKey(length);
                                 height = (null == lowHeight ? 0 : lowHeight);
                             }
                         }

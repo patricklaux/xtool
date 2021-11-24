@@ -10,10 +10,10 @@ import java.util.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-15
  */
+@Ignore
 public class ConcurrentHashTriePerformanceTest {
 
     @Test
-    @Ignore
     public void get() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -43,13 +43,14 @@ public class ConcurrentHashTriePerformanceTest {
         System.out.println("get\tt2:\t" + (t2 - t1));
 
         Map<String, String> map = new HashMap<>(size);
-        for (String key : keys) {
+        for (int i = 0; i < keys.size(); i++) {
+            String key = keys.get(i);
             map.put(key, key);
+            keys.set(i, String.valueOf(key.toCharArray()));
         }
 
         long t3 = System.currentTimeMillis();
         System.out.println("get\tt3:\t" + (t3 - t2));
-
 
         for (String key : keys) {
             trie.put(key, key);
@@ -58,7 +59,7 @@ public class ConcurrentHashTriePerformanceTest {
         long t4 = System.currentTimeMillis();
         System.out.println("get\tt4:\t" + (t4 - t3));
 
-        List<String> result = new ArrayList<>(size);
+        List<String> result = new ArrayList<>(keys.size());
         for (String key : keys) {
             String value = map.get(key);
             if (null != value) {
@@ -71,7 +72,7 @@ public class ConcurrentHashTriePerformanceTest {
         long t5 = System.currentTimeMillis();
         System.out.println("get\tt5:\t" + (t5 - t4));
 
-        List<String> result2 = new ArrayList<>(size);
+        List<String> result2 = new ArrayList<>(keys.size());
         for (String key : keys) {
             String value = trie.get(key);
             if (null != value) {
@@ -87,7 +88,6 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
-    @Ignore
     public void matchAll() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -152,7 +152,6 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
-    @Ignore
     public void contains() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
@@ -203,7 +202,6 @@ public class ConcurrentHashTriePerformanceTest {
     }
 
     @Test
-    @Ignore
     public void containsAll() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
