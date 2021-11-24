@@ -7,6 +7,8 @@ package com.igeeksky.xtool.core.lang;
  * @since 0.0.4 2021-10-21
  */
 public class BooleanUtils {
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
 
     private BooleanUtils() {
     }
@@ -28,7 +30,7 @@ public class BooleanUtils {
 
         String temp = StringUtils.trimToNull(original.toString());
         if (temp != null) {
-            if (temp.equalsIgnoreCase("true") || temp.equalsIgnoreCase("false")) {
+            if (temp.equalsIgnoreCase(TRUE) || temp.equalsIgnoreCase(FALSE)) {
                 return Boolean.valueOf(temp);
             }
             throw new IllegalArgumentException("For input string: \"" + temp + "\"");
