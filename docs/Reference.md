@@ -15,7 +15,7 @@ Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.4
 xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不求大而全，但求小而美。主要包含：
 
 - 字符串、数值、集合、IO等工具类；
-- 一些自定义注解；
+- 一些常用自定义注解；
 - NLP 相关的数据结构。
 
 ### 1.2. 使用
