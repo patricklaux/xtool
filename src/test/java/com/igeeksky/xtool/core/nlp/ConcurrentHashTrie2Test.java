@@ -135,9 +135,8 @@ public class ConcurrentHashTrie2Test {
         List<String> matchAll = trie.matchAll("abcdef");
         Assert.assertEquals("[ab, abc, abcd]", matchAll.toString());
 
-        /*
-         * match 的参数测试
-         */
+
+        // match 的参数测试
         // match：最长匹配
         match = trie.match("abcdef", true);
         Assert.assertEquals("abcd", match);
@@ -146,9 +145,8 @@ public class ConcurrentHashTrie2Test {
         match = trie.match("abcdef", false);
         Assert.assertEquals("ab", match);
 
-        /*
-         * matchAll 的参数测试
-         */
+
+        // matchAll 的参数测试
         // matchAll：最大返回数量为 1
         matchAll = trie.matchAll("abcdef", 1);
         Assert.assertEquals("[ab]", matchAll.toString());
@@ -234,29 +232,37 @@ public class ConcurrentHashTrie2Test {
 
 
         // contains 参数变化对比
+        // 最长匹配；逐字符扫描
         contains = trie.contains("xxabcdexx", true, true);
         Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
 
+        // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         contains = trie.contains("xxabcdexx", true, false);
         Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}]", contains.toString());
 
+        // 最短匹配；逐字符扫描
         contains = trie.contains("xxabcdexx", false, true);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
 
+        // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         contains = trie.contains("xxabcdexx", false, false);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", contains.toString());
 
 
         // containsAll 参数变化对比
+        // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
         containsAll = trie.containsAll("xxabcdexx", true, Integer.MAX_VALUE);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", containsAll.toString());
 
+        // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
         containsAll = trie.containsAll("xxabcdexx", false, Integer.MAX_VALUE);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}]", containsAll.toString());
 
+        // 逐字符扫描；最大返回数量为1
         containsAll = trie.containsAll("xxabcdexx", true, 1);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
 
+        // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
         containsAll = trie.containsAll("xxabcdexx", false, 1);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
     }
@@ -300,9 +306,11 @@ public class ConcurrentHashTrie2Test {
         trie.put("abd", "abd");
         trie.put("bcd", "bcd");
 
+        // 搜索深度为4
         List<String> values = trie.values(4);
         Assert.assertEquals("[ab, abc, abcd, abd, bcd]", values.toString());
 
+        // 搜索深度为3
         values = trie.values(3);
         Assert.assertEquals("[ab, abc, abd, bcd]", values.toString());
     }
@@ -318,10 +326,15 @@ public class ConcurrentHashTrie2Test {
         trie.put("bcd", "bcd");
 
         List<Tuple2<String, String>> entries = new ArrayList<>(5);
+
+        // 搜索深度为4
         trie.traversal(4, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd], [bcd, bcd]]", entries.toString());
 
+
         entries = new ArrayList<>(5);
+
+        // 搜索深度为3
         trie.traversal(3, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [bcd, bcd]]", entries.toString());
     }

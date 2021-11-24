@@ -227,13 +227,13 @@ public class NodeTest {
     @Test
     public void deleteChild3() {
         LinkedNode<String> parent = new LinkedNode<>('0');
-        for (int c = 0; c < 66; c++) {
+        for (int c = 0; c < 65536; c++) {
             parent.addChild((char) c, creator, convertor);
-            System.out.println(parent.size() + "\t" + parent.table.length);
+            // System.out.println(parent.size() + "\t" + parent.table.length);
         }
 
-        List<Tuple2<Integer, Integer>> list = new ArrayList<>(66);
-        for (int c = 0; c < 66; c++) {
+        List<Tuple2<Integer, Integer>> list = new ArrayList<>(65536);
+        for (int c = 0; c < 65536; c++) {
             Node<String> child = parent.findChild((char) c);
             parent.deleteChild(child, convertor);
             list.add(Tuples.of(parent.size(), (null != parent.table) ? parent.table.length : 0));

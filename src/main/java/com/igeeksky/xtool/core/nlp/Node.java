@@ -70,7 +70,13 @@ public abstract class Node<V> extends BaseNode<V> {
             return null;
         }
         Node<V> head = table[c & (table.length - 1)];
-        return (head != null) ? head.find(c) : null;
+        if (head != null) {
+            if (head.c == c) {
+                return head;
+            }
+            return head.find(c);
+        }
+        return null;
     }
 
     @Override

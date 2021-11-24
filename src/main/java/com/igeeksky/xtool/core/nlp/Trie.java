@@ -109,7 +109,7 @@ public interface Trie<V> {
     List<V> matchAll(String word, int maximum);
 
     /**
-     * 前缀匹配：输入前缀，返回以有此前缀的 key 对应的 value，如果有多个 key 都有此前缀，将这些 key 对应的 value 都返回
+     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
      * <p>
      * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
      * <p>
@@ -130,7 +130,7 @@ public interface Trie<V> {
     List<V> search(String prefix);
 
     /**
-     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key都包含此前缀，将这些 key 对应的 value 都返回。
+     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -270,7 +270,10 @@ public interface Trie<V> {
     List<Found<V>> containsAll(String text, boolean oneByOne, int maximum);
 
     /**
-     * 遍历值
+     * 遍历值（！！慎用：如果树中包含大量的键值对，可能会导致内存溢出！！）
+     * <p>
+     * 调用此方法需慎重，此方法会将所有 value 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
+     * 当无法判断是否会导致内存溢出时，请使用{@link Trie#traversal}方法
      * <p>
      * {@link ConcurrentHashTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
      *
@@ -306,7 +309,7 @@ public interface Trie<V> {
      * <p>
      * 等同于 HashMap 的 remove 方法
      * <p>
-     * 如果该 key 有后缀节点，则仅移除 value；如无后缀节点，则删除无效分支。
+     * 没有采用惰性删除的方式，不仅仅删除value。如果该 key 有后缀节点，则仅移除 value；如无后缀节点，则删除整个无效分支。
      * <pre>
      * 如当前树中有 gran, grand, grace 三个 key。初始树结构如下：
      *            g
@@ -325,7 +328,7 @@ public interface Trie<V> {
      *            |
      *            a
      *           / \
-     *          c   n()
+     *          c   n
      *          |   |
      *   (grace)e   d(grand)
      * 2. 删除 grace，同时删除无效分支 c，最后仅剩下 grand：
@@ -335,13 +338,13 @@ public interface Trie<V> {
      *            |
      *            a
      *             \
-     *              n()
+     *              n
      *              |
      *              d(grand)
      * </pre>
      *
      * @param key 键：完全匹配的字符串
-     * @return 如果 key 存在于树中，则返回该 key 对应的 value；否则，返回空。
+     * @return 如果 key 存在于树中，则删除该 key 并返回该 key 对应的 value；否则，则删除该 key 但返回空。
      */
     V remove(String key);
 
@@ -362,7 +365,7 @@ public interface Trie<V> {
     /**
      * 树是否为空
      *
-     * @return true：没有任何键值对；false：至少有一对键值对
+     * @return {@link Boolean#TRUE}：没有任何键值对；{@link Boolean#FALSE}：至少有一对键值对
      */
     boolean isEmpty();
 

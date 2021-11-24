@@ -6,7 +6,7 @@
 
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
     <name>xtool</name>
     <description>xtool is a very small set of Java tools.</description>
     <url>https://github.com/patricklaux/xtool</url>
@@ -54,11 +54,6 @@
             <version>4.13.2</version>
             <scope>test</scope>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,7 @@
 
 Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.4
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases) [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits) [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)  [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases)  [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits)  [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 
@@ -1263,32 +1263,36 @@ public class IntegerValueTest {
 
 ### 8.1. 字典树 ConcurrentHashTrie
 
-2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看，一是代码结构有些乱，二是单链表在Hash冲突严重的情况下会有性能问题，因此这次开发 xtool 时就用 Hash + 单链表 + AVLTree 完全重写了一遍。那么，新版本的字典树做了哪些优化和支持哪些特性呢？
+2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在Hash冲突严重的情况下会有性能问题。
+
+因此这次开发 xtool 时就用 Hash + 单链表 + AVLTree 完全重写了一遍。那么，新版本的字典树做了哪些优化和支持哪些特性呢？
 
 - 大容量：支持亿级以上的键值对。
+- 泛型支持：键为字符串，值可以为其它数据类型；
 - 时间复杂度：最好的情况为O(m)，最坏的情况为O(mlogn)，m 为字符串长度，n 为256。具体解释见 <a href="#time">为什么时间复杂度最坏的情况下为 O(mlogn)？</a>。
 - 并发支持：使用分段的读写锁，最高支持 65536 个 key 同时写，高并发下无性能问题。
-- 内存优化：使用自定义的单链表和 AVLTree，完全删除了无关信息。
-- 性能优化：使用新的遍历算法（非递归，无队列和栈），在大容量的情况下可以保持高效率且无需担心内存溢出和栈溢出问题。
+- 内存优化：使用自定义的单链表和 AVLTree，最大限度去除了可有可无的信息。
+- 性能优化：使用新的遍历算法（非递归；无队列和栈），在大容量的情况下可以保持高效率遍历而无需担心内存溢出和栈溢出问题。
 
 #### 8.1.1. 什么是字典树？
 
 字典树[^1]又称为前缀树，是一种搜索树。
 
-假如有四个单词：ape, april, bad, bed
+假如有五个单词：ab, abc, abcd, abd, bcd
 
 如果想判断某个单词是否存在，我们可以用 HashMap，时间复杂度为O(1)。但：
 
-- 输入"ap"，输出包含 "ap"这个前缀的所有单词；
+- 输入"ab"，输出前缀为 "ab" 的所有单词；
 
-- 输入一段文本，输出文本中存在这四个单词的哪几个，以及单词出现的起止位置……
+- 输入一段文本，输出文本中存在这五个单词的哪几个，以及单词出现的起止位置……
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
 <div align=center>
-<img src="images/trie.png" alt="trie" style="zoom: 67%;" />
+<img src="images/trie.png" alt="trie" style="zoom: 50%;" />
 <div align=center>图1</div>
 </div>
+
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
@@ -1303,7 +1307,7 @@ public class IntegerValueTest {
 
 **Trie 与 HashMap 对比**
 
-如果都使用字符串作为Key，Trie 可以替代 HashMap。那么，两者相比，分别适用哪些场景呢？我们分别从时间和空间两方面来分析。
+如果都使用字符串作为Key，Trie 可以替代 HashMap。那么，两者相比，分别适用哪些场景呢？我们从时间和空间两方面来分析。
 
 - **空间性能**
 
@@ -1315,19 +1319,19 @@ public class IntegerValueTest {
 
   1. Trie 不需要计算哈希值，HashMap 需要计算哈希值。
 
-  2. 查找的时间复杂度：Trie 为O(m)；HashMap 最好的情况下 为O(m)，最坏的情况是m * O(logn)。
+  2. 查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(mlogk)。
 
-     注1：m为字符串的长度，n 为  key 的数量；
+     注1：m为字符串的长度，k 为  key 的数量；
 
-     注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度也需要 O(m)。
+     注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度也需要 O(m)。我们通常说 HashMap 的时间复杂度为O(1)，其实是没有计算字符串比较所需要的时间复杂度。
 
-  似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个对比的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个对比的速度会比较慢。
+  似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
 
-  另外，Trie 的某些节点可能在主存，某些节点在 cpu 缓存，比对过程可能需要多次访问主存；而 HashMap 可能仅需要访问一次主存。
+  另，Trie 的某些节点可能在主存，某些节点在 cpu 缓存，比对过程可能需要多次访问主存；而 HashMap 可能仅需要访问一次主存。
 
-  非严格对比测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
+  非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
 
-字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，可以参考维基百科中关于Trie[^1]的介绍。
+字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以参考维基百科中关于Trie[^1]的介绍。
 
 现在，我们先来考虑选择什么方式去构造这样的一棵字典树。
 
@@ -1339,9 +1343,9 @@ public class IntegerValueTest {
 
 如果节点用 HashMap来实现，查找单个字符后缀的时间复杂度为O(1)，时间性能很好，但空间利用率不高。
 
-- HashMap 的扩容因子是0.75，每次扩容是原容量的 2 倍，而且无法缩容，这意味着会有大量的空间浪费；
-- HashMap 还保存了一些附加信息，如size，modCount……等，相当于每存一个字符，就要存储N倍信息；
-- HashMap 的 Entry 本身就是节点，相当于一个字符就包了两层数据结构。
+- HashMap 的扩容因子是 0.75，每次扩容是原容量的 2 倍，且不支持缩容，这意味着会有大量的空间浪费；
+- HashMap 还保存了一些附加信息，如 size，modCount……等，相当于每存一个字符，就要存储N倍信息；
+- HashMap 的 Entry 本身就是节点，相当于一个字符就包了两层数据结构 Entry(Map<Character, Map<>>)。
 
 **二叉树？**
 
@@ -1361,7 +1365,7 @@ public class LinkedNode<V>{
     // 字符
     final char c;	
     
-    // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径可以构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
+    // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
     V value;	
 
     // 当前的子节点数量
@@ -1383,7 +1387,7 @@ public class AvlNode<V>{
     // 字符
     final char c;
     
-    // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径可以构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
+    // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
     V value;	
 
     // 当前的子节点数量
@@ -1408,9 +1412,9 @@ public class AvlNode<V>{
 
 LinkedNode 在Hash 冲突严重时会有性能问题，因此需要树形结构来作为补充，当Hash 冲突超过阈值则将链表转换为树，Java 的HashMap 使用的是 RedBlackTree。
 
-一般来说，RedBlackTree 的删除性能比 AvlTree 要好，AVLTree 的查找性能比 RedBlackTree  要好。考虑到字典树通常不会有频繁的删除操作，因此选择AVLTree。另外， AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
+一般来说，RedBlackTree 的增删性能比 AvlTree 要好（实际上大多数场景两者差别细微），AVLTree 的查找性能比 RedBlackTree  要好。考虑到字典树通常不会有频繁的增删操作，因此选择AVLTree。另外， AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
 
-这里定义的 AvlNode 相比 HashMap 中定义的 TreeNode（红黑树节点），删减了父节点指针、前驱指针、后继指针和颜色标识，会更节省空间，但删减信息带来的副作用就是增加了程序复杂度。
+这里定义的 AvlNode 相比 HashMap 中定义的 TreeNode（RedBlackTree），删减了父节点指针、前驱指针、后继指针和颜色标识，会更节省空间，但删减信息带来的副作用就是增加了程序复杂度。
 
 如果是一棵庞大的字典树，节点数过亿，或达到十亿级，每节省一个信息都会减少大量的内存消耗。出于这样的考虑，所以，程序复杂一些也是值得的。
 
@@ -1432,35 +1436,32 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 ##### 8.1.2.2. 树的创建
 
 <div align=center>
-<img src="images/trie_node.png" alt="trie_node" style="zoom: 67%;" />
+<img src="images/trie_node.png" alt="trie_node" style="zoom: 50%;" />
 <div align=center>图2</div>
 </div>
+
 
 > 注：蓝色方框为数组，也就是节点定义里的 table，用来保存直接后缀节点。
 
 1. 创建root节点；
 
-2. 添加单词 ape：
+2. 添加单词 abc：
 
-   2.1. root 节点创建 table，初始容量为1，table中添加 a 节点，++root.size；
+   2.1. root 节点创建 table，初始容量为1，table中添加 a 节点，++root.size。
 
-   2.2. a 节点创建 table，初始容量为1，table中添加 p 节点，++a.size；
+   2.2. a 节点创建 table，初始容量为1，table 中添加 b 节点，++a.size。
 
-   2.3. p 节点创建 table，初始容量为1，table中添加 e 节点，++p.size；e 为单词结尾，e 节点的 value 设置为 “ape”。
+   2.3. b 节点创建 table，初始容量为1，table 中添加 c 节点，++b.size；c 为单词结尾，c 节点的 value 设置为 “abc”。
 
-3. 添加单词 april
+3. 添加单词 abd：
 
-   3.1. 判断 root 节点 有无 a 节点： a & (table.length-1) 计算下标，发现 table[0] 已有 a 节点，无需创建 a节点；
+   3.1. 判断 root 节点 有无 a 节点： a & (table.length-1) 计算下标，发现 table[0] 已有 a 节点，无需创建 a 节点。
 
-   3.2. 判断 a 节点的 table 有无 p 节点，已有 p 节点，无需创建 p节点；
+   3.2. 判断 a 节点的 table 有无 b 节点，已有 b 节点，无需创建 b 节点。
 
-   3.3. 判断 p 节点的 table 有无 r 节点，没有 r 节点，但 p节点的 table 容量只有1，出现Hash冲突。选择一：扩容 table；选择二：e 节点的 next 指针指向 r 节点；为简化描述，这里先选择扩容，table容量变为2，table[1] = r节点，++p.size。
+   3.3. 判断 b 节点的 table 有无 d 节点，没有 d 节点，但 b 节点的 table 容量只有1，出现Hash冲突。选择一：扩容 table；选择二：c 节点的 next 指针指向 d 节点。选择扩容，table 扩容为2，table[1] = d 节点，++b.size；d 为单词结尾，d 节点的 value 设置为 “abd”。
 
-   3.4. r 节点创建 table，初始容量为1，table中添加 i 节点；
-
-   3.5. i 节点创建 table，初始容量为1，table中添加 l 节点；l 为单词结尾，l 节点的 value 设置为 “april”。
-
-4. 重复过程3，添加 bad、bed ，最终得到的树结构如 **图2** 所示。
+4. 重复过程3，添加 ab, abcd, bcd，最终得到的树结构如 **图2** 所示。
 
 **代码实现：**
 
@@ -1500,12 +1501,19 @@ public abstract class Node<V>{
 ```java
 public class Node<V>{
 
+    @Override
     public Node<V> findChild(char c) {
         if (null == table) {
             return null;
         }
         Node<V> head = table[c & (table.length - 1)];
-        return (head != null) ? head.find(c) : null;
+        if (head != null) {
+            if (head.c == c) {
+                return head;
+            }
+            return head.find(c);
+        }
+        return null;
     }
 }
 ```
@@ -1556,7 +1564,7 @@ public class Node<V>{
 
 <div id="time"><b>为什么时间复杂度最坏的情况下为 O(mlogn) （m 为字符串长度，n 为256）？</b></div>
 
-Java使用的 UTF-16 字符集的字符数为65536。当容量为128时，同一位置最多会有 65536 ÷ 128 = 512 个字符节点。因为扩容因子为 2，所以 size 达到256 个字符的时候 table 会扩容到256，这时同一位置最多就只有 65536 ÷ 256 = 256 个字符，因此 n 最大为256。
+Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时，同一位置最多会有 65536 ÷ 128 = 512 个字符节点。因为扩容因子为 2，所以 size 达到256 个字符时 table 会扩容到256，这时同一位置最多就只有 65536 ÷ 256 = 256 个字符，因此 n 最大为256。
 
 一旦同一位置的节点数达到阈值8，LinkedNode 就会转换为 AvlNode。AVLTree 的时间复杂度为O(logn)，再乘于字符串的长度 m，查找整个字符串 key 的时间复杂度就是 O(mlogn)。
 
@@ -1570,9 +1578,7 @@ Java使用的 UTF-16 字符集的字符数为65536。当容量为128时，同一
 <img src="images/trie_method.png" alt="trie_method" style="zoom: 67%;" />
 <div align=center>图3</div>
 </div>
-
-
-方法有些多，先放上我设计 Trie 时画的思维导图，再结合一些场景来写示例代码。
+方法比较多，先放上我做设计时画的思维导图，再结合一些场景来写示例代码。
 
 
 
@@ -1755,9 +1761,8 @@ public class ConcurrentHashTrieTest {
         List<String> matchAll = trie.matchAll("abcdef");
         Assert.assertEquals("[ab, abc, abcd]", matchAll.toString());
 
-        /*
-         * match 的参数测试
-         */
+        
+        // match 的参数测试
         // match：最长匹配
         match = trie.match("abcdef", true);
         Assert.assertEquals("abcd", match);
@@ -1766,9 +1771,8 @@ public class ConcurrentHashTrieTest {
         match = trie.match("abcdef", false);
         Assert.assertEquals("ab", match);
 
-        /*
-         * matchAll 的参数测试
-         */
+        
+        // matchAll 的参数测试
         // matchAll：最大返回数量为 1
         matchAll = trie.matchAll("abcdef", 1);
         Assert.assertEquals("[ab]", matchAll.toString());
@@ -1786,7 +1790,7 @@ public class ConcurrentHashTrieTest {
 
 **方法说明**：
 
-- **search**：输入前缀，返回以有此前缀的 key 对应的 value，如果有多个 key 都有此前缀，将这些 key 对应的 value 都返回。 
+- **search**：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回。 
 
   String prefix：前缀
 
@@ -1794,7 +1798,7 @@ public class ConcurrentHashTrieTest {
 
   int depth：搜索深度（默认：Integer.MAX_VALUE）
 
-  boolean dfs：是否深度优先遍历（true，深度优先遍历；false，广度优先遍历；默认：true）
+  boolean dfs：是否深度优先遍历（true：深度优先遍历；false：广度优先遍历；默认：深度优先遍历）
 
 **应用场景：搜索引擎输入框提示列表**
 
@@ -1893,9 +1897,12 @@ public class ConcurrentHashTrieTest {
         trie.put("敏感词", "敏感词");
 
         String text = "为什么不准发布？敏感词真敏感！";
+        
+        
         List<Found<String>> contains = trie.contains(text);
         Assert.assertEquals("[{\"start\":8, \"end\":10, \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"value\":\"敏感\"}]", contains.toString());
 
+        
         // contains 与 containsAll 对比，起始位置 8：contains只返回“敏感”；containsAll 返回了“敏感”和“敏感词”；
         List<Found<String>> containsAll = trie.containsAll(text);
         Assert.assertEquals("[{\"start\":8, \"end\":9, \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"value\":\"敏感\"}]", containsAll.toString());
@@ -1922,29 +1929,37 @@ public class ConcurrentHashTrieTest {
 
 
         // contains 参数变化对比
+        // 最长匹配；逐字符扫描
         contains = trie.contains("xxabcdexx", true, true);
         Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
 
+        // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         contains = trie.contains("xxabcdexx", true, false);
         Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}]", contains.toString());
 
+        // 最短匹配；逐字符扫描
         contains = trie.contains("xxabcdexx", false, true);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
 
+        // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         contains = trie.contains("xxabcdexx", false, false);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", contains.toString());
 
 
         // containsAll 参数变化对比
+        // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
         containsAll = trie.containsAll("xxabcdexx", true, Integer.MAX_VALUE);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", containsAll.toString());
 
+        // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
         containsAll = trie.containsAll("xxabcdexx", false, Integer.MAX_VALUE);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}]", containsAll.toString());
 
+        // 逐字符扫描；最大返回数量为1
         containsAll = trie.containsAll("xxabcdexx", true, 1);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
 
+        // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
         containsAll = trie.containsAll("xxabcdexx", false, 1);
         Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
     }
@@ -1957,11 +1972,11 @@ public class ConcurrentHashTrieTest {
 
 **方法说明：**
 
-- **values**：遍历值
+- **values**：遍历值（！！调用此方法需慎重，此方法会将所有 value 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal 方法。！！）
 
   int depth：遍历深度
 
-- **traversal**：遍历键值对。考虑到树中包含的键值对数量可能非常庞大，如果提供 entrySet()方法会消耗大量的内存，甚至会导致内存溢出， 因此采用用户提供的函数来处理遍历结果，用户可以自定义函数实现序列化等操作。
+- **traversal**：遍历键值对。考虑到树中包含的键值对数量可能非常庞大，如果提供 entrySet() 方法会消耗大量的内存，甚至会导致内存溢出， 因此采用用户提供的函数来处理遍历结果，用户可以自定义函数实现序列化等操作。
 
   int depth：遍历深度
 
@@ -1974,13 +1989,13 @@ public class ConcurrentHashTrieTest {
 
 但这两种方式对于字典树来说都是不适合的，一棵庞大的字典树可能会有数十亿个节点：使用递归会导致栈溢出；使用栈和队列则可能导致内存溢出。
 
-之前学习算法时根本就没关注过数十亿个节点的树如何遍历才不会出错，翻遍了各种算法书也都是上面描述的两种方式，网络上也没有找到有价值的信息。然后，只能自己日夜冥思苦想，差不多花了一周的时间，终于实现了一个不需要递归，也不需要栈和队列的遍历方式，而且一个方法可以同时支持深度优先遍历和广度优先遍历。
+之前学习算法时没关注数十亿个节点的树如何遍历才不会出错，翻遍了各种算法书也都是上面描述的两种方式，网络上也没有找到有价值的信息。然后，只能自己日夜冥思苦想，差不多花了一周时间，终于实现了一个不需要递归也不需要栈和队列的遍历方式，而且一个方法可以同时支持深度优先遍历和广度优先遍历。
 
 如果有兴趣的话可以看看 com.igeeksky.xtool.core.nlp.NodeHelper 的 traversal方法，实现还是非常巧妙的。😀 得意ing！
 
-ConcurrentHashTrie 其实花了很多时间去优化，考虑到了很多的使用边界。这些其实在最初学习算法的时候其实是很少关注的，再次说明生产级的代码其实与学习写的代码是完全不一样的，需要花几倍甚至几十倍的时间去优化和改进，需要花几倍的时间去写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
+ConcurrentHashTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
 
-后续有时间再来完整介绍ConcurrentHashTrie的实现，然后再来聊聊这个我比较得意的一个算法吧，这里先继续介绍如何使用 values 和 traversal 方法。
+后续有时间再来完整介绍ConcurrentHashTrie的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 values 和 traversal 方法。
 
 ```java
 public class ConcurrentHashTrieTest {
@@ -1994,9 +2009,11 @@ public class ConcurrentHashTrieTest {
         trie.put("abd", "abd");
         trie.put("bcd", "bcd");
 
+        // 搜索深度为4
         List<String> values = trie.values(4);
         Assert.assertEquals("[ab, abc, abcd, abd, bcd]", values.toString());
 
+        // 搜索深度为3
         values = trie.values(3);
         Assert.assertEquals("[ab, abc, abd, bcd]", values.toString());
     }
@@ -2012,10 +2029,15 @@ public class ConcurrentHashTrieTest {
         trie.put("bcd", "bcd");
 
         List<Tuple2<String, String>> entries = new ArrayList<>(5);
-        trie.traversal(144, new TraversalFunction(5, entries));
+        
+        // 搜索深度为4
+        trie.traversal(4, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd], [bcd, bcd]]", entries.toString());
-
+        
+        
         entries = new ArrayList<>(5);
+        
+        // 搜索深度为3
         trie.traversal(3, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [bcd, bcd]]", entries.toString());
     }
@@ -2094,7 +2116,17 @@ public class ConcurrentHashTrieTest {
 
 
 
-参考资料：
+### 8.2. 关于NLP
+
+NLP 领域有非常多很有用的算法和数据结构，但写学习代码容易，写生产级别的代码却需要花费大量的时间和精力，后续会陆续补充。
+
+我初步的意向是先开发这个数据结构：双数组字典树。
+
+如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr 哦。
+
+
+
+## 参考资料
 
 [^1]: https://en.wikipedia.org/wiki/Trie
 
