@@ -746,7 +746,7 @@ public class MapsTest {
 > **注意**：
 >
 > - 只有 targetMap 没有的key ，才从 sourceMap 中复制到 targetMap ；targetMap 已有的 key，一律保留原值（即使值为空）。
-> - targetMap 不能为 *Collections.emptyMap()*、*Collections.singletonMap()* …… 等无法保存元素的 map
+> - targetMap 不能为 *Collections.emptyMap()*、*Collections.singletonMap()* …… 等无法添加元素的 map
 
 
 
