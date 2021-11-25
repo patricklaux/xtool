@@ -576,7 +576,7 @@ public class IOException extends RuntimeException {
 
 - isTrue  判断表达式是否为真
 - isFalse  判断表达式是否为假
-- notEmpty  判断容器是否为空对象或无元素
+- notEmpty  判断集合是否为空对象或无元素
 - hasText  判断字符串是否不为空且含有非空白字符
 - hasLength  判断字符串是否不为空且至少有一个字符（可以为空白字符）
 - notNull  判断对象是否不为空
@@ -626,7 +626,7 @@ public class AssertTest {
 
 ------
 
-## 4. 容器与数组
+## 4. 集合与数组
 
 ### 4.1. CollectionUtils
 
@@ -637,17 +637,17 @@ public class CollectionUtilsTest {
     @Test
     public void testIsEmpty() {
 
-        // 情形一：容器不含元素，isEmpty == true
+        // 情形一：集合不含元素，isEmpty == true
         boolean isEmpty = CollectionUtils.isEmpty(Collections.emptyList());
         Assert.assertTrue(isEmpty);
 
 
-        // 情形二：容器为空对象，isEmpty == true
+        // 情形二：集合为空对象，isEmpty == true
         isEmpty = CollectionUtils.isEmpty(null);
         Assert.assertTrue(isEmpty);
 
 
-        // 情形三：容器含有至少一个元素，isEmpty == false
+        // 情形三：集合含有至少一个元素，isEmpty == false
         isEmpty = CollectionUtils.isEmpty(Collections.singletonList("a"));
         Assert.assertFalse(isEmpty);
     }
@@ -655,17 +655,17 @@ public class CollectionUtilsTest {
     @Test
     public void testIsNotEmpty() {
 
-        // 情形一：容器不含元素，isNotEmpty == false
+        // 情形一：集合不含元素，isNotEmpty == false
         boolean isNotEmpty = CollectionUtils.isNotEmpty(Collections.emptyList());
         Assert.assertFalse(isNotEmpty);
 
 
-        // 情形二：容器为空对象，isNotEmpty == false
+        // 情形二：集合为空对象，isNotEmpty == false
         isNotEmpty = CollectionUtils.isNotEmpty(null);
         Assert.assertFalse(isNotEmpty);
 
 
-        // 情形三：容器含有至少一个元素，isNotEmpty == true
+        // 情形三：集合含有至少一个元素，isNotEmpty == true
         isNotEmpty = CollectionUtils.isNotEmpty(Collections.singletonList("a"));
         Assert.assertTrue(isNotEmpty);
     }
@@ -675,11 +675,11 @@ public class CollectionUtilsTest {
 
 
 
-#### 4.1.2. concat 多个容器拼接
+#### 4.1.2. concat 多个集合拼接
 
-*concat*(Collection<E>... collections) 方法是可变参数，支持多个容器的拼接。
+*concat*(Collection<E>... collections) 方法是可变参数，支持多个集合的拼接。
 
-考虑到大多数情况下，我们需要的都是特定类型的容器，而不是固定的 *LinkedList* 或 *ArrayList*，因此使用用户传入的第一个容器来拼接其它容器。
+考虑到大多数情况下，我们需要的都是特定类型的集合，而不是固定的 *LinkedList* 或 *ArrayList*，因此使用用户传入的第一个集合来拼接其它集合。
 
 ```java
 public class MapsTest {
@@ -694,8 +694,8 @@ public class MapsTest {
 
 > **注意**：
 >
-> - 第一个容器如果是 *ArrayList*，请预先计算并指定容量，避免在拼接过程中扩容。
-> - 第一个容器不能是 *Collections.singletonList()* 或 *Collections.emptyList()*  之类无法添加元素的容器。
+> - 第一个集合如果是 *ArrayList*，请预先计算并指定容量，避免在拼接过程中扩容。
+> - 第一个集合不能是 *Collections.singletonList()* 或 *Collections.emptyList()*  之类无法添加元素的集合。
 
 
 
@@ -877,7 +877,7 @@ public class ArrayUtilsTest {
 其处理逻辑与 **CollectionUtils.concat ** 相似，不同点：
 
 - ArrayUtils.concat 返回的是新数组；
-- CollectionUtils.concat 返回的是原容器（入参的第一个容器）。
+- CollectionUtils.concat 返回的是原集合（入参的第一个集合）。
 
 ```java
 public class ArrayUtilsTest {
