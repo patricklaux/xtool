@@ -1276,7 +1276,7 @@ public class IntegerValueTest {
 
 #### 8.1.1. 什么是字典树？
 
-字典树[^1]又称为前缀树，是一种搜索树。
+字典树 [Trie](https://en.wikipedia.org/wiki/Trie) 又称为前缀树，是一种搜索树。
 
 假如有五个单词：ab, abc, abcd, abd, bcd
 
@@ -1331,7 +1331,7 @@ public class IntegerValueTest {
 
   非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
 
-字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以参考维基百科中关于Trie[^1]的介绍。
+字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以参考维基百科中关于[Trie](https://en.wikipedia.org/wiki/Trie) 的介绍。
 
 现在，我们先来考虑选择什么方式去构造这样的一棵字典树。
 
