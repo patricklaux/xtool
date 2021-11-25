@@ -12,7 +12,7 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 
 ## 2. 使用
 
-更详细的使用介绍，请查看 [参考文档](https://github.com/patricklaux/xtool/blob/main/docs/Reference.md) 。
+详细的使用介绍，请查看 [参考文档](https://github.com/patricklaux/xtool/blob/main/docs/Reference.md) 。
 
 ### 2.1.Maven
 
