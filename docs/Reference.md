@@ -996,8 +996,8 @@ Haskell、Scala、Python 等函数式语言都有元组的概念，元组其实�
 
 Java 编程当中，有很多时候需要用到一些不可变的定长列表，特别是 key-value，因此这里提供了两种元组。
 
-- **Pair：**元素可以为空，构造方法为 Public（键值对）。
-- **Tuple：**元素不能为空，构造方法为 Friendly，必须使用 Tuples 来创建（当前实现了 一元组 至 五元组）。
+- **Pair**：元素可以为空，构造方法为 Public（键值对）。
+- **Tuple**：元素不能为空，构造方法为 Friendly，必须使用 Tuples 来创建（当前实现了 一元组 至 五元组）。
 
 #### 6.1.1. Pair 与 Pairs
 
@@ -1315,13 +1315,13 @@ public class IntegerValueTest {
 
 - **时间性能**
 
-  1. Trie 不需要计算哈希值，HashMap 需要计算哈希值。
+  Trie 不需要计算哈希值，HashMap 需要计算哈希值。
 
-  2. 查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(mlogk)。
+  查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(mlogk)。
 
-     注1：m为字符串的长度，k 为  key 的数量；
-
-     注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
+  > 注1：m为字符串的长度，k 为  key 的数量；
+  >
+  > 注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
 
   似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
 
@@ -2107,7 +2107,7 @@ public class ConcurrentHashTrieTest {
 **方法说明：**
 
 - **size**：字典树中已有键值对的数量
-- **isEmpty **：字典树是否为空（true：没有任何键值对；false：至少有一对键值对）
+- **isEmpty**：字典树是否为空（true：没有任何键值对；false：至少有一对键值对）
 - **clear**：清空字典树中的所有键值对
 
 **注：**这三个方法 与 HashMap 同名方法运行结果是完全一致的，略。
@@ -2122,9 +2122,4 @@ NLP 领域有非常多很有用的算法和数据结构，但写学习代码容�
 
 如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr 哦。
 
-
-
-## 参考资料
-
-[^1]: https://en.wikipedia.org/wiki/Trie
 
