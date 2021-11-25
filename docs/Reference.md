@@ -358,13 +358,11 @@ public class StringUtilsTest {
 
 #### 3.2.1. toXXX 转换为数值
 
-如果原对象为空，返回空；如果转换正常，返回转换后的值；如果转换异常，抛出异常信息
+- toLong(Object original) ：无默认值，返回值为包装类型（转换异常时抛出异常）；
+
+- toLong(Object original, long defaultValue) ：有默认值，返回值为原始数据类型(捕捉转换异常，异常时返回默认值)。
 
 ```java
-/*
- * toLong(Object original) 无默认值，返回值为包装类型；
- * toLong(Object original, long defaultValue) 有默认值，返回值为原始数据类型(捕捉转换异常，异常时返回默认值)。
- */
 public class NumberUtilsTest {
     @Test
     public void toLong() {
@@ -1323,7 +1321,7 @@ public class IntegerValueTest {
 
      注1：m为字符串的长度，k 为  key 的数量；
 
-     注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度也需要 O(m)。我们通常说 HashMap 的时间复杂度为O(1)，其实是没有计算字符串比较所需要的时间复杂度。
+     注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
 
   似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
 
