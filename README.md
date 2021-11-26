@@ -80,7 +80,7 @@ mvn clean install
 
 | 版本  | 说明                                                         |
 | ----- | ------------------------------------------------------------ |
-| 1.0.5 | 1. 重命名 ConcurrentHashTrie ——> ConcurrentArrayTrie；2. 调整部分方法返回值 |
+| 1.0.5 | 1. 重命名 ConcurrentHashTrie —> ConcurrentArrayTrie；2. 调整部分方法返回值 |
 | 1.0.4 | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码             |
 | 1.0.3 | 1. 调整DigestUtils默认小写                                   |
 | 1.0.2 | 1. 补充完整注释                                              |
