@@ -23,6 +23,7 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 #### 1.2.1.Maven
 
 ```xml
+
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
@@ -110,8 +111,6 @@ public class Pair<K, V> {
 }
 ```
 
-
-
 ### 2.2. @Perfect
 
 **完美代码标识**
@@ -130,8 +129,6 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
 }
 ```
 
-
-
 ------
 
 ## 3. 常用工具类
@@ -142,7 +139,8 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
 
 **判断字符串是否为空或空白**
 
-[Apache Commons Lang](https://commons.apache.org/proper/commons-lang/) 的 StringUtils 提供了 *isBlank*、*isEmpty* 方法，我在使用时总要想一想仅有空白字符的情况应该用哪个方法。比较而言，*hasText* 和 *hasLength* 的命名会更加直观清晰，因此提供了这两个方法。
+[Apache Commons Lang](https://commons.apache.org/proper/commons-lang/) 的 StringUtils 提供了 *isBlank*、*isEmpty*
+方法，我在使用时总要想一想仅有空白字符的情况应该用哪个方法。比较而言，*hasText* 和 *hasLength* 的命名会更加直观清晰，因此提供了这两个方法。
 
 > **方法比较**
 >
@@ -201,13 +199,11 @@ public class StringUtilsTest {
 }
 ```
 
-
-
 #### 3.1.2. trim 与 trimToNull
 
 **去除空白字符**
 
-> **方法比较** 
+> **方法比较**
 >
 > 情形二：字符串无字符
 >
@@ -269,8 +265,6 @@ public class StringUtilsTest {
 }
 ```
 
-
-
 #### 3.1.3. toUpperCase 与 toLowerCase
 
 **字符串大小写转换**
@@ -308,8 +302,6 @@ public class StringUtilsTest {
     }
 }
 ```
-
-
 
 #### 3.1.4. capitalize 与 unCapitalize
 
@@ -351,8 +343,6 @@ public class StringUtilsTest {
     }
 }
 ```
-
-
 
 ### 3.2. NumberUtils
 
@@ -456,8 +446,6 @@ public class NumberUtilsTest {
 
 > **提示**：另外，还有 *toInteger*、*toShort*、 *toByte*、 *toDouble*、 *toFloat* 方法，与 *toLong* 类似，略。
 
-
-
 ### 3.3. BooleanUtils
 
 #### 3.3.1. toBoolean 转换为布尔值
@@ -540,8 +528,6 @@ public class BooleanUtilsTest {
 }
 ```
 
-
-
 ### 3.4. IOUtils
 
 IOUtils 提供了关闭流 和 复制流的静态方法，比较简单，略。
@@ -553,8 +539,6 @@ IOUtils 提供了关闭流 和 复制流的静态方法，比较简单，略。
 #### 3.4.2. copy 复制流
 
 详见接口文档，略。
-
-
 
 ### 3.5. IOException
 
@@ -568,18 +552,16 @@ public class IOException extends RuntimeException {
 }
 ```
 
-
-
 ### 3.6. Assert 断言
 
 #### 3.6.1. 主要方法
 
-- isTrue  判断表达式是否为真
-- isFalse  判断表达式是否为假
-- notEmpty  判断集合是否为空对象或无元素
-- hasText  判断字符串是否不为空且含有非空白字符
-- hasLength  判断字符串是否不为空且至少有一个字符（可以为空白字符）
-- notNull  判断对象是否不为空
+- isTrue 判断表达式是否为真
+- isFalse 判断表达式是否为假
+- notEmpty 判断集合是否为空对象或无元素
+- hasText 判断字符串是否不为空且含有非空白字符
+- hasLength 判断字符串是否不为空且至少有一个字符（可以为空白字符）
+- notNull 判断对象是否不为空
 
 #### 3.6.2. 参数说明
 
@@ -599,20 +581,20 @@ java.lang.IllegalArgumentException
 public class AssertTest {
     @Test
     public void isTrue() {
-        
+
         // 异常时使用默认的提示信息
         Assert.isTrue(true);
-        
+
         // 异常时使用传入的提示信息
         Assert.isTrue(true, "error");
-        
+
         // 异常时使用 supplier.get() 获取提示信息
         Assert.isTrue(true, () -> "error");
-        
+
         // 异常时抛出用户传入的异常
         Assert.isTrue(true, new RuntimeException("error"));
     }
-    
+
     @Test
     public void isFalse() {
         // 略
@@ -651,7 +633,7 @@ public class CollectionUtilsTest {
         isEmpty = CollectionUtils.isEmpty(Collections.singletonList("a"));
         Assert.assertFalse(isEmpty);
     }
-    
+
     @Test
     public void testIsNotEmpty() {
 
@@ -672,8 +654,6 @@ public class CollectionUtilsTest {
 
 }
 ```
-
-
 
 #### 4.1.2. concat 多个集合拼接
 
@@ -703,15 +683,11 @@ public class MapsTest {
 
 如果您有某个方法经常要用而又不想写重复代码，欢迎提交 pr 或 issue！
 
-
-
 ### 4.2. Maps
 
 #### 4.2.1. isEmpty 与 isNotEmpty
 
 其处理逻辑与 **CollectionUtils.isEmpty** 相似，略。
-
-
 
 #### 4.2.2. 合并两个 map
 
@@ -747,8 +723,6 @@ public class MapsTest {
 >
 > - 只有 targetMap 没有的key ，才从 sourceMap 中复制到 targetMap ；targetMap 已有的 key，一律保留原值（即使值为空）。
 > - targetMap 不能为 *Collections.emptyMap()*、*Collections.singletonMap()* …… 等无法添加元素的 map
-
-
 
 #### 4.2.3. 获取Map中的值并转换成目标类型
 
@@ -830,15 +804,11 @@ public class MapsTest {
 >
 > - *Maps.getLong* 、*Maps.getInteger* …… 等方法其实是调用了 NumberUtils.toXXX 和 BooleanUtils.toBoolean，因此响应逻辑是一致的。
 
-
-
 ### 4.3. ArrayUtils
 
 #### 4.3.1. isEmpty 与 isNotEmpty
 
 支持泛型数组和 byte数组，其处理逻辑与 **CollectionUtils.isEmpty** 相似，略。
-
-
 
 #### 4.3.2. getFirst与getLast
 
@@ -870,8 +840,6 @@ public class ArrayUtilsTest {
 }
 ```
 
-
-
 #### 4.3.3. concat 多个数组拼接
 
 其处理逻辑与 **CollectionUtils.concat ** 相似，不同点：
@@ -897,8 +865,6 @@ public class ArrayUtilsTest {
     }
 }
 ```
-
-
 
 ## 5. 安全工具类
 
@@ -929,7 +895,7 @@ public class DigestUtilsTest {
     @Test
     public void md5() {
         String text = "Less is more";
-        
+
         // 默认字符编码为 StandardCharsets.UTF_8；默认使用小写字符
         String hex = DigestUtils.md5(text);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
@@ -959,7 +925,7 @@ public class DigestUtilsTest {
         // 默认使用小写字符
         String hex = DigestUtils.md5(bytes);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
-        
+
         // 指定使用小写字符
         hex = DigestUtils.md5(bytes, true);
         Assert.assertEquals("df6ae335a4f5cf721002eaa9299f4a9d", hex);
@@ -970,8 +936,6 @@ public class DigestUtilsTest {
     }
 }
 ```
-
-
 
 ### 5.2. HexUtils
 
@@ -1056,8 +1020,6 @@ public class PairTest {
 }
 ```
 
-
-
 #### 6.1.2. Tuple 与 Tuples
 
 Tuples 是静态工厂类，用于创建 Tuple 。
@@ -1128,8 +1090,6 @@ public class Tuple3Test {
 }
 ```
 
-
-
 ------
 
 ## 7. 数值类
@@ -1149,15 +1109,15 @@ Java 已经有了 AtomicInteger ……等原子操作的数值类型，为什么
 
 #### 7.1.1. 主要方法
 
-- get  获取值
-- set  设置新值
-- getAndSet  获取旧值，并设置新值
-- increment  递增
-- incrementAndGet  递增，并返回递增后的新值
-- getAndIncrement   递增，并返回递增前的旧值
-- decrement  递减
-- decrementAndGet  递减，并返回递减后的新值
-- getAndDecrement  递减，并返回递减前的旧值
+- get 获取值
+- set 设置新值
+- getAndSet 获取旧值，并设置新值
+- increment 递增
+- incrementAndGet 递增，并返回递增后的新值
+- getAndIncrement 递增，并返回递增前的旧值
+- decrement 递减
+- decrementAndGet 递减，并返回递减后的新值
+- getAndDecrement 递减，并返回递减前的旧值
 
 #### 7.1.2. 代码示例
 
@@ -1253,8 +1213,6 @@ public class IntegerValueTest {
 }
 ```
 
-
-
 ------
 
 ## 8. NLP 相关
@@ -1286,12 +1244,12 @@ public class IntegerValueTest {
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
-<img src="images/trie.png" alt="trie" style="zoom:50%;" />
-
-<div align=center>图1</div>
+<div align=center>
+  <img src="images/trie.png" alt="trie" style="zoom: 50%;" />
+  <div align=center>图1</div>
+</div>
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
-
 
 - 蓝色节点 root 为起始节点，不保存字符和值；
 - 白色节点和红色节点仅保存一个字符；
@@ -1315,9 +1273,10 @@ public class IntegerValueTest {
 
   Trie 不需要计算哈希值，HashMap 需要计算哈希值。
 
-  查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(mlogk)。
+  查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(
+  mlogk)。
 
-  > 注1：m为字符串的长度，k 为  key 的数量；
+  > 注1：m为字符串的长度，k 为 key 的数量；
   >
   > 注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
 
@@ -1356,58 +1315,59 @@ public class IntegerValueTest {
 - **单链表节点**
 
 ```java
-public class LinkedNode<V>{
+public class LinkedNode<V> {
     // 字符
-    final char c;	
-    
+    final char c;
+
     // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
-    V value;	
+    V value;
 
     // 当前的子节点数量
-    int size;	
-    
-    // 子节点
-    Node<V>[] table;	
+    int size;
 
-    
+    // 子节点
+    Node<V>[] table;
+
+
     // Hash冲突时保存兄弟节点
-    LinkedNode<V> next;		
+    LinkedNode<V> next;
 }
 ```
 
 - **AVL节点**
 
 ```java
-public class AvlNode<V>{
+public class AvlNode<V> {
     // 字符
     final char c;
-    
+
     // 值（可能为空，如果值不为空，则表示从根节点到该节点的路径构成一个完整的单词；值可以是字符串，也可以是其它数据类型）
-    V value;	
+    V value;
 
     // 当前的子节点数量
-    int size;	
-    
-    // 子节点（保存直接后缀节点）
-    Node<V>[] table;	
+    int size;
 
-    
+    // 子节点（保存直接后缀节点）
+    Node<V>[] table;
+
+
     // Avl树的高度
     byte height;
-    
+
     // 左孩子：Hash冲突时保存兄弟节点
     AvlNode<V> left;
-    
+
     // 右孩子：Hash冲突时保存兄弟节点
     AvlNode<V> right;
 }
 ```
 
-**AvlTree  or RedBlackTree？**
+**AvlTree or RedBlackTree？**
 
 LinkedNode 在 Hash 冲突严重时会有性能问题，因此需要树形结构来作为补充，当 Hash 冲突超过阈值则将链表转换为树，Java 的HashMap 使用的是 RedBlackTree。
 
-一般来说，RedBlackTree 的增删性能比 AvlTree 要好（实际上大多数场景两者差别细微），AVLTree 的查找性能比 RedBlackTree  要好。考虑到字典树通常不会有频繁的增删操作，因此选择AVLTree。另外，AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
+一般来说，RedBlackTree 的增删性能比 AvlTree 要好（实际上大多数场景两者差别细微），AVLTree 的查找性能比 RedBlackTree
+要好。考虑到字典树通常不会有频繁的增删操作，因此选择AVLTree。另外，AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
 
 这里定义的 AvlNode 相比 HashMap 中定义的 TreeNode（RedBlackTree），删减了父节点指针、前驱指针、后继指针和颜色标识，会更节省空间，但删减信息带来的副作用就是增加了程序复杂度。
 
@@ -1430,9 +1390,10 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
 ##### 8.1.2.2. 树的创建
 
-<img src="images/trie_node.png" alt="trie_node" style="zoom:50%;" />
-
-<div align=center>图2</div>
+<div align=center>
+  <img src="images/trie_node.png" alt="trie_node" style="zoom: 50%;" />
+  <div align=center>图2</div>
+</div>
 
 > 注：蓝色方框为数组，也就是节点定义里的 table，用于保存直接后缀节点。
 
@@ -1452,14 +1413,15 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
    3.2. 判断 a 节点的 table 有无 b 节点，已有 b 节点，无需创建 b 节点。
 
-   3.3. 判断 b 节点的 table 有无 d 节点，没有 d 节点，但 b 节点的 table 容量只有1，出现Hash冲突。选择一：扩容 table；选择二：c 节点的 next 指针指向 d 节点。选择扩容，table 扩容为2，table[1] = d 节点，++b.size；d 为单词结尾，d 节点的 value 设置为 “abd”。
+   3.3. 判断 b 节点的 table 有无 d 节点，没有 d 节点，但 b 节点的 table 容量只有1，出现Hash冲突。选择一：扩容 table；选择二：c 节点的 next 指针指向 d 节点。选择扩容，table
+   扩容为2，table[1] = d 节点，++b.size；d 为单词结尾，d 节点的 value 设置为 “abd”。
 
 4. 重复过程3，添加 ab, abcd, bcd，最终得到的树结构如 **图2** 所示。
 
 **代码实现：**
 
 ```java
-public abstract class Node<V>{
+public abstract class Node<V> {
     @Override
     public Node<V> addChild(char c, NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
         // 创建 table
@@ -1492,7 +1454,7 @@ public abstract class Node<V>{
 **代码实现：**
 
 ```java
-public abstract class Node<V>{
+public abstract class Node<V> {
 
     @Override
     public Node<V> findChild(char c) {
@@ -1538,30 +1500,29 @@ public abstract class Node<V>{
 - **缩容**
 
   如果 size > 63458，容量保持65536；
-  
+
   如果 size > 32768，且 size < (当前容量 - 28)，缩容为32768；
-  
+
   如果 size > 16384，且 size < (当前容量 - 26)，缩容为16384
-  
+
   ……
-  
+
   如果 size > 8，且 size < (当前容量 - 4 )，缩容为4；
-  
+
   如果 size > 4，且 size < (当前容量 - 2 )，缩容为4；
-  
+
   如果 size < 4，缩容为2；
-  
+
   如果 size < 2，缩容为1；
-  
+
   如果 size < 1，缩容为0。
 
 <div id="time"><b>为什么时间复杂度最坏的情况下为 O(mlogn) （m 为字符串长度，n 为256）？</b></div>
 
-Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时，同一位置最多会有 65536 ÷ 128 = 512 个字符节点。因为扩容因子为 2，所以 size 达到256 个字符时 table 会扩容到256，这时同一位置最多就只有 65536 ÷ 256 = 256 个字符，因此 n 最大为256。
+Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时，同一位置最多会有 65536 ÷ 128 = 512 个字符节点。因为扩容因子为 2，所以 size 达到256 个字符时 table
+会扩容到256，这时同一位置最多就只有 65536 ÷ 256 = 256 个字符，因此 n 最大为256。
 
 一旦同一位置的节点数达到阈值8，LinkedNode 就会转换为 AvlNode。AVLTree 的时间复杂度为O(logn)，再乘于字符串的长度 m，查找整个字符串 key 的时间复杂度就是 O(mlogn)。
-
-
 
 #### 8.1.3. 字典树的使用
 
@@ -1572,8 +1533,6 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 <div align=center>图3</div>
 </div>
 方法比较多，先放上我设计时画的思维导图，再结合一些场景来写示例代码。
-
-
 
 ##### 8.1.3.1. Map 同名方法
 
@@ -1596,7 +1555,7 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 - **putAll**：添加多个键值对
 
   TreeMap<String, V> treeMap：多个键值对
-  
+
 - **size**：树中已有键值对的数量
 
 - **isEmpty**：树是否为空
@@ -1706,8 +1665,6 @@ public class ConcurrentArrayTrieTest {
 }
 ```
 
-
-
 ##### 8.1.3.2. 前缀匹配：prefixMatch 与 prefixMatchAll
 
 **方法说明**：
@@ -1802,8 +1759,6 @@ public class ConcurrentArrayTrieTest {
 }
 ```
 
-
-
 ##### 8.1.3.3. 匹配前缀：keyWithPrefix 与 keysWithPrefix
 
 **方法说明**：
@@ -1814,7 +1769,7 @@ public class ConcurrentArrayTrieTest {
 
   boolean longestMatch：是否最长匹配（默认：true，最长匹配）
 
-- **keysWithPrefix**：输入前缀，返回以此前缀开头的 key&value，如有多个 key 都以此前缀开头，将这些 key&value 都返回。 
+- **keysWithPrefix**：输入前缀，返回以此前缀开头的 key&value，如有多个 key 都以此前缀开头，将这些 key&value 都返回。
 
   String prefix：前缀
 
@@ -1922,13 +1877,12 @@ public class ConcurrentArrayTrieTest {
 }
 ```
 
-
-
 ##### 8.1.3.4. 包含匹配：match 与 matchAll
 
 **方法说明**：
 
-- **match**：输入一段文本，返回该文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本段中的同一起始位置匹配到多个 key，**默认仅返回最长的那个**。
+- **match**：输入一段文本，返回该文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本段中的同一起始位置匹配到多个 key，**
+  默认仅返回最长的那个**。
 
   String text：文本段
 
@@ -1936,7 +1890,8 @@ public class ConcurrentArrayTrieTest {
 
   boolean oneByOne：是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）（默认：true 逐字符匹配）
 
-- **matchAll**：输入一段文本，返回文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本中的同一起始位置匹配到多个 key，**从短到长全部返回**。
+- **matchAll**：输入一段文本，返回文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本中的同一起始位置匹配到多个 key，**
+  从短到长全部返回**。
 
   String text：文本段
 
@@ -2028,17 +1983,17 @@ public class ConcurrentArrayTrieTest {
 }
 ```
 
-
-
 ##### 8.1.3.5. 树的遍历：keys, values 与 traversal
 
 **方法说明：**
 
-- **keys**：遍历键（！！调用此方法需慎重，此方法会将所有 key 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal 方法。！！）
+- **keys**：遍历键（！！调用此方法需慎重，此方法会将所有 key 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal
+  方法。！！）
 
   int depth：遍历深度
 
-- **values**：遍历值（！！调用此方法需慎重，此方法会将所有 value 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal 方法。！！）
+- **values**：遍历值（！！调用此方法需慎重，此方法会将所有 value 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用
+  traversal 方法。！！）
 
   int depth：遍历深度
 
@@ -2059,7 +2014,8 @@ public class ConcurrentArrayTrieTest {
 
 如果有兴趣的话可以看看 com.igeeksky.xtool.core.nlp.NodeHelper 的 traversal方法，实现还是非常巧妙的。😀 得意ing！
 
-ConcurrentArrayTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
+ConcurrentArrayTrie
+其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
 
 后续有时间再来完整介绍 ConcurrentArrayTrie 的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 keys, values 和 traversal 方法。
 
@@ -2146,8 +2102,6 @@ public class ConcurrentArrayTrieTest {
 }
 ```
 
-
-
 ##### 8.1.3.6 树的高度：height
 
 **方法说明：**
@@ -2186,8 +2140,6 @@ public class ConcurrentArrayTrieTest {
     }
 }
 ```
-
-
 
 ### 8.2. 关于NLP
 
