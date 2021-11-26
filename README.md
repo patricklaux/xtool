@@ -21,14 +21,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.4'
+implementation 'com.igeeksky.xtool:xtool:1.0.5'
 ```
 
 ### 2.3.编译安装
@@ -80,9 +80,10 @@ mvn clean install
 
 | 版本  | 说明                                                     |
 | ----- | -------------------------------------------------------- |
+| 1.0.5 | 1. 重命名 ConcurrentHashTrie ——> ConcurrentTrie        |
 | 1.0.4 | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码         |
 | 1.0.3 | 1. 调整DigestUtils默认小写                               |
 | 1.0.2 | 1. 补充完整注释                                          |
-| 1.0.1 | 1. 增加测试用例<br />2. 删除 Lists类                     |
-| 1.0.0 | 1. 添加常用工具类<br />2. 添加 ConcurrentHashTrie 字典树 |
+| 1.0.1 | 1. 增加测试用例 2. 删除 Lists类                     |
+| 1.0.0 | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树 |
 

@@ -28,12 +28,12 @@ import java.util.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-23
  */
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
 
 
     @Test
     public void put() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String put = trie.put("a", "a");
         Assert.assertNull(put);
 
@@ -60,7 +60,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void putAll() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         TreeMap<String, String> treeMap = new TreeMap<>();
         strings.forEach(key -> treeMap.put(key, key));
@@ -72,7 +72,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void get() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         strings.forEach(key -> trie.put(key, key));
         trie.put("aaa", "aaa");
@@ -88,7 +88,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void match() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
@@ -106,7 +106,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void match2() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "ab";
         String key2 = "abc";
         String key3 = "abd";
@@ -125,7 +125,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void matchAll() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "1234";
         String key2 = "12345";
         String key3 = "123456";
@@ -146,7 +146,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void search() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ac", "ac");
@@ -245,7 +245,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void search1() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -312,7 +312,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void contains() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -356,7 +356,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void containsAll() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -392,7 +392,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -408,7 +408,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -472,7 +472,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void remove() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
@@ -513,7 +513,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove2() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abcdef";
         String key3 = "abcfgh";
@@ -536,7 +536,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove3() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abcd";
         String key3 = "abcf";
@@ -560,7 +560,7 @@ public class ConcurrentHashTrieTest {
      */
     @Test
     public void remove4() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abcde";
         String key3 = "abcd";
@@ -584,7 +584,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -623,7 +623,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void size() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -669,7 +669,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void isEmpty() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -710,7 +710,7 @@ public class ConcurrentHashTrieTest {
 
     @Test
     public void clear() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";

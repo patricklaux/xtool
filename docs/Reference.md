@@ -1,6 +1,6 @@
-# xtool-1.0.4 参考文档
+# xtool-1.0.5 参考文档
 
-Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.4
+Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.5
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)  [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases)  [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits)  [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -26,14 +26,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
 #### 1.2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.4'
+implementation 'com.igeeksky.xtool:xtool:1.0.5'
 ```
 
 #### 1.2.3.编译安装
@@ -125,7 +125,7 @@ public class Pair<K, V> {
 ```java
 
 @Perfect
-public class ConcurrentHashTrie<V> implements Trie<V> {
+public class ConcurrentTrie<V> implements Trie<V> {
     //......
 }
 ```
@@ -1259,7 +1259,7 @@ public class IntegerValueTest {
 
 ## 8. NLP 相关
 
-### 8.1. 字典树 ConcurrentHashTrie
+### 8.1. 字典树 ConcurrentTrie
 
 2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在Hash冲突严重的情况下会有性能问题。
 
@@ -1606,11 +1606,11 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 **代码示例**
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     @Test
     public void putAndGet() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentHashTrie<>();
+        Trie<Integer> trie = new ConcurrentTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         String key = "abc";
@@ -1639,7 +1639,7 @@ public class ConcurrentHashTrieTest {
     @Test
     public void testPutAndGet() {
         // 思维导图中的方法示例
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1653,7 +1653,7 @@ public class ConcurrentHashTrieTest {
     @Test
     public void putAllAndRemove() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentHashTrie<>();
+        Trie<Integer> trie = new ConcurrentTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         TreeMap<String, Integer> keyValues = new TreeMap<>();
@@ -1716,11 +1716,11 @@ public class ConcurrentHashTrieTest {
 期望输出：true
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     @Test
     public void match() {
         // 网址安全校验
-        Trie<Boolean> trie = new ConcurrentHashTrie<>();
+        Trie<Boolean> trie = new ConcurrentTrie<>();
         trie.put("baidu.com", true);
         trie.put("qq.com", true);
         trie.put("github.com", true);
@@ -1743,7 +1743,7 @@ public class ConcurrentHashTrieTest {
     @Test
     public void matchAndMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1814,11 +1814,11 @@ public class ConcurrentHashTrieTest {
 现在，我们可以用字典树来实现这样的一个功能：
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     @Test
     public void search() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -1838,7 +1838,7 @@ public class ConcurrentHashTrieTest {
     @Test
     public void testSearch() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1885,11 +1885,11 @@ public class ConcurrentHashTrieTest {
 输入这样的一份评论：“为什么不准发布？敏感词真敏感！”
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     @Test
     public void contains() {
         // 敏感词过滤
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("敏感", "敏感");
         trie.put("敏感词", "敏感词");
 
@@ -1909,7 +1909,7 @@ public class ConcurrentHashTrieTest {
     @Test
     public void containsAndContainsAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1990,16 +1990,16 @@ public class ConcurrentHashTrieTest {
 
 如果有兴趣的话可以看看 com.igeeksky.xtool.core.nlp.NodeHelper 的 traversal方法，实现还是非常巧妙的。😀 得意ing！
 
-ConcurrentHashTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
+ConcurrentTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
 
-后续有时间再来完整介绍ConcurrentHashTrie的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 values 和 traversal 方法。
+后续有时间再来完整介绍ConcurrentTrie的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 values 和 traversal 方法。
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     // 遍历值
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2018,7 +2018,7 @@ public class ConcurrentHashTrieTest {
     // 遍历键值对
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2067,10 +2067,10 @@ public class ConcurrentHashTrieTest {
 - **height**：字典树的高度（即字典树中最长的 key 的长度）
 
 ```java
-public class ConcurrentHashTrieTest {
+public class ConcurrentTrieTest {
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
 
         trie.put("ab", "ab");
         int height = trie.height();

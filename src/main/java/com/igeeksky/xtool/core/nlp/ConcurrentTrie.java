@@ -38,7 +38,7 @@ import java.util.function.BiFunction;
  * @since 0.0.4 2021-10-23
  */
 @Perfect
-public class ConcurrentHashTrie<V> implements Trie<V> {
+public class ConcurrentTrie<V> implements Trie<V> {
 
     private volatile int size = 0;
     private volatile int height = 0;
@@ -52,11 +52,11 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
     private final Object lock = new Object();
     private final ReadWriteLock[] locks = new ReadWriteLock[TrieConstants.TABLE_MAX_CAPACITY];
 
-    public ConcurrentHashTrie() {
+    public ConcurrentTrie() {
         this(new LinkedNodeCreator<>(), new LinkedToAvlConvertor<>());
     }
 
-    public ConcurrentHashTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
+    public ConcurrentTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
         this.creator = creator;
         this.convertor = convertor;
         Arrays.fill(locks, new ReentrantReadWriteLock());
@@ -292,7 +292,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
      * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会带来一些性能消耗）
      * <p>
      * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
-     * 具体一致性的描述同 {@link ConcurrentHashTrie#values(int)} 方法
+     * 具体一致性的描述同 {@link ConcurrentTrie#values(int)} 方法
      *
      * @param depth    遍历深度
      * @param function 每个键值对会作为参数调用 function的 apply 方法，如果此 apply 方法返回 false，则停止遍历，否则继续遍历

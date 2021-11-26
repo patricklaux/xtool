@@ -28,11 +28,11 @@ import java.util.*;
  * @since 0.0.4 2021-11-15
  */
 @Ignore
-public class ConcurrentHashTriePerformanceTest {
+public class ConcurrentTriePerformanceTest {
 
     @Test
     public void get() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         long t1 = System.currentTimeMillis();
         System.out.println("get\tt1:\t" + t1);
 
@@ -106,7 +106,7 @@ public class ConcurrentHashTriePerformanceTest {
 
     @Test
     public void matchAll() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         long t1 = System.currentTimeMillis();
         System.out.println("matchAll\tt1:" + t1);
 
@@ -170,7 +170,7 @@ public class ConcurrentHashTriePerformanceTest {
 
     @Test
     public void contains() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         long t1 = System.currentTimeMillis();
         System.out.println("contains\tt1:" + t1);
 
@@ -220,7 +220,7 @@ public class ConcurrentHashTriePerformanceTest {
 
     @Test
     public void containsAll() {
-        Trie<String> trie = new ConcurrentHashTrie<>();
+        Trie<String> trie = new ConcurrentTrie<>();
         long t1 = System.currentTimeMillis();
         System.out.println("containsAll\tt1:\t" + t1);
 
