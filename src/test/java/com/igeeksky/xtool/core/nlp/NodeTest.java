@@ -258,10 +258,6 @@ public class NodeTest {
 
         Collections.reverse(list);
 
-        for (Tuple2<Integer, Integer> tuple2 : list) {
-            System.out.println(tuple2.getT1() + "\t" + tuple2.getT2());
-        }
-
         Assert.assertEquals(0, parent.size());
         Assert.assertNull(parent.table);
     }
