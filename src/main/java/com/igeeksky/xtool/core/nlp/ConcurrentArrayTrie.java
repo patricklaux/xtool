@@ -18,6 +18,8 @@
 package com.igeeksky.xtool.core.nlp;
 
 import com.igeeksky.xtool.core.annotation.Perfect;
+import com.igeeksky.xtool.core.function.tuple.Tuple2;
+import com.igeeksky.xtool.core.function.tuple.Tuples;
 import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.math.IntegerValue;
 
@@ -38,7 +40,7 @@ import java.util.function.BiFunction;
  * @since 0.0.4 2021-10-23
  */
 @Perfect
-public class ConcurrentTrie<V> implements Trie<V> {
+public class ConcurrentArrayTrie<V> implements Trie<V> {
 
     private volatile int size = 0;
     private volatile int height = 0;
@@ -52,11 +54,11 @@ public class ConcurrentTrie<V> implements Trie<V> {
     private final Object lock = new Object();
     private final ReadWriteLock[] locks = new ReadWriteLock[TrieConstants.TABLE_MAX_CAPACITY];
 
-    public ConcurrentTrie() {
+    public ConcurrentArrayTrie() {
         this(new LinkedNodeCreator<>(), new LinkedToAvlConvertor<>());
     }
 
-    public ConcurrentTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
+    public ConcurrentArrayTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
         this.creator = creator;
         this.convertor = convertor;
         Arrays.fill(locks, new ReentrantReadWriteLock());
@@ -102,22 +104,25 @@ public class ConcurrentTrie<V> implements Trie<V> {
 
     @Override
     public V get(String key) {
-        Found<V> found = match(key, true, true);
+        Found<V> found = prefixMatch(key, true, true);
         return (found != null) ? found.getValue() : null;
     }
 
     @Override
-    public V match(String word) {
-        return match(word, true);
+    public Tuple2<String, V> prefixMatch(String word) {
+        return prefixMatch(word, true);
     }
 
     @Override
-    public V match(String word, boolean longestMatch) {
-        Found<V> found = match(word, false, longestMatch);
-        return (found != null) ? found.getValue() : null;
+    public Tuple2<String, V> prefixMatch(String word, boolean longestMatch) {
+        Found<V> found = prefixMatch(word, false, longestMatch);
+        if (found != null) {
+            return Tuples.of(found.getKey(), found.getValue());
+        }
+        return null;
     }
 
-    private Found<V> match(String word, boolean exactlyMatch, boolean longestMatch) {
+    private Found<V> prefixMatch(String word, boolean exactlyMatch, boolean longestMatch) {
         Assert.hasLength(word, "word must not be null or blank");
 
         int length = word.length();
@@ -131,12 +136,12 @@ public class ConcurrentTrie<V> implements Trie<V> {
     }
 
     @Override
-    public List<V> matchAll(String word) {
-        return matchAll(word, Integer.MAX_VALUE);
+    public List<Tuple2<String, V>> prefixMatchAll(String word) {
+        return prefixMatchAll(word, Integer.MAX_VALUE);
     }
 
     @Override
-    public List<V> matchAll(String word, int maximum) {
+    public List<Tuple2<String, V>> prefixMatchAll(String word, int maximum) {
         Assert.hasLength(word, "word must not be null or blank");
         int charsLen = word.length();
         List<Found<V>> founds = new LinkedList<>();
@@ -149,18 +154,55 @@ public class ConcurrentTrie<V> implements Trie<V> {
             readLock.unlock();
         }
 
-        List<V> result = new LinkedList<>();
-        founds.forEach(find -> result.add(find.getValue()));
+        List<Tuple2<String, V>> result = new LinkedList<>();
+        founds.forEach(find -> result.add(Tuples.of(find.getKey(), find.getValue())));
         return result;
     }
 
     @Override
-    public List<V> search(String prefix) {
-        return search(prefix, Integer.MAX_VALUE, Integer.MAX_VALUE, true);
+    public Tuple2<String, V> keyWithPrefix(String prefix) {
+        return keyWithPrefix(prefix, true);
     }
 
     @Override
-    public List<V> search(String prefix, int maximum, int depth, boolean dfs) {
+    public Tuple2<String, V> keyWithPrefix(String prefix, boolean longestMatch) {
+        Assert.hasLength(prefix, "prefix must not be null or empty");
+        int length = prefix.length();
+        int depth = height - length;
+        if (depth < 0) {
+            return null;
+        }
+        NodeHelper.KeyValueCollector<V> function = new NodeHelper.KeyValueCollector<>(longestMatch);
+
+        Lock readLock = getReadLock(prefix.charAt(0));
+        readLock.lock();
+        try {
+            Found<V> found = NodeHelper.match(root, prefix, 0, length, true, true);
+            if (null == found) {
+                return null;
+            }
+            BaseNode<V> root0 = found.getNode();
+            V val = root0.getValue();
+            if (val != null) {
+                if (!function.apply(prefix, val)) {
+                    return Tuples.of(function.getKey(), function.getValue());
+                }
+            }
+            NodeHelper.search(root0, prefix.toCharArray(), depth, false, function);
+            String key = function.getKey();
+            return (key == null) ? null : Tuples.of(key, function.getValue());
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    @Override
+    public List<Tuple2<String, V>> keysWithPrefix(String prefix) {
+        return keysWithPrefix(prefix, Integer.MAX_VALUE, Integer.MAX_VALUE, true);
+    }
+
+    @Override
+    public List<Tuple2<String, V>> keysWithPrefix(String prefix, int maximum, int depth, boolean dfs) {
         Assert.hasLength(prefix, "prefix must not be null or empty");
         if (maximum <= 0) {
             return new LinkedList<>();
@@ -172,8 +214,8 @@ public class ConcurrentTrie<V> implements Trie<V> {
             return new LinkedList<>();
         }
 
-        List<V> values = new LinkedList<>();
-        NodeHelper.ValuesCollector<V> function = new NodeHelper.ValuesCollector<>(maximum, values);
+        List<Tuple2<String, V>> values = new LinkedList<>();
+        NodeHelper.KeyValuesCollector<V> function = new NodeHelper.KeyValuesCollector<>(maximum, values);
 
         Lock readLock = getReadLock(prefix.charAt(0));
         readLock.lock();
@@ -200,12 +242,12 @@ public class ConcurrentTrie<V> implements Trie<V> {
     }
 
     @Override
-    public List<Found<V>> contains(String text) {
-        return contains(text, true, true);
+    public List<Found<V>> match(String text) {
+        return match(text, true, true);
     }
 
     @Override
-    public List<Found<V>> contains(String text, boolean longestMatch, boolean oneByOne) {
+    public List<Found<V>> match(String text, boolean longestMatch, boolean oneByOne) {
         Assert.hasLength(text, "text must not be null or empty");
 
         int length = text.length();
@@ -230,12 +272,12 @@ public class ConcurrentTrie<V> implements Trie<V> {
     }
 
     @Override
-    public List<Found<V>> containsAll(String text) {
-        return containsAll(text, true, Integer.MAX_VALUE);
+    public List<Found<V>> matchAll(String text) {
+        return matchAll(text, true, Integer.MAX_VALUE);
     }
 
     @Override
-    public List<Found<V>> containsAll(String text, boolean oneByOne, int maximum) {
+    public List<Found<V>> matchAll(String text, boolean oneByOne, int maximum) {
         Assert.hasLength(text, "text must not be null or empty");
 
         int charsLen = text.length();
@@ -261,6 +303,14 @@ public class ConcurrentTrie<V> implements Trie<V> {
             }
         }
         return toResult(founds);
+    }
+
+    @Override
+    public List<String> keys(int depth) {
+        List<String> keys = new LinkedList<>();
+        NodeHelper.KeysCollector<V> function = new NodeHelper.KeysCollector<>(Integer.MAX_VALUE, keys);
+        traversal(depth, function);
+        return keys;
     }
 
     /**
@@ -292,7 +342,7 @@ public class ConcurrentTrie<V> implements Trie<V> {
      * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会带来一些性能消耗）
      * <p>
      * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
-     * 具体一致性的描述同 {@link ConcurrentTrie#values(int)} 方法
+     * 具体一致性的描述同 {@link ConcurrentArrayTrie#values(int)} 方法
      *
      * @param depth    遍历深度
      * @param function 每个键值对会作为参数调用 function的 apply 方法，如果此 apply 方法返回 false，则停止遍历，否则继续遍历
@@ -324,6 +374,15 @@ public class ConcurrentTrie<V> implements Trie<V> {
                 readLock.unlock();
             }
         }
+    }
+
+    @Override
+    public boolean contains(String key) {
+        Found<V> found = prefixMatch(key, true, true);
+        if (found != null) {
+            return found.getValue() != null;
+        }
+        return false;
     }
 
     private List<Found<V>> toResult(List<Found<V>> founds) {

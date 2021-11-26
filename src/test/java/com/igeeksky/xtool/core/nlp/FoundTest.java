@@ -28,30 +28,30 @@ public class FoundTest {
 
     @Test
     public void getStart() {
-        Found<String> found = new Found<>(0, 2, new LinkedNode<>('c', "ac", 0, null));
+        Found<String> found = new Found<>(0, 2, null, new LinkedNode<>('c', "ac", 0, null));
         Assert.assertEquals(0, found.getStart());
     }
 
     @Test
     public void getEnd() {
-        Found<String> found = new Found<>(0, 2, new LinkedNode<>('c', "ac", 0, null));
+        Found<String> found = new Found<>(0, 2, null, new LinkedNode<>('c', "ac", 0, null));
         Assert.assertEquals(2, found.getEnd());
     }
 
     @Test
     public void getNode() {
         LinkedNode<String> node = new LinkedNode<>('c', "ac", 0, null);
-        Found<String> found = new Found<>(0, 2, node);
+        Found<String> found = new Found<>(0, 2, null, node);
         Assert.assertEquals(node, found.getNode());
     }
 
     @Test
     public void testEquals() {
         LinkedNode<String> node = new LinkedNode<>('c', "ac", 0, null);
-        Found<String> found = new Found<>(0, 1, node);
-        Found<String> found2 = new Found<>(1, 2, node);
-        Found<String> found3 = new Found<>(1, 2, node);
-        Found<String> found4 = new Found<>(1, 3, node);
+        Found<String> found = new Found<>(0, 1, null, node);
+        Found<String> found2 = new Found<>(1, 2, null, node);
+        Found<String> found3 = new Found<>(1, 2, null, node);
+        Found<String> found4 = new Found<>(1, 3, null, node);
         Assert.assertEquals(found, found);
         Assert.assertNotEquals(found, node);
         Assert.assertNotEquals(found, found2);
@@ -62,7 +62,7 @@ public class FoundTest {
     @Test
     public void testHashCode() {
         LinkedNode<String> node = new LinkedNode<>('c', "ac", 0, null);
-        Found<String> found = new Found<>(0, 1, node);
-        Assert.assertEquals(3137, found.hashCode());
+        Found<String> found = new Found<>(0, 1, null, node);
+        Assert.assertEquals(1407778946, found.hashCode());
     }
 }

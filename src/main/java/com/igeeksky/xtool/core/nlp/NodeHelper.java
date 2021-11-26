@@ -18,6 +18,9 @@
 package com.igeeksky.xtool.core.nlp;
 
 
+import com.igeeksky.xtool.core.function.tuple.Tuple2;
+import com.igeeksky.xtool.core.function.tuple.Tuples;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -80,12 +83,14 @@ public class NodeHelper {
             }
             if (exactlyMatch) {
                 if (i == last) {
-                    return new Found<>(start, i, ch);
+                    String key = (start == 0) ? word : String.valueOf(word.toCharArray(), start, end - start);
+                    return new Found<>(start, i, key, ch);
                 }
             } else {
                 if (ch.value != null) {
                     // 如果当前节点的值不为空，待返回值置为当前节点的值
-                    f = new Found<>(start, i, ch);
+                    String key = (start == 0 && i == last) ? word : String.valueOf(word.toCharArray(), start, i + 1 - start);
+                    f = new Found<>(start, i, key, ch);
                     // 如为最短匹配，返回当前值；否则继续对剩余字符进行匹配，直至所有字符匹配完毕
                     if (!longestMatch) {
                         return f;
@@ -110,13 +115,15 @@ public class NodeHelper {
      */
     public static <V> void matchAll(BaseNode<V> root, String word, int start, int end, int maximum, List<Found<V>> founds) {
         BaseNode<V> p = root;
+        int last = end - 1;
         for (int i = start; i < end; i++) {
             BaseNode<V> ch = p.findChild(word.charAt(i));
             if (ch == null) {
                 return;
             }
             if (ch.value != null) {
-                founds.add(new Found<>(start, i, ch));
+                String key = (start == 0 && i == last) ? word : String.valueOf(word.toCharArray(), start, i + 1 - start);
+                founds.add(new Found<>(start, i, key, ch));
                 // 如果已经达到最大返回数量，返回当前列表；否则继续对剩余字符进行匹配，直至所有字符匹配完毕
                 if (founds.size() >= maximum) {
                     return;
@@ -286,6 +293,56 @@ public class NodeHelper {
         return null;
     }
 
+    static class KeyValueCollector<V> implements BiFunction<String, V, Boolean> {
+
+        private final boolean longestMatch;
+        private String key;
+        private V value;
+
+        public KeyValueCollector(boolean longestMatch) {
+            this.longestMatch = longestMatch;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public Boolean apply(String key, V value) {
+            if (this.key == null) {
+                this.key = key;
+                this.value = value;
+                return longestMatch;
+            }
+            if (key.length() >= this.key.length()) {
+                this.key = key;
+                this.value = value;
+            }
+            return longestMatch;
+        }
+    }
+
+    static class KeyValuesCollector<V> implements BiFunction<String, V, Boolean> {
+
+        private final int maximum;
+        private final List<Tuple2<String, V>> values;
+
+        public KeyValuesCollector(int maximum, List<Tuple2<String, V>> values) {
+            this.maximum = maximum;
+            this.values = values;
+        }
+
+        @Override
+        public Boolean apply(String key, V value) {
+            values.add(Tuples.of(key, value));
+            return values.size() < maximum;
+        }
+    }
+
     static class ValuesCollector<V> implements BiFunction<String, V, Boolean> {
 
         private final int maximum;
@@ -300,6 +357,23 @@ public class NodeHelper {
         public Boolean apply(String key, V value) {
             values.add(value);
             return values.size() < maximum;
+        }
+    }
+
+    static class KeysCollector<V> implements BiFunction<String, V, Boolean> {
+
+        private final int maximum;
+        private final List<String> keys;
+
+        public KeysCollector(int maximum, List<String> keys) {
+            this.maximum = maximum;
+            this.keys = keys;
+        }
+
+        @Override
+        public Boolean apply(String key, V value) {
+            keys.add(key);
+            return keys.size() < maximum;
         }
     }
 }

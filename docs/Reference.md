@@ -125,7 +125,7 @@ public class Pair<K, V> {
 ```java
 
 @Perfect
-public class ConcurrentTrie<V> implements Trie<V> {
+public class ConcurrentArrayTrie<V> implements Trie<V> {
     //......
 }
 ```
@@ -1259,9 +1259,9 @@ public class IntegerValueTest {
 
 ## 8. NLP 相关
 
-### 8.1. 字典树 ConcurrentTrie
+### 8.1. 字典树 ConcurrentArrayTrie
 
-2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在Hash冲突严重的情况下会有性能问题。
+2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在 Hash 冲突严重的情况下会有性能问题。
 
 因此这次开发 xtool 时就用 Hash + 单链表 + AVLTree 完全重写了一遍。那么，新版本的字典树做了哪些优化和支持哪些特性呢？
 
@@ -1286,11 +1286,9 @@ public class IntegerValueTest {
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
-<div align=center>
-<img src="images/trie.png" alt="trie" style="zoom: 50%;" />
-<div align=center>图1</div>
-</div>
+<img src="images/trie.png" alt="trie" style="zoom:50%;" />
 
+<div align=center>图1</div>
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
@@ -1432,13 +1430,11 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
 ##### 8.1.2.2. 树的创建
 
-<div align=center>
-<img src="images/trie_node.png" alt="trie_node" style="zoom: 50%;" />
+<img src="images/trie_node.png" alt="trie_node" style="zoom:50%;" />
+
 <div align=center>图2</div>
-</div>
 
-
-> 注：蓝色方框为数组，也就是节点定义里的 table，用来保存直接后缀节点。
+> 注：蓝色方框为数组，也就是节点定义里的 table，用于保存直接后缀节点。
 
 1. 创建root节点；
 
@@ -1496,7 +1492,7 @@ public abstract class Node<V>{
 **代码实现：**
 
 ```java
-public class Node<V>{
+public abstract class Node<V>{
 
     @Override
     public Node<V> findChild(char c) {
@@ -1575,11 +1571,11 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 <img src="images/trie_method.png" alt="trie_method" style="zoom: 67%;" />
 <div align=center>图3</div>
 </div>
-方法比较多，先放上我做设计时画的思维导图，再结合一些场景来写示例代码。
+方法比较多，先放上我设计时画的思维导图，再结合一些场景来写示例代码。
 
 
 
-##### 8.1.3.1. get、remove、put、putAll
+##### 8.1.3.1. Map 同名方法
 
 **方法说明**：
 
@@ -1600,17 +1596,23 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 - **putAll**：添加多个键值对
 
   TreeMap<String, V> treeMap：多个键值对
+  
+- **size**：树中已有键值对的数量
 
-**注：**这些方法 与 HashMap 同名方法运行结果是完全一致的。
+- **isEmpty**：树是否为空
+
+- **clear**：清空树中的所有键值对
+
+**注：**这些方法 与 HashMap 的运行结果是一致的。
 
 **代码示例**
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
     @Test
     public void putAndGet() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentTrie<>();
+        Trie<Integer> trie = new ConcurrentArrayTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         String key = "abc";
@@ -1632,28 +1634,14 @@ public class ConcurrentTrieTest {
         // get，返回值都为 100
         Integer trieGet = trie.put(key, value);
         Integer mapGet = map.put(key, value);
-        Assert.assertEquals(value, mapPut);
-        Assert.assertEquals(triePut, mapPut);
-    }
-
-    @Test
-    public void testPutAndGet() {
-        // 思维导图中的方法示例
-        Trie<String> trie = new ConcurrentTrie<>();
-        trie.put("ab", "ab");
-        trie.put("abc", "abc");
-        trie.put("abcd", "abcd");
-        trie.put("abd", "abd");
-        trie.put("bcd", "bcd");
-
-        String get = trie.get("abcd");
-        Assert.assertEquals("abcd", get);
+        Assert.assertEquals(value, mapGet);
+        Assert.assertEquals(trieGet, mapGet);
     }
 
     @Test
     public void putAllAndRemove() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentTrie<>();
+        Trie<Integer> trie = new ConcurrentArrayTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         TreeMap<String, Integer> keyValues = new TreeMap<>();
@@ -1682,24 +1670,57 @@ public class ConcurrentTrieTest {
             Assert.assertEquals(trieGet, mapGet);
         }
     }
+
+    @Test
+    public void mapMethod() {
+        // 思维导图中的方法示例
+        // 测试 put, contains, size, isEmpty, clear 方法
+        Trie<String> trie = new ConcurrentArrayTrie<>();
+        trie.put("ab", "ab");
+        trie.put("abc", "abc");
+        trie.put("abcd", "abcd");
+        trie.put("abd", "abd");
+        trie.put("bcd", "bcd");
+
+        boolean contains = trie.contains("abcd");
+        Assert.assertTrue(contains);
+        int size = trie.size();
+        Assert.assertEquals(5, size);
+        boolean isEmpty = trie.isEmpty();
+        Assert.assertFalse(isEmpty);
+
+        trie.remove("abcd");
+        contains = trie.contains("abcd");
+        Assert.assertFalse(contains);
+        size = trie.size();
+        Assert.assertEquals(4, size);
+        isEmpty = trie.isEmpty();
+        Assert.assertFalse(isEmpty);
+
+        trie.clear();
+        size = trie.size();
+        Assert.assertEquals(0, size);
+        isEmpty = trie.isEmpty();
+        Assert.assertTrue(isEmpty);
+    }
 }
 ```
 
 
 
-##### 8.1.3.2. 前缀匹配：match 与 matchAll
+##### 8.1.3.2. 前缀匹配：prefixMatch 与 prefixMatchAll
 
 **方法说明**：
 
-- **match**：前缀匹配，使用输入的字符串的前缀去匹配树中已有的 key：如果 key 存在，则返回 key 对应的 value。
+- **prefixMatch**：前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空。
 
-  String word：待匹配字符串
+  String word：待匹配词
 
   boolean longestMatch：是否最长匹配（默认：true，最长匹配）
 
-- **matchAll**：前缀匹配，使用输入的字符串的前缀去匹配树中已有的 key：如果 key 存在，则返回 key 对应的 value；如果匹配到多个key，那么将这些 key 对应的 value 都返回。
+- **prefixMatchAll**：前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如匹配到多个 key，那么将这些 key&value 都返回。
 
-  String word：待匹配字符串
+  String word：待匹配词
 
   int maximum：最大返回结果数量（默认：Integer.MAX_VALUE）
 
@@ -1716,78 +1737,84 @@ public class ConcurrentTrieTest {
 期望输出：true
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
     @Test
-    public void match() {
+    public void prefixMatch() {
         // 网址安全校验
-        Trie<Boolean> trie = new ConcurrentTrie<>();
+        Trie<Boolean> trie = new ConcurrentArrayTrie<>();
         trie.put("baidu.com", true);
         trie.put("qq.com", true);
         trie.put("github.com", true);
         trie.put("xxdfdfsdaxdsfdsff.com", false);
 
         // 安全
-        Boolean match = trie.match("github.com/patricklaux/xtool");
-        Assert.assertTrue(match);
+        Tuple2<String, Boolean> prefixMatch = trie.prefixMatch("github.com/patricklaux/xtool");
+        Assert.assertTrue(prefixMatch.getT2());
 
         // 不安全
-        match = trie.match("xxdfdfsdaxdsfdsff.com/error/wrong");
-        Assert.assertFalse(match);
+        prefixMatch = trie.prefixMatch("xxdfdfsdaxdsfdsff.com/error/wrong");
+        Assert.assertFalse(prefixMatch.getT2());
 
         // 未知
-        match = trie.match("unkndfsasfdownaaaaadfdsfds.com/unknown/unknown");
-        Assert.assertNull(match);
+        prefixMatch = trie.prefixMatch("unkndfsasfdownaaaaadfdsfds.com/unknown/unknown");
+        Assert.assertNull(prefixMatch);
     }
 
 
     @Test
-    public void matchAndMatchAll() {
+    public void prefixMatchAndPrefixMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
         trie.put("abd", "abd");
         trie.put("bcd", "bcd");
 
-        // match：仅返回最长的匹配结果
-        String match = trie.match("abcdef");
-        Assert.assertEquals("abcd", match);
+        // prefixMatch：仅返回最长的匹配结果
+        Tuple2<String, String> prefixMatch = trie.prefixMatch("abcdef");
+        Assert.assertEquals("[abcd, abcd]", prefixMatch.toString());
 
-        // matchAll：返回从短到长全部匹配到的结果
-        List<String> matchAll = trie.matchAll("abcdef");
-        Assert.assertEquals("[ab, abc, abcd]", matchAll.toString());
+        // prefixMatchAll：返回从短到长全部匹配到的结果
+        List<Tuple2<String, String>> prefixMatchAll = trie.prefixMatchAll("abcdef");
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
 
-        
-        // match 的参数测试
-        // match：最长匹配
-        match = trie.match("abcdef", true);
-        Assert.assertEquals("abcd", match);
 
-        // match：最短匹配
-        match = trie.match("abcdef", false);
-        Assert.assertEquals("ab", match);
+        // prefixMatch 的参数测试
+        // prefixMatch：最长匹配
+        prefixMatch = trie.prefixMatch("abcdef", true);
+        Assert.assertEquals("[abcd, abcd]", prefixMatch.toString());
 
-        
-        // matchAll 的参数测试
-        // matchAll：最大返回数量为 1
-        matchAll = trie.matchAll("abcdef", 1);
-        Assert.assertEquals("[ab]", matchAll.toString());
+        // prefixMatch：最短匹配
+        prefixMatch = trie.prefixMatch("abcdef", false);
+        Assert.assertEquals("[ab, ab]", prefixMatch.toString());
 
-        // matchAll：最大返回数量为10
-        matchAll = trie.matchAll("abcdef", 10);
-        Assert.assertEquals("[ab, abc, abcd]", matchAll.toString());
+
+        // prefixMatchAll 的参数测试
+        // prefixMatchAll：最大返回数量为 1
+        prefixMatchAll = trie.prefixMatchAll("abcdef", 1);
+        Assert.assertEquals("[[ab, ab]]", prefixMatchAll.toString());
+
+        // prefixMatchAll：最大返回数量为10
+        prefixMatchAll = trie.prefixMatchAll("abcdef", 10);
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
     }
 }
 ```
 
 
 
-##### 8.1.3.3. 启发式搜索：search
+##### 8.1.3.3. 匹配前缀：keyWithPrefix 与 keysWithPrefix
 
 **方法说明**：
 
-- **search**：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回。 
+- **keyWithPrefix**：输入前缀，返回以此前缀开头的 key&value
+
+  String prefix：前缀
+
+  boolean longestMatch：是否最长匹配（默认：true，最长匹配）
+
+- **keysWithPrefix**：输入前缀，返回以此前缀开头的 key&value，如有多个 key 都以此前缀开头，将这些 key&value 都返回。 
 
   String prefix：前缀
 
@@ -1801,7 +1828,7 @@ public class ConcurrentTrieTest {
 
 搜索引擎的输入框中，我们输入前面的几个字，输入框就会自动出现一个列表来给我们选择。
 
-譬如，我输入”罗纳尔多“，
+譬如，输入”罗纳尔多“，
 
 搜索框会出现类似的提示列表：
 
@@ -1814,11 +1841,11 @@ public class ConcurrentTrieTest {
 现在，我们可以用字典树来实现这样的一个功能：
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
     @Test
-    public void search() {
+    public void keyWithPrefix() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -1828,39 +1855,80 @@ public class ConcurrentTrieTest {
         trie.put("c罗梅西", "c罗梅西");
         trie.put("梅西c罗", "梅西c罗");
 
-        List<String> ronaldo = trie.search("罗纳尔多");
-        Assert.assertEquals("[罗纳尔多C罗, 罗纳尔多图片, 罗纳尔多进球集锦高清]", ronaldo.toString());
+        Tuple2<String, String> ronaldo = trie.keyWithPrefix("罗纳尔多");
+        Assert.assertEquals("[罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]", ronaldo.toString());
 
-        List<String> messi = trie.search("梅西");
-        Assert.assertEquals("[梅西c罗, 梅西图片, 梅西法甲首球, 梅西现在在哪个球队]", messi.toString());
+        Tuple2<String, String> messi = trie.keyWithPrefix("梅西");
+        Assert.assertEquals("[梅西现在在哪个球队, 梅西现在在哪个球队]", messi.toString());
     }
 
     @Test
-    public void testSearch() {
+    public void testKeyWithPrefix() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
         trie.put("abd", "abd");
         trie.put("bcd", "bcd");
 
-        List<String> search = trie.search("ab");
-        Assert.assertEquals("[ab, abc, abcd, abd]", search.toString());
+        Tuple2<String, String> keyWithPrefix = trie.keyWithPrefix("ab");
+        Assert.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
 
-        search = trie.search("abc");
-        Assert.assertEquals("[abc, abcd]", search.toString());
+        keyWithPrefix = trie.keyWithPrefix("ab", true);
+        Assert.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
+
+        keyWithPrefix = trie.keyWithPrefix("ab", false);
+        Assert.assertEquals("[ab, ab]", keyWithPrefix.toString());
+    }
+
+
+    @Test
+    public void keysWithPrefix() {
+        // 搜索引擎输入框提示列表
+        Trie<String> trie = new ConcurrentArrayTrie<>();
+        trie.put("罗纳尔多C罗", "罗纳尔多C罗");
+        trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
+        trie.put("罗纳尔多图片", "罗纳尔多图片");
+        trie.put("梅西法甲首球", "梅西法甲首球");
+        trie.put("梅西现在在哪个球队", "梅西现在在哪个球队");
+        trie.put("梅西图片", "梅西图片");
+        trie.put("c罗梅西", "c罗梅西");
+        trie.put("梅西c罗", "梅西c罗");
+
+        List<Tuple2<String, String>> ronaldo = trie.keysWithPrefix("罗纳尔多");
+        Assert.assertEquals("[[罗纳尔多C罗, 罗纳尔多C罗], [罗纳尔多图片, 罗纳尔多图片], [罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]]", ronaldo.toString());
+
+        List<Tuple2<String, String>> messi = trie.keysWithPrefix("梅西");
+        Assert.assertEquals("[[梅西c罗, 梅西c罗], [梅西图片, 梅西图片], [梅西法甲首球, 梅西法甲首球], [梅西现在在哪个球队, 梅西现在在哪个球队]]", messi.toString());
+    }
+
+    @Test
+    public void testKeysWithPrefix() {
+        // 思维导图中的示例
+        Trie<String> trie = new ConcurrentArrayTrie<>();
+        trie.put("ab", "ab");
+        trie.put("abc", "abc");
+        trie.put("abcd", "abcd");
+        trie.put("abd", "abd");
+        trie.put("bcd", "bcd");
+
+        List<Tuple2<String, String>> keysWithPrefix = trie.keysWithPrefix("ab");
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", keysWithPrefix.toString());
+
+        keysWithPrefix = trie.keysWithPrefix("abc");
+        Assert.assertEquals("[[abc, abc], [abcd, abcd]]", keysWithPrefix.toString());
     }
 }
 ```
 
 
 
-##### 8.1.3.4. 包含匹配：contains 与 containsAll
+##### 8.1.3.4. 包含匹配：match 与 matchAll
 
 **方法说明**：
 
-- **contains**：输入一段文本，返回该文本中包含的 key 对应的 value 和起止位置；如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回；如果文本段中的同一起始位置匹配到多个 key，**默认仅返回最长的那个**。
+- **match**：输入一段文本，返回该文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本段中的同一起始位置匹配到多个 key，**默认仅返回最长的那个**。
 
   String text：文本段
 
@@ -1868,7 +1936,7 @@ public class ConcurrentTrieTest {
 
   boolean oneByOne：是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）（默认：true 逐字符匹配）
 
-- **containsAll**：输入一段文本，返回文本中包含的 key 对应的 value 和起止位置；如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回；如果文本中的同一起始位置匹配到多个 key，**从短到长全部返回**。
+- **matchAll**：输入一段文本，返回文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本中的同一起始位置匹配到多个 key，**从短到长全部返回**。
 
   String text：文本段
 
@@ -1885,31 +1953,28 @@ public class ConcurrentTrieTest {
 输入这样的一份评论：“为什么不准发布？敏感词真敏感！”
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
     @Test
-    public void contains() {
+    public void match() {
         // 敏感词过滤
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("敏感", "敏感");
         trie.put("敏感词", "敏感词");
 
         String text = "为什么不准发布？敏感词真敏感！";
-        
-        
-        List<Found<String>> contains = trie.contains(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":10, \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"value\":\"敏感\"}]", contains.toString());
+        List<Found<String>> match = trie.match(text);
+        Assert.assertEquals("[{\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
 
-        
-        // contains 与 containsAll 对比，起始位置 8：contains只返回“敏感”；containsAll 返回了“敏感”和“敏感词”；
-        List<Found<String>> containsAll = trie.containsAll(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":9, \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"value\":\"敏感\"}]", containsAll.toString());
+        // match 与 matchAll 对比，起始位置 8：contains只返回“敏感”；matchAll 返回了“敏感”和“敏感词”；
+        List<Found<String>> matchAll = trie.matchAll(text);
+        Assert.assertEquals("[{\"start\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
     }
 
 
     @Test
-    public void containsAndContainsAll() {
+    public void matchAndMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1917,57 +1982,61 @@ public class ConcurrentTrieTest {
         trie.put("bcd", "bcd");
 
 
-        // contains 与 containsAll 对比
-        List<Found<String>> contains = trie.contains("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
+        // match 与 matchAll 对比
+        List<Found<String>> match = trie.match("xxabcdexx");
+        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
-        List<Found<String>> containsAll = trie.containsAll("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", containsAll.toString());
+        List<Found<String>> matchAll = trie.matchAll("xxabcdexx");
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
 
-        // contains 参数变化对比
+        // match 参数变化对比
         // 最长匹配；逐字符扫描
-        contains = trie.contains("xxabcdexx", true, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
+        match = trie.match("xxabcdexx", true, true);
+        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
-        contains = trie.contains("xxabcdexx", true, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"value\":\"abcd\"}]", contains.toString());
+        match = trie.match("xxabcdexx", true, false);
+        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
 
         // 最短匹配；逐字符扫描
-        contains = trie.contains("xxabcdexx", false, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", contains.toString());
+        match = trie.match("xxabcdexx", false, true);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
-        contains = trie.contains("xxabcdexx", false, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", contains.toString());
+        match = trie.match("xxabcdexx", false, false);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
 
 
-        // containsAll 参数变化对比
+        // matchAll 参数变化对比
         // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
-        containsAll = trie.containsAll("xxabcdexx", true, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"value\":\"bcd\"}]", containsAll.toString());
+        matchAll = trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
-        containsAll = trie.containsAll("xxabcdexx", false, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"value\":\"abcd\"}]", containsAll.toString());
+        matchAll = trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
 
         // 逐字符扫描；最大返回数量为1
-        containsAll = trie.containsAll("xxabcdexx", true, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
+        matchAll = trie.matchAll("xxabcdexx", true, 1);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
-        containsAll = trie.containsAll("xxabcdexx", false, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"value\":\"ab\"}]", containsAll.toString());
+        matchAll = trie.matchAll("xxabcdexx", false, 1);
+        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
     }
 }
 ```
 
 
 
-##### 8.1.3.5. 树的遍历：values 与 traversal
+##### 8.1.3.5. 树的遍历：keys, values 与 traversal
 
 **方法说明：**
+
+- **keys**：遍历键（！！调用此方法需慎重，此方法会将所有 key 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal 方法。！！）
+
+  int depth：遍历深度
 
 - **values**：遍历值（！！调用此方法需慎重，此方法会将所有 value 添加到返回的 List 中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。 当无法判断是否会导致内存溢出时，请使用 traversal 方法。！！）
 
@@ -1986,20 +2055,39 @@ public class ConcurrentTrieTest {
 
 但这两种方式对于字典树来说都是不适合的，一棵庞大的字典树可能会有数十亿个节点：使用递归会导致栈溢出；使用栈和队列则可能导致内存溢出。
 
-之前学习算法时没关注数十亿个节点的树如何遍历才不会出错，翻遍了各种算法书也都是上面描述的两种方式，网络上也没有找到有价值的信息。然后，只能自己日夜冥思苦想，差不多花了一周时间，终于实现了一个不需要递归也不需要栈和队列的遍历方式，而且一个方法可以同时支持深度优先遍历和广度优先遍历。
+之前学习算法时没关注数十亿个节点的树如何遍历才不会出错，这次翻遍了各种算法书也都是上面描述的两种方式，网络上也没有找到有价值的信息。然后，只能自己日夜冥思苦想，差不多花了一周时间，终于实现了一个不需要递归也不需要栈和队列的遍历方式，而且一个方法可以同时支持深度优先遍历和广度优先遍历。
 
 如果有兴趣的话可以看看 com.igeeksky.xtool.core.nlp.NodeHelper 的 traversal方法，实现还是非常巧妙的。😀 得意ing！
 
-ConcurrentTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
+ConcurrentArrayTrie 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
 
-后续有时间再来完整介绍ConcurrentTrie的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 values 和 traversal 方法。
+后续有时间再来完整介绍 ConcurrentArrayTrie 的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 keys, values 和 traversal 方法。
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
+    // 遍历键
+    @Test
+    public void keys() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
+        trie.put("ab", "ab");
+        trie.put("abc", "abc");
+        trie.put("abcd", "abcd");
+        trie.put("abd", "abd");
+        trie.put("bcd", "bcd");
+
+        // 搜索深度为4
+        List<String> keys = trie.keys(4);
+        Assert.assertEquals("[ab, abc, abcd, abd, bcd]", keys.toString());
+
+        // 搜索深度为3
+        keys = trie.keys(3);
+        Assert.assertEquals("[ab, abc, abd, bcd]", keys.toString());
+    }
+
     // 遍历值
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2018,7 +2106,7 @@ public class ConcurrentTrieTest {
     // 遍历键值对
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2026,20 +2114,20 @@ public class ConcurrentTrieTest {
         trie.put("bcd", "bcd");
 
         List<Tuple2<String, String>> entries = new ArrayList<>(5);
-        
+
         // 搜索深度为4
         trie.traversal(4, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd], [bcd, bcd]]", entries.toString());
-        
-        
+
+
         entries = new ArrayList<>(5);
-        
+
         // 搜索深度为3
         trie.traversal(3, new TraversalFunction(5, entries));
         Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [bcd, bcd]]", entries.toString());
     }
 
-    // 示例：键值对的遍历函数
+    // 示例：键值对的遍历函数（！！生产环境不建议使用容器来保存键值对，应该每一个分别处理，否则可能内存溢出！！）
     private static class TraversalFunction implements BiFunction<String, String, Boolean> {
         private final int maximum;
         private final List<Tuple2<String, String>> entries;
@@ -2067,10 +2155,10 @@ public class ConcurrentTrieTest {
 - **height**：字典树的高度（即字典树中最长的 key 的长度）
 
 ```java
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
 
         trie.put("ab", "ab");
         int height = trie.height();
@@ -2101,23 +2189,9 @@ public class ConcurrentTrieTest {
 
 
 
-##### 8.1.3.7. size、isEmpty 与 clear
-
-**方法说明：**
-
-- **size**：字典树中已有键值对的数量
-- **isEmpty**：字典树是否为空（true：没有任何键值对；false：至少有一对键值对）
-- **clear**：清空字典树中的所有键值对
-
-**注：**这三个方法 与 HashMap 同名方法运行结果是完全一致的，略。
-
-
-
 ### 8.2. 关于NLP
 
-NLP 领域有非常多很有用的算法和数据结构，但写学习代码容易，写生产级别的代码却需要花费大量的时间和精力，后续会陆续补充。
+NLP 领域有很多很有用的算法和数据结构，但写学习代码容易，写生产级别的代码却需要花费大量时间和精力，后续再慢慢补充。
 
-我初步的意向是先开发这个数据结构：双数组字典树。
-
-如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr 哦。
+如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr。
 

@@ -17,6 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
+import com.igeeksky.xtool.core.function.tuple.Tuple2;
+
 import java.util.List;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
@@ -54,7 +56,7 @@ public interface Trie<V> {
      * </pre>
      *
      * @param key 键(精确匹配)
-     * @return 如果树中包含此 key，则 key 对应的 value；否则，空
+     * @return 如果树中存在此 key，则返回 key 对应的 value；否则，空
      */
     V get(String key);
 
@@ -71,7 +73,7 @@ public interface Trie<V> {
      * @param word 待匹配词
      * @return 是否匹配到 key，是：返回 key对应的值；否，返回空
      */
-    V match(String word);
+    Tuple2<String, V> prefixMatch(String word);
 
     /**
      * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key
@@ -90,7 +92,7 @@ public interface Trie<V> {
      * @param longestMatch 是否最长匹配；true，匹配到的最长的 Key 对应的 value；false：匹配到的最短的 key 对应的值（默认：{@link Boolean#TRUE}）
      * @return 是否匹配到 key，是：关键字的对应的值；否：空
      */
-    V match(String word, boolean longestMatch);
+    Tuple2<String, V> prefixMatch(String word, boolean longestMatch);
 
     /**
      * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key
@@ -107,7 +109,7 @@ public interface Trie<V> {
      * @param word 待匹配文本
      * @return 是否匹配到 key：是，返回这些 key 对应的 values；否，返回空列表
      */
-    List<V> matchAll(String word);
+    List<Tuple2<String, V>> prefixMatchAll(String word);
 
     /**
      * 前缀匹配：给定一个字符串，判断该字符串的前缀是否匹配关键字
@@ -123,7 +125,41 @@ public interface Trie<V> {
      * @param maximum 最大返回结果数量（默认：{@link Integer#MAX_VALUE}）
      * @return 是否匹配到 key：是，返回这些 key 对应的 values；否，返回空列表
      */
-    List<V> matchAll(String word, int maximum);
+    List<Tuple2<String, V>> prefixMatchAll(String word, int maximum);
+
+
+    /**
+     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value
+     * <p>
+     * 默认最长匹配，longestMatch = {@link Boolean#TRUE}
+     * <p>
+     * 此方法等同于：trie.keyWithPrefix("ab", true)
+     *
+     * <pre>
+     *     Trie中已有：ab, abc, abcd, abd, bcd
+     *     trie.keyWithPrefix("ab") == "abcd"；
+     * </pre>
+     *
+     * @param prefix 前缀
+     * @return 所有包含给定前缀的关键字对应的值。
+     */
+    Tuple2<String, V> keyWithPrefix(String prefix);
+
+    /**
+     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value
+     *
+     * <pre>
+     *     Trie中已有：ab, abc, abcd, abd, bcd
+     *     trie.keyWithPrefix("ab") == "abcd"；
+     *     trie.keyWithPrefix("ab", true) == "abcd"；
+     *     trie.keyWithPrefix("ab", false) == "ab"；
+     * </pre>
+     *
+     * @param prefix       前缀
+     * @param longestMatch 是否最长匹配；true，包含此前缀的最长的 Key 对应的 value；false：包含此前缀的最长的 Key 对应的 value（默认：{@link Boolean#TRUE}）
+     * @return 所有包含给定前缀的关键字对应的值。
+     */
+    Tuple2<String, V> keyWithPrefix(String prefix, boolean longestMatch);
 
     /**
      * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
@@ -144,7 +180,7 @@ public interface Trie<V> {
      * @param prefix 前缀
      * @return 所有包含给定前缀的关键字对应的值。
      */
-    List<V> search(String prefix);
+    List<Tuple2<String, V>> keysWithPrefix(String prefix);
 
     /**
      * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
@@ -173,7 +209,7 @@ public interface Trie<V> {
      * @param dfs     是否深度优先遍历（true，深度优先遍历；false，广度优先遍历；默认：{@link Boolean#TRUE}）
      * @return 所有包含给定前缀的关键字对应的值。
      */
-    List<V> search(String prefix, int maximum, int depth, boolean dfs);
+    List<Tuple2<String, V>> keysWithPrefix(String prefix, int maximum, int depth, boolean dfs);
 
     /**
      * 包含匹配：输入一段文本，返回该文本中包含的 key 对应的 value 和 key 的起止位置
@@ -196,7 +232,7 @@ public interface Trie<V> {
      * @param text 文本段
      * @return 文本段包含的所有关键字对应的值的集合
      */
-    List<Found<V>> contains(String text);
+    List<Found<V>> match(String text);
 
     /**
      * 包含匹配：给定一个文本段，查找文本中包含的所有键对应的值
@@ -222,7 +258,7 @@ public interface Trie<V> {
      * @param oneByOne     是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）
      * @return 文本段包含的所有关键字对应的值的集合
      */
-    List<Found<V>> contains(String text, boolean longestMatch, boolean oneByOne);
+    List<Found<V>> match(String text, boolean longestMatch, boolean oneByOne);
 
     /**
      * 包含匹配：输入一段文本，返回文本中包含的 key 对应的 value 和起止位置
@@ -250,7 +286,7 @@ public interface Trie<V> {
      * @param text 文本段
      * @return 文本段包含的所有关键字对应的值的集合
      */
-    List<Found<V>> containsAll(String text);
+    List<Found<V>> matchAll(String text);
 
     /**
      * 包含匹配：输入一段文本，返回文本中包含的 key 对应的 value 和起止位置
@@ -284,15 +320,15 @@ public interface Trie<V> {
      * @param maximum  最大返回结果数量
      * @return 文本段包含的所有关键字对应的值的集合
      */
-    List<Found<V>> containsAll(String text, boolean oneByOne, int maximum);
+    List<Found<V>> matchAll(String text, boolean oneByOne, int maximum);
 
     /**
-     * 遍历值（！！慎用：如果树中包含大量的键值对，可能会导致内存溢出！！）
+     * 遍历键（！！慎用：如果树中包含大量的键值对，可能会导致内存溢出！！）
      * <p>
-     * 调用此方法需慎重，此方法会将所有 value 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
+     * 调用此方法需慎重，此方法会将所有遍历得到的 Key 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
      * 当无法判断是否会导致内存溢出时，请使用{@link Trie#traversal}方法
      * <p>
-     * {@link ConcurrentTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
+     * {@link ConcurrentArrayTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
      *
      * <pre>
      *     例：
@@ -302,14 +338,35 @@ public interface Trie<V> {
      * </pre>
      *
      * @param depth 遍历深度
-     * @return 全部值的集合
+     * @return 遍历得到的键的集合
+     */
+    List<String> keys(int depth);
+
+
+    /**
+     * 遍历值（！！慎用：如果树中包含大量的键值对，可能会导致内存溢出！！）
+     * <p>
+     * 调用此方法需慎重，此方法会将所有遍历得到的 value 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
+     * 当无法判断是否会导致内存溢出时，请使用{@link Trie#traversal}方法
+     * <p>
+     * {@link ConcurrentArrayTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
+     *
+     * <pre>
+     *     例：
+     *     Trie中已有：ab, abc, abcd, abd, bcd
+     *     执行：trie.values(4)
+     *     结果：[ab, abc, abcd, abd, bcd]
+     * </pre>
+     *
+     * @param depth 遍历深度
+     * @return 遍历得到的值的集合
      */
     List<V> values(int depth);
 
     /**
      * 遍历键值对
      * <p>
-     * {@link ConcurrentTrie#traversal(int, BiFunction)} 采用深度优先遍历和字典序
+     * {@link ConcurrentArrayTrie#traversal(int, BiFunction)} 采用深度优先遍历和字典序
      * <p>
      * 考虑到树中包含的键值对可能数量庞大，如果提供 entrySet()方法会消耗大量的内存，甚至会导致内存溢出，
      * 因此采用用户提供的函数来处理遍历结果，用户可以自定义函数实现序列化等操作。
@@ -317,9 +374,24 @@ public interface Trie<V> {
      * BiFunction 的入参：(key， value)
      *
      * @param depth    遍历深度
-     * @param function 每个键值对会传入给该 function：如果该 function 返回 false，则停止遍历，否则继续遍历
+     * @param function 遍历得到的每个键值对会传入给该 function：如果该 function 返回 false，则停止遍历，否则继续遍历
      */
     void traversal(int depth, BiFunction<String, V, Boolean> function);
+
+    /**
+     * 精确匹配：判断 Key 是否存在于树中
+     * <p>
+     * 等同于 hashmap 的 get 方法
+     *
+     * <pre>
+     *     Trie中已有：ab, abc, abcd, abd, bcd
+     *     trie.get("abcd") == abcd
+     * </pre>
+     *
+     * @param key 键(精确匹配)
+     * @return {@link Boolean#TRUE}：树中存在此 key；{@link Boolean#FALSE}：树中不存在此 key
+     */
+    boolean contains(String key);
 
     /**
      * 完全匹配：根据 key 删除 value

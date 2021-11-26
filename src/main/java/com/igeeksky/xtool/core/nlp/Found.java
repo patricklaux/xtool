@@ -17,8 +17,6 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import java.util.Objects;
-
 /**
  * 用于文本段的关键字过滤，返回关键字在文本段中的起止位置
  *
@@ -27,6 +25,8 @@ import java.util.Objects;
  * @since 0.0.4 2021-10-23
  */
 public class Found<V> {
+
+    private final String key;
 
     /**
      * key 在文本段中的起始位置
@@ -48,9 +48,10 @@ public class Found<V> {
      */
     private final V value;
 
-    public Found(int start, int end, BaseNode<V> node) {
+    public Found(int start, int end, String key, BaseNode<V> node) {
         this.start = start;
         this.end = end;
+        this.key = key;
         this.node = node;
         this.value = node != null ? node.getValue() : null;
     }
@@ -67,6 +68,10 @@ public class Found<V> {
      */
     public int getEnd() {
         return end;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     /**
@@ -98,21 +103,31 @@ public class Found<V> {
         if (!(o instanceof Found)) {
             return false;
         }
-        Found<?> word = (Found<?>) o;
-        if (start != word.start) {
+
+        Found<?> found = (Found<?>) o;
+
+        if (getStart() != found.getStart()) {
             return false;
         }
-        if (end != word.end) {
+        if (getEnd() != found.getEnd()) {
             return false;
         }
-        return Objects.equals(value, word.value);
+        if (getKey() != null ? !getKey().equals(found.getKey()) : found.getKey() != null) {
+            return false;
+        }
+        if (getNode() != null ? !getNode().equals(found.getNode()) : found.getNode() != null) {
+            return false;
+        }
+        return getValue() != null ? getValue().equals(found.getValue()) : found.getValue() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = start;
-        result = 31 * result + end;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        int result = getKey() != null ? getKey().hashCode() : 0;
+        result = 31 * result + getStart();
+        result = 31 * result + getEnd();
+        result = 31 * result + (getNode() != null ? getNode().hashCode() : 0);
+        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
         return result;
     }
 
@@ -120,6 +135,7 @@ public class Found<V> {
     public String toString() {
         return "{\"start\":" + start +
                 ", \"end\":" + end +
+                (null == key ? "" : (", \"key\":\"" + key + "\"")) +
                 (null == value ? "" : (", \"value\":\"" + value + "\"")) +
                 "}";
     }

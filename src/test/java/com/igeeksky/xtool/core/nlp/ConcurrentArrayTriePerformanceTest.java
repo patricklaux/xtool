@@ -28,13 +28,13 @@ import java.util.*;
  * @since 0.0.4 2021-11-15
  */
 @Ignore
-public class ConcurrentTriePerformanceTest {
+public class ConcurrentArrayTriePerformanceTest {
 
     @Test
     public void get() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         long t1 = System.currentTimeMillis();
-        System.out.println("get\tt1:\t" + t1);
+        String method = "ConcurrentArrayTrie-get\t";
 
         Random random = new Random();
         int size = 100000000;
@@ -57,7 +57,7 @@ public class ConcurrentTriePerformanceTest {
         }
 
         long t2 = System.currentTimeMillis();
-        System.out.println("get\tt2:\t" + (t2 - t1));
+        System.out.println(method + "init-keys:\t" + (t2 - t1));
 
         Map<String, String> map = new HashMap<>(size);
         for (int i = 0; i < keys.size(); i++) {
@@ -67,14 +67,14 @@ public class ConcurrentTriePerformanceTest {
         }
 
         long t3 = System.currentTimeMillis();
-        System.out.println("get\tt3:\t" + (t3 - t2));
+        System.out.println(method + "  map-put:\t" + (t3 - t2));
 
         for (String key : keys) {
             trie.put(key, key);
         }
 
         long t4 = System.currentTimeMillis();
-        System.out.println("get\tt4:\t" + (t4 - t3));
+        System.out.println(method + " trie-put:\t" + (t4 - t3));
 
         List<String> result = new ArrayList<>(keys.size());
         for (String key : keys) {
@@ -84,10 +84,8 @@ public class ConcurrentTriePerformanceTest {
             }
         }
 
-        System.out.println("map-size\t\t\t\t" + result.size());
-
         long t5 = System.currentTimeMillis();
-        System.out.println("get\tt5:\t" + (t5 - t4));
+        System.out.println(method + "  map-get:\t" + (t5 - t4));
 
         List<String> result2 = new ArrayList<>(keys.size());
         for (String key : keys) {
@@ -97,18 +95,19 @@ public class ConcurrentTriePerformanceTest {
             }
         }
 
-        System.out.println("trie-size\t\t\t\t" + result2.size());
-
         long t6 = System.currentTimeMillis();
-        System.out.println("get\tt6:\t" + (t6 - t5));
+        System.out.println(method + " trie-get:\t" + (t6 - t5));
+
+        System.out.println(method + "trie-size:\t" + result2.size());
+        System.out.println(method + " map-size:\t" + result.size());
         Assert.assertEquals(result.size(), result2.size());
     }
 
     @Test
-    public void matchAll() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void prefixMatchAll() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         long t1 = System.currentTimeMillis();
-        System.out.println("matchAll\tt1:" + t1);
+        String method = "ConcurrentArrayTrie-prefixMatchAll\t";
 
         Random random = new Random();
         int size = 1000000;
@@ -131,9 +130,6 @@ public class ConcurrentTriePerformanceTest {
             }
         }
 
-        long t2 = System.currentTimeMillis();
-        System.out.println("matchAll\tt2:" + (t2 - t1));
-
         List<String> words = new ArrayList<>(10000000);
         for (int i = 0; i < 10000000; ) {
             int length = random.nextInt(15);
@@ -152,31 +148,31 @@ public class ConcurrentTriePerformanceTest {
             }
         }
 
-        long t3 = System.currentTimeMillis();
-        System.out.println("matchAll\tt3:" + (t3 - t2));
+        long t2 = System.currentTimeMillis();
+        System.out.println(method + "init-keys:\t\t" + (t2 - t1));
 
         trie.putAll(treeMap);
 
-        long t4 = System.currentTimeMillis();
-        System.out.println("matchAll\tt4:" + (t4 - t3));
+        long t3 = System.currentTimeMillis();
+        System.out.println(method + "putAll:\t\t\t" + (t3 - t2));
 
         for (String word : words) {
-            trie.matchAll(word);
+            trie.prefixMatchAll(word);
         }
 
-        long t5 = System.currentTimeMillis();
-        System.out.println("matchAll\tt5:" + (t5 - t4));
+        long t4 = System.currentTimeMillis();
+        System.out.println(method + "prefixMatchAll:\t" + (t4 - t3));
     }
 
     @Test
-    public void contains() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void match() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
+        String method = "ConcurrentArrayTrie-match\t";
         long t1 = System.currentTimeMillis();
-        System.out.println("contains\tt1:" + t1);
 
         Random random = new Random();
         int size = 5000000;
-        TreeMap<String, String> pairs = new TreeMap<>();
+        TreeMap<String, String> treeMap = new TreeMap<>();
         for (int i = 0; i < size; i++) {
             int length = random.nextInt(9);
             if (length > 5) {
@@ -190,14 +186,10 @@ public class ConcurrentTriePerformanceTest {
                     }
                 }
                 String key = new String(chars);
-                pairs.put(key, key);
+                treeMap.put(key, key);
                 i++;
             }
         }
-
-        trie.putAll(pairs);
-        long t2 = System.currentTimeMillis();
-        System.out.println("contains\tt2:" + (t2 - t1));
 
         int charsLen = 1000000000;
         char[] chars = new char[charsLen];
@@ -209,21 +201,28 @@ public class ConcurrentTriePerformanceTest {
             }
         }
         String text = new String(chars);
-        long t3 = System.currentTimeMillis();
-        System.out.println("contains\tt3:" + (t3 - t2));
 
-        List<Found<String>> list = trie.contains(text, false, false);
-        System.out.println(list.size());
+        long t2 = System.currentTimeMillis();
+        System.out.println(method + "init-keys:\t" + (t2 - t1));
+
+        trie.putAll(treeMap);
+
+        long t3 = System.currentTimeMillis();
+        System.out.println(method + "putAll:\t" + (t3 - t2));
+
+        List<Found<String>> list = trie.match(text, false, false);
         long t4 = System.currentTimeMillis();
-        System.out.println("contains\tt4:" + (t4 - t3));
+        System.out.println(method + "match:\t" + (t4 - t3));
+
+        System.out.println(method + "size:\t\t" + list.size());
     }
 
     @Test
-    public void containsAll() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void matchAll() {
+        String method = "ConcurrentArrayTrie-matchAll\t";
         long t1 = System.currentTimeMillis();
-        System.out.println("containsAll\tt1:\t" + t1);
 
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         Random random = new Random();
         int size = 5000000;
         TreeMap<String, String> pairs = new TreeMap<>();
@@ -245,9 +244,6 @@ public class ConcurrentTriePerformanceTest {
             }
         }
 
-        long t2 = System.currentTimeMillis();
-        System.out.println("containsAll\tt2:\t" + (t2 - t1));
-
         char[] chars = new char[100000000];
         for (int i = 0; i < 100000000; ) {
             int index = random.nextInt(91);
@@ -258,18 +254,16 @@ public class ConcurrentTriePerformanceTest {
         }
         String text = new String(chars);
 
-        long t3 = System.currentTimeMillis();
-        System.out.println("containsAll\tt3:\t" + (t3 - t2));
+        long t2 = System.currentTimeMillis();
+        System.out.println(method + "init-keys:\t" + (t2 - t1));
 
         trie.putAll(pairs);
+        long t3 = System.currentTimeMillis();
+        System.out.println(method + "putAll\t\t" + (t3 - t2));
 
+        List<Found<String>> matchAll = trie.matchAll(text, false, Integer.MAX_VALUE);
         long t4 = System.currentTimeMillis();
-        System.out.println("containsAll\tt4:\t" + (t4 - t3));
-
-        List<Found<String>> list2 = trie.containsAll(text, false, Integer.MAX_VALUE);
-        System.out.println("size\t\t\t\t" + list2.size());
-
-        long t5 = System.currentTimeMillis();
-        System.out.println("containsAll\tt5:\t" + (t5 - t4));
+        System.out.println(method + "matchAll\t" + (t4 - t3));
+        System.out.println(method + "size\t\t" + matchAll.size());
     }
 }

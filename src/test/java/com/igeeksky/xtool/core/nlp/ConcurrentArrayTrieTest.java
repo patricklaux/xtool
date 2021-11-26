@@ -28,12 +28,12 @@ import java.util.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-23
  */
-public class ConcurrentTrieTest {
+public class ConcurrentArrayTrieTest {
 
 
     @Test
     public void put() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String put = trie.put("a", "a");
         Assert.assertNull(put);
 
@@ -60,7 +60,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void putAll() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         TreeMap<String, String> treeMap = new TreeMap<>();
         strings.forEach(key -> treeMap.put(key, key));
@@ -72,7 +72,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void get() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         List<String> strings = Arrays.asList("aaaa", "bbbbb", "cccccc");
         strings.forEach(key -> trie.put(key, key));
         trie.put("aaa", "aaa");
@@ -87,26 +87,26 @@ public class ConcurrentTrieTest {
     }
 
     @Test
-    public void match() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void prefixMatch() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
         trie.put(key1, key1);
         trie.put(key2, key2);
         trie.put(key3, key3);
-        String longMatch = trie.match("abcdefgh");
+        Tuple2<String, String> longMatch = trie.prefixMatch("abcdefgh");
         System.out.println("longMatch:\t\t" + longMatch);
-        Assert.assertEquals(key3, longMatch);
+        Assert.assertEquals(key3, longMatch.getT2());
 
-        String shortMatch = trie.match("abcdefgh", false);
+        Tuple2<String, String> shortMatch = trie.prefixMatch("abcdefgh", false);
         System.out.println("shortMatch1:\t" + shortMatch);
-        Assert.assertEquals(key1, shortMatch);
+        Assert.assertEquals(key1, shortMatch.getT2());
     }
 
     @Test
-    public void match2() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void prefixMatch2() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "ab";
         String key2 = "abc";
         String key3 = "abd";
@@ -114,18 +114,18 @@ public class ConcurrentTrieTest {
         trie.put(key2, key2);
         trie.put(key3, key3);
 
-        String longMatch = trie.match("abcdefg");
+        Tuple2<String, String> longMatch = trie.prefixMatch("abcdefg");
         System.out.println("longMatch:\t\t" + longMatch);
-        Assert.assertEquals(key2, longMatch);
+        Assert.assertEquals(key2, longMatch.getT2());
 
-        String shortMatch = trie.match("abcdefgh", false);
+        Tuple2<String, String> shortMatch = trie.prefixMatch("abcdefgh", false);
         System.out.println("shortMatch1:\t" + shortMatch);
-        Assert.assertEquals(key1, shortMatch);
+        Assert.assertEquals(key1, shortMatch.getT2());
     }
 
     @Test
-    public void matchAll() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void prefixMatchAll() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "1234";
         String key2 = "12345";
         String key3 = "123456";
@@ -135,18 +135,18 @@ public class ConcurrentTrieTest {
         trie.put(key3, key3);
         trie.put(key4, key4);
 
-        List<String> matches = trie.matchAll("123456789");
+        List<Tuple2<String, String>> matches = trie.prefixMatchAll("123456789");
         System.out.println(matches);
-        Assert.assertEquals(key3, matches.get(2));
+        Assert.assertEquals(key3, matches.get(2).getT2());
 
-        List<String> limitMatches = trie.matchAll("123456789", 2);
+        List<Tuple2<String, String>> limitMatches = trie.prefixMatchAll("123456789", 2);
         System.out.println(limitMatches);
         Assert.assertEquals(2, limitMatches.size());
     }
 
     @Test
-    public void search() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void keysWithPrefix() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ac", "ac");
@@ -164,88 +164,88 @@ public class ConcurrentTrieTest {
 
         // DFS
         // 不存在该前缀
-        List<String> dfs = trie.search("b", 1, 1, true);
+        List<Tuple2<String, String>> dfs = trie.keysWithPrefix("b", 1, 1, true);
         System.out.println("DFS:\t" + dfs);
         Assert.assertEquals("[]", dfs.toString());
 
         // 仅返回前缀的值
-        dfs = trie.search("a", 1, 1, true);
+        dfs = trie.keysWithPrefix("a", 1, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[a]", dfs.toString());
+        Assert.assertEquals("[[a, a]]", dfs.toString());
 
-        dfs = trie.search("a", 10, 10, true);
+        dfs = trie.keysWithPrefix("a", 10, 10, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag]", dfs.toString());
-
-        // DFS
-        dfs = trie.search("a");
-        System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag, agfff, ahfff, aifff, ajfff]", dfs.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs.toString());
 
         // DFS
-        List<String> dfs0 = trie.search("a", Integer.MAX_VALUE, 0, false);
+        dfs = trie.keysWithPrefix("a");
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs.toString());
+
+        // DFS
+        List<Tuple2<String, String>> dfs0 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 0, false);
         System.out.println("DFS0:\t" + dfs0);
-        Assert.assertEquals("[a]", dfs0.toString());
+        Assert.assertEquals("[[a, a]]", dfs0.toString());
 
         // BFS
-        List<String> bfs0 = trie.search("a", Integer.MAX_VALUE, 0, true);
+        List<Tuple2<String, String>> bfs0 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 0, true);
         System.out.println("BFS0:\t" + bfs0);
-        Assert.assertEquals("[a]", bfs0.toString());
+        Assert.assertEquals("[[a, a]]", bfs0.toString());
 
         // DFS
-        List<String> dfs1 = trie.search("a", Integer.MAX_VALUE, 1, false);
+        List<Tuple2<String, String>> dfs1 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 1, false);
         System.out.println("DFS1:\t" + dfs1);
-        Assert.assertEquals("[a, ab, ac, ag]", dfs1.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", dfs1.toString());
 
         // BFS
-        List<String> bfs1 = trie.search("a", Integer.MAX_VALUE, 1, false);
+        List<Tuple2<String, String>> bfs1 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 1, false);
         System.out.println("BFS1:\t" + bfs1);
-        Assert.assertEquals("[a, ab, ac, ag]", bfs1.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", bfs1.toString());
 
         // DFS
-        List<String> dfs2 = trie.search("a", Integer.MAX_VALUE, 2, true);
+        List<Tuple2<String, String>> dfs2 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 2, true);
         System.out.println("DFS2:\t" + dfs2);
-        Assert.assertEquals("[a, ab, ac, ach, aci, aek, afl, ag]", dfs2.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [ag, ag]]", dfs2.toString());
 
         // BFS
-        List<String> bfs2 = trie.search("a", Integer.MAX_VALUE, 2, false);
+        List<Tuple2<String, String>> bfs2 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 2, false);
         System.out.println("BFS2:\t" + bfs2);
-        Assert.assertEquals("[a, ab, ac, ag, ach, aci, aek, afl]", bfs2.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl]]", bfs2.toString());
 
         // DFS
-        List<String> dfs3 = trie.search("a", Integer.MAX_VALUE, 3, true);
+        List<Tuple2<String, String>> dfs3 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 3, true);
         System.out.println("DFS3:\t" + dfs3);
-        Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag]", dfs3.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs3.toString());
 
         // BFS
-        List<String> bfs3 = trie.search("a", Integer.MAX_VALUE, 3, false);
+        List<Tuple2<String, String>> bfs3 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 3, false);
         System.out.println("BFS3:\t" + bfs3);
-        Assert.assertEquals("[a, ab, ac, ag, ach, aci, aek, afl, adjn, afmo]", bfs3.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo]]", bfs3.toString());
 
         // DFS
-        List<String> dfs4 = trie.search("a", Integer.MAX_VALUE, 4, true);
+        List<Tuple2<String, String>> dfs4 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 4, true);
         System.out.println("DFS4:\t" + dfs4);
-        Assert.assertEquals("[a, ab, ac, ach, aci, adjn, aek, afl, afmo, ag, agfff, ahfff, aifff, ajfff]", dfs4.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs4.toString());
 
         // BFS
-        List<String> bfs4 = trie.search("a", Integer.MAX_VALUE, 4, false);
+        List<Tuple2<String, String>> bfs4 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 4, false);
         System.out.println("BFS4:\t" + bfs4);
-        Assert.assertEquals("[a, ab, ac, ag, ach, aci, aek, afl, adjn, afmo, agfff, ahfff, aifff, ajfff]", bfs4.toString());
+        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", bfs4.toString());
 
         // DFS（测试不存在的前缀）
-        List<String> dfs5 = trie.search("b", Integer.MAX_VALUE, 4, true);
+        List<Tuple2<String, String>> dfs5 = trie.keysWithPrefix("b", Integer.MAX_VALUE, 4, true);
         System.out.println("DFS5:\t" + dfs5);
         Assert.assertEquals("[]", dfs5.toString());
 
         // BFS（测试不存在的前缀）
-        List<String> bfs5 = trie.search("b", Integer.MAX_VALUE, 4, false);
+        List<Tuple2<String, String>> bfs5 = trie.keysWithPrefix("b", Integer.MAX_VALUE, 4, false);
         System.out.println("BFS5:\t" + bfs5);
         Assert.assertEquals("[]", bfs5.toString());
     }
 
     @Test
-    public void search1() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void keysWithPrefix1() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -253,66 +253,66 @@ public class ConcurrentTrieTest {
         trie.put("bcd", "bcd");
 
         // DFS
-        List<String> dfs = trie.search("ab");
+        List<Tuple2<String, String>> dfs = trie.keysWithPrefix("ab");
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab, abc, abcd, abd]", dfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
 
-        dfs = trie.search("ab", 0, 1, true);
-        System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[]", dfs.toString());
-
-        dfs = trie.search("ab", 1000, -1, true);
+        dfs = trie.keysWithPrefix("ab", 0, 1, true);
         System.out.println("DFS:\t" + dfs);
         Assert.assertEquals("[]", dfs.toString());
 
-        dfs = trie.search("ab", 1000, 0, true);
+        dfs = trie.keysWithPrefix("ab", 1000, -1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab]", dfs.toString());
+        Assert.assertEquals("[]", dfs.toString());
 
-        List<String> bfs = trie.search("ab", 1000, 0, false);
-        System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[ab]", bfs.toString());
-
-
-        dfs = trie.search("ab", 1000, 1, true);
+        dfs = trie.keysWithPrefix("ab", 1000, 0, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab, abc, abd]", dfs.toString());
+        Assert.assertEquals("[[ab, ab]]", dfs.toString());
 
-        bfs = trie.search("ab", 1000, 1, false);
+        List<Tuple2<String, String>> bfs = trie.keysWithPrefix("ab", 1000, 0, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[ab, abc, abd]", bfs.toString());
+        Assert.assertEquals("[[ab, ab]]", bfs.toString());
 
 
-        dfs = trie.search("ab", 1000, 2, true);
+        dfs = trie.keysWithPrefix("ab", 1000, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab, abc, abcd, abd]", dfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", dfs.toString());
 
-        bfs = trie.search("ab", 1000, 2, false);
+        bfs = trie.keysWithPrefix("ab", 1000, 1, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[ab, abc, abd, abcd]", bfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
 
-        dfs = trie.search("ab", 1000, 3, true);
+
+        dfs = trie.keysWithPrefix("ab", 1000, 2, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab, abc, abcd, abd]", dfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
 
-        bfs = trie.search("ab", 1000, 3, false);
+        bfs = trie.keysWithPrefix("ab", 1000, 2, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[ab, abc, abd, abcd]", bfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
+
+        dfs = trie.keysWithPrefix("ab", 1000, 3, true);
+        System.out.println("DFS:\t" + dfs);
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
+
+        bfs = trie.keysWithPrefix("ab", 1000, 3, false);
+        System.out.println("BFS:\t" + bfs);
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
 
         // 限定搜索数量
-        dfs = trie.search("ab", 3, 3, true);
+        dfs = trie.keysWithPrefix("ab", 3, 3, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[ab, abc, abcd]", dfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", dfs.toString());
 
         // 限定搜索数量
-        bfs = trie.search("ab", 3, 3, false);
+        bfs = trie.keysWithPrefix("ab", 3, 3, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[ab, abc, abd]", bfs.toString());
+        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
     }
 
     @Test
-    public void contains() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void match() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -325,38 +325,38 @@ public class ConcurrentTrieTest {
         trie.put(key5, key5);
 
 
-        List<Found<String>> shortMatches = trie.contains("abcdefg");
+        List<Found<String>> shortMatches = trie.match("abcdefg");
         System.out.println(shortMatches);
-        String expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
+        String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches.toString());
 
 
-        List<Found<String>> shortMatches2 = trie.contains("abcdefg", true, true);
+        List<Found<String>> shortMatches2 = trie.match("abcdefg", true, true);
         System.out.println(shortMatches2);
         Assert.assertEquals(expected, shortMatches2.toString());
 
 
-        List<Found<String>> longMatches = trie.contains("abcdefg", true, true);
+        List<Found<String>> longMatches = trie.match("abcdefg", true, true);
         System.out.println(longMatches);
-        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
+        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assert.assertEquals(expected, longMatches.toString());
 
 
-        List<Found<String>> skipMatches2 = trie.contains("abcdefg", false, false);
+        List<Found<String>> skipMatches2 = trie.match("abcdefg", false, false);
         System.out.println(skipMatches2);
-        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}]";
+        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}]";
         Assert.assertEquals(expected, skipMatches2.toString());
 
 
-        List<Found<String>> skipMatches = trie.contains("abcdefg", true, false);
+        List<Found<String>> skipMatches = trie.match("abcdefg", true, false);
         System.out.println(skipMatches);
-        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
+        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assert.assertEquals(expected, skipMatches.toString());
     }
 
     @Test
-    public void containsAll() {
-        Trie<String> trie = new ConcurrentTrie<>();
+    public void matchAll() {
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "ab";
         String key2 = "bc";
         String key3 = "cd";
@@ -368,31 +368,31 @@ public class ConcurrentTrieTest {
         trie.put(key4, key4);
         trie.put(key5, key5);
 
-        List<Found<String>> shortMatches = trie.containsAll("abcdefg");
+        List<Found<String>> shortMatches = trie.matchAll("abcdefg");
         System.out.println(shortMatches);
-        String expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
+        String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches.toString());
 
 
-        List<Found<String>> shortMatches1 = trie.containsAll("abcdefg", true, Integer.MAX_VALUE);
+        List<Found<String>> shortMatches1 = trie.matchAll("abcdefg", true, Integer.MAX_VALUE);
         System.out.println(shortMatches1);
         Assert.assertEquals(expected, shortMatches1.toString());
 
 
-        List<Found<String>> shortMatches2 = trie.containsAll("abcdefg", false, Integer.MAX_VALUE);
+        List<Found<String>> shortMatches2 = trie.matchAll("abcdefg", false, Integer.MAX_VALUE);
         System.out.println(shortMatches2);
-        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"value\":\"efg\"}]";
+        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assert.assertEquals(expected, shortMatches2.toString());
 
-        List<Found<String>> shortMatches3 = trie.containsAll("abcdefg", false, 1);
+        List<Found<String>> shortMatches3 = trie.matchAll("abcdefg", false, 1);
         System.out.println(shortMatches3);
-        expected = "[{\"start\":0, \"end\":1, \"value\":\"ab\"}]";
+        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}]";
         Assert.assertEquals(expected, shortMatches3.toString());
     }
 
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -408,7 +408,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         trie.put("a", "a");
         trie.put("ab", "ab");
         trie.put("ach", "ach");
@@ -472,7 +472,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void remove() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abcd";
         String key2 = "abcde";
         String key3 = "abcdef";
@@ -482,29 +482,29 @@ public class ConcurrentTrieTest {
         trie.put(key3, key3);
         trie.put(key4, key4);
 
-        String longMatch1 = trie.match("abcdefghi");
+        Tuple2<String, String> longMatch1 = trie.prefixMatch("abcdefghi");
         System.out.println("longMatch1:\t\t" + longMatch1);
-        Assert.assertEquals(key4, longMatch1);
+        Assert.assertEquals(key4, longMatch1.getT2());
 
         String remove = trie.remove(key4);
         System.out.println("remove:\t\t\t" + remove);
         Assert.assertEquals(key4, remove);
 
-        String longMatch2 = trie.match("abcdefghi");
+        Tuple2<String, String> longMatch2 = trie.prefixMatch("abcdefghi");
         System.out.println("longMatch2:\t\t" + longMatch2);
-        Assert.assertEquals(key3, longMatch2);
+        Assert.assertEquals(key3, longMatch2.getT2());
 
-        String shortMatch1 = trie.match("abcdefghi", false);
+        Tuple2<String, String> shortMatch1 = trie.prefixMatch("abcdefghi", false);
         System.out.println("shortMatch1:\t" + shortMatch1);
-        Assert.assertEquals(key1, shortMatch1);
+        Assert.assertEquals(key1, shortMatch1.getT2());
 
         String remove2 = trie.remove(key1);
         System.out.println("remove2:\t\t" + remove2);
         Assert.assertEquals(key1, remove2);
 
-        String shortMatch2 = trie.match("abcdefghi", false);
+        Tuple2<String, String> shortMatch2 = trie.prefixMatch("abcdefghi", false);
         System.out.println("shortMatch2:\t" + shortMatch2);
-        Assert.assertEquals(key2, shortMatch2);
+        Assert.assertEquals(key2, shortMatch2.getT2());
     }
 
     /**
@@ -513,7 +513,7 @@ public class ConcurrentTrieTest {
      */
     @Test
     public void remove2() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abcdef";
         String key3 = "abcfgh";
@@ -536,7 +536,7 @@ public class ConcurrentTrieTest {
      */
     @Test
     public void remove3() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abcd";
         String key3 = "abcf";
@@ -560,7 +560,7 @@ public class ConcurrentTrieTest {
      */
     @Test
     public void remove4() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abcde";
         String key3 = "abcd";
@@ -584,7 +584,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -623,7 +623,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void size() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -669,7 +669,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void isEmpty() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
@@ -710,7 +710,7 @@ public class ConcurrentTrieTest {
 
     @Test
     public void clear() {
-        Trie<String> trie = new ConcurrentTrie<>();
+        Trie<String> trie = new ConcurrentArrayTrie<>();
         String key1 = "abc";
         String key2 = "abd";
         String key3 = "abcd";
