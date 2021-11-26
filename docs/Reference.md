@@ -1674,13 +1674,13 @@ public class ConcurrentArrayTrieTest {
 
 - **prefixMatch**：前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空。
 
-  String word：待匹配词
+  String word：待匹配词（不为空且长度大于0）
 
   boolean longestMatch：是否最长匹配（默认：true，最长匹配）
 
 - **prefixMatchAll**：前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如匹配到多个 key，那么将这些 key&value 都返回。
 
-  String word：待匹配词
+  String word：待匹配词（不为空且长度大于0）
 
   int maximum：最大返回结果数量（默认：Integer.MAX_VALUE）
 
@@ -1768,13 +1768,13 @@ public class ConcurrentArrayTrieTest {
 
 - **keyWithPrefix**：输入前缀，返回以此前缀开头的 key&value
 
-  String prefix：前缀
+  String prefix：前缀（不为空且长度大于0）
 
   boolean longestMatch：是否最长匹配（默认：true，最长匹配）
 
 - **keysWithPrefix**：输入前缀，返回以此前缀开头的 key&value，如有多个 key 都以此前缀开头，将这些 key&value 都返回。
 
-  String prefix：前缀
+  String prefix：前缀（不为空且长度大于0）
 
   int maximum：最大返回结果数量（默认：Integer.MAX_VALUE）
 
@@ -1887,7 +1887,7 @@ public class ConcurrentArrayTrieTest {
 - **match**：输入一段文本，返回该文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本段中的同一起始位置匹配到多个 key，**
   默认仅返回最长的那个**。
 
-  String text：文本段
+  String text：文本段（不为空且长度大于0）
 
   boolean longestMatch：是否最长匹配（默认：true 最长匹配）
 
@@ -1896,7 +1896,7 @@ public class ConcurrentArrayTrieTest {
 - **matchAll**：输入一段文本，返回文本中包含的 key&value 和起止位置；如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；如果文本中的同一起始位置匹配到多个 key，**
   从短到长全部返回**。
 
-  String text：文本段
+  String text：文本段（不为空且长度大于0）
 
   boolean oneByOne：是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）（默认：true 逐字符匹配）
 
