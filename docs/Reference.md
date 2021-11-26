@@ -1539,21 +1539,25 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 
 - **get**：根据 key 获取 value
 
-  String key：键
+  String key：键（不为空且长度大于0）
 
 - **remove**：根据 key 删除 value
 
-  String key：键
+  String key：键（不为空且长度大于0）
 
 - **put**：添加键值对
 
-  String key：键
+  String key：键（不为空且长度大于0）
 
-  V value：值
+  V value：值（不能为空）
 
 - **putAll**：添加多个键值对
 
-  TreeMap<String, V> treeMap：多个键值对
+  TreeMap<String, V> treeMap：多个键值对（键：不为空且长度大于0；值：不能为空）
+
+- **contains**：判断树中是否存在该 key
+
+  String key：键（不为空且长度大于0）
 
 - **size**：树中已有键值对的数量
 
@@ -1996,7 +2000,7 @@ public class ConcurrentArrayTrieTest {
 
   int depth：遍历深度
 
-- **traversal**：遍历键值对。考虑到树中包含的键值对数量可能非常庞大，如果提供 entrySet() 方法会消耗大量的内存，甚至会导致内存溢出， 因此采用用户提供的函数来处理遍历结果，用户可以自定义函数实现序列化等操作。
+- **traversal**：遍历键值对。考虑到树中包含的键值对数量可能非常庞大， 因此采用用户提供的函数来处理每一个遍历结果，用户可以自定义函数实现序列化等操作。
 
   int depth：遍历深度
 

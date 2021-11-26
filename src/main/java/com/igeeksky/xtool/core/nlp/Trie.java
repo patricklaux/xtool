@@ -32,16 +32,16 @@ public interface Trie<V> {
     /**
      * 添加键值对
      *
-     * @param key   键：不能为空或空白
+     * @param key   键：不为空且长度大于0
      * @param value 值：不能为空
-     * @return 如果树中包含此 key，则旧值；否则空。
+     * @return 如果树中原来已存在此 key，则返回 key 对应的旧 value；否则返回空
      */
     V put(String key, V value);
 
     /**
      * 添加多个键值对
      *
-     * @param treeMap 键值对集合（键：不能为空或空白；值：不能为空）
+     * @param treeMap 多个键值对（键：不为空且长度大于0；值：不能为空）
      */
     void putAll(TreeMap<String, V> treeMap);
 
@@ -55,42 +55,41 @@ public interface Trie<V> {
      *     trie.get("abcd") == abcd
      * </pre>
      *
-     * @param key 键(精确匹配)
-     * @return 如果树中存在此 key，则返回 key 对应的 value；否则，空
+     * @param key 键（精确匹配，不为空且长度大于0）
+     * @return 如果树中存在此 key，则返回 key 对应的 value；否则返回空
      */
     V get(String key);
 
     /**
-     * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key：如果 key 存在，则返回 key 对应的 value
+     * 前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空
      * <p>
      * 默认返回最长匹配结果：longestMatch = {@link Boolean#TRUE}
+     *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.match("abcdef") == abcd
+     *     trie.prefixMatch("abcdef") == [abcd, abcd]
      *     依次会匹配到 ab, abc, abcd，默认返回最长匹配结果：abcd
      * </pre>
      *
-     * @param word 待匹配词
-     * @return 是否匹配到 key，是：返回 key对应的值；否，返回空
+     * @param word 待匹配词（不为空且长度大于0）
+     * @return 是否匹配到 key：是，返回 key&value；否，返回空
      */
     Tuple2<String, V> prefixMatch(String word);
 
     /**
-     * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key
-     * <p>
-     * 如果 key 存在，则返回 key 对应的 value
+     * 前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.match("abcdef", true) == abcd
-     *     trie.match("abcdef", false) == ab
-     *     trie.match("ccc", true) == null
-     *     trie.match("ccc", false) == null
+     *     trie.prefixMatch("abcdef", true) == [abcd, abcd]
+     *     trie.prefixMatch("abcdef", false) == [ab, ab]
+     *     trie.prefixMatch("ccc", true) == null
+     *     trie.prefixMatch("ccc", false) == null
      * </pre>
      *
-     * @param word         待匹配词
-     * @param longestMatch 是否最长匹配；true，匹配到的最长的 Key 对应的 value；false：匹配到的最短的 key 对应的值（默认：{@link Boolean#TRUE}）
-     * @return 是否匹配到 key，是：关键字的对应的值；否：空
+     * @param word         待匹配词（不为空且长度大于0）
+     * @param longestMatch 是否最长匹配
+     * @return 是否匹配到 key：是，返回 key&value；否，返回空
      */
     Tuple2<String, V> prefixMatch(String word, boolean longestMatch);
 
@@ -99,15 +98,15 @@ public interface Trie<V> {
      * <p>
      * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
      * <p>
-     * 如果 key 存在，则返回 key 对应的 value；如果匹配到多个key，那么将这些 key 对应的 value 都返回
+     * 如果 key 存在，则返回 key&value；如果匹配到多个key，那么将这些 key&value 都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.matchAll("abcdef") == [ab, abc, abcd]
+     *     trie.prefixMatchAll("abcdef") == [[ab, ab], [abc, abc], [abcd, abcd]]
      * </pre>
      *
-     * @param word 待匹配文本
-     * @return 是否匹配到 key：是，返回这些 key 对应的 values；否，返回空列表
+     * @param word 待匹配文本（不为空且长度大于0）
+     * @return 是否匹配到 key：是，返回所有匹配的 key&value；否，返回空列表
      */
     List<Tuple2<String, V>> prefixMatchAll(String word);
 
@@ -116,20 +115,20 @@ public interface Trie<V> {
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.matchAll("abcdef", 1) == [ab]
-     *     trie.matchAll("abcdef", 2) == [ab, abc]
-     *     trie.matchAll("abcdef", 3) == [ab, abc, abcd]
+     *     trie.prefixMatchAll("abcdef", 1) == [[ab, ab]]
+     *     trie.prefixMatchAll("abcdef", 2) == [[ab, ab], [abc, abc]]
+     *     trie.prefixMatchAll("abcdef", 3) == [[ab, ab], [abc, abc], [abcd, abcd]]
      * </pre>
      *
-     * @param word    待匹配文本
+     * @param word    待匹配文本（不为空且长度大于0）
      * @param maximum 最大返回结果数量（默认：{@link Integer#MAX_VALUE}）
-     * @return 是否匹配到 key：是，返回这些 key 对应的 values；否，返回空列表
+     * @return 是否匹配到 key：是，返回所有匹配的 key&value；否，返回空列表
      */
     List<Tuple2<String, V>> prefixMatchAll(String word, int maximum);
 
 
     /**
-     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value
      * <p>
      * 默认最长匹配，longestMatch = {@link Boolean#TRUE}
      * <p>
@@ -137,32 +136,32 @@ public interface Trie<V> {
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.keyWithPrefix("ab") == "abcd"；
+     *     trie.keyWithPrefix("ab") == [abcd, abcd]；
      * </pre>
      *
-     * @param prefix 前缀
-     * @return 所有包含给定前缀的关键字对应的值。
+     * @param prefix 前缀（不为空且长度大于0）
+     * @return 所有包含给定前缀的 key 及对应 value
      */
     Tuple2<String, V> keyWithPrefix(String prefix);
 
     /**
-     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.keyWithPrefix("ab") == "abcd"；
-     *     trie.keyWithPrefix("ab", true) == "abcd"；
-     *     trie.keyWithPrefix("ab", false) == "ab"；
+     *     trie.keyWithPrefix("ab") == [abcd, abcd]；
+     *     trie.keyWithPrefix("ab", true) == [abcd, abcd]；
+     *     trie.keyWithPrefix("ab", false) == [ab, ab]；
      * </pre>
      *
-     * @param prefix       前缀
-     * @param longestMatch 是否最长匹配；true，包含此前缀的最长的 Key 对应的 value；false：包含此前缀的最长的 Key 对应的 value（默认：{@link Boolean#TRUE}）
-     * @return 所有包含给定前缀的关键字对应的值。
+     * @param prefix       前缀（不为空且长度大于0）
+     * @param longestMatch 是否最长匹配
+     * @return 所有包含此前缀的 key 及对应 value
      */
     Tuple2<String, V> keyWithPrefix(String prefix, boolean longestMatch);
 
     /**
-     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value，如果有多个 key 都以此前缀开头，将这些 key&value 都返回
      * <p>
      * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
      * <p>
@@ -170,51 +169,51 @@ public interface Trie<V> {
      * <p>
      * 默认深度优先遍历：dfs = {@link Boolean#TRUE}
      * <p>
-     * 此方法等同于：trie.search("ab", Integer.MAX_VALUE, Integer.MAX_VALUE, true)
+     * 此方法等同于：trie.keysWithPrefix("ab", Integer.MAX_VALUE, Integer.MAX_VALUE, true)
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.search("ab")，结果：[ab, abc, abcd, abd]；
+     *     trie.keysWithPrefix("ab") == [[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]
      * </pre>
      *
-     * @param prefix 前缀
-     * @return 所有包含给定前缀的关键字对应的值。
+     * @param prefix 前缀（不为空且长度大于0）
+     * @return 所有包含此前缀的 key 及对应 value
      */
     List<Tuple2<String, V>> keysWithPrefix(String prefix);
 
     /**
-     * 前缀匹配：输入前缀，返回以此前缀开头的 key 对应的 value，如果有多个 key 都以此前缀开头，将这些 key 对应的 value 都返回
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value，如果有多个 key 都以此前缀开头，将这些 key&value 都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.search("ab", 1000, 0, true); 结果：[ab]；
-     *     trie.search("ab", 1000, 0, false); 结果：[ab]
+     *     trie.keysWithPrefix("ab", 1000, 0, true) == [[ab, ab]]；
+     *     trie.keysWithPrefix("ab", 1000, 0, false); 结果：[[ab, ab]]
      *
-     *     trie.search("ab", 1000, 1, true); 结果：[ab, abc, abd]
-     *     trie.search("ab", 1000, 1, false); 结果：[ab, abc, abd]
+     *     trie.keysWithPrefix("ab", 1000, 1, true) == [[ab, ab], [abc, abc], [abd, abd]]
+     *     trie.keysWithPrefix("ab", 1000, 1, false) == [[ab, ab], [abc, abc], [abd, abd]]
      *
-     *     trie.search("ab", 1000, 2, true); 结果：[ab, abc, abcd, abd]
-     *     trie.search("ab", 1000, 2, false); 结果：[ab, abc, abd, abcd]
+     *     trie.keysWithPrefix("ab", 1000, 2, true) == [[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]
+     *     trie.keysWithPrefix("ab", 1000, 2, false) == [[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]
      *
-     *     trie.search("ab", 1000, 3, true); 结果：[ab, abc, abcd, abd]
-     *     trie.search("ab", 1000, 3, false); 结果：[ab, abc, abd, abcd]
+     *     trie.keysWithPrefix("ab", 1000, 3, true); 结果：[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]
+     *     trie.keysWithPrefix("ab", 1000, 3, false); 结果：[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]
      *
-     *     trie.search("ab", 3, 3, true); 结果：[ab, abc, abcd]
-     *     trie.search("ab", 3, 3, false); 结果：[ab, abc, abd]
+     *     trie.keysWithPrefix("ab", 3, 3, true); 结果：[[ab, ab], [abc, abc], [abcd, abcd]]
+     *     trie.keysWithPrefix("ab", 3, 3, false); 结果：[[ab, ab], [abc, abc], [abd, abd]]
      * </pre>
      *
-     * @param prefix  前缀
+     * @param prefix  前缀（不为空且长度大于0）
      * @param maximum 最大返回结果数量（默认：{@link Integer#MAX_VALUE}）
      * @param depth   搜索深度（默认：{@link Integer#MAX_VALUE}）
      * @param dfs     是否深度优先遍历（true，深度优先遍历；false，广度优先遍历；默认：{@link Boolean#TRUE}）
-     * @return 所有包含给定前缀的关键字对应的值。
+     * @return 所有包含给定前缀的 key 及对应 value。
      */
     List<Tuple2<String, V>> keysWithPrefix(String prefix, int maximum, int depth, boolean dfs);
 
     /**
-     * 包含匹配：输入一段文本，返回该文本中包含的 key 对应的 value 和 key 的起止位置
+     * 包含匹配：输入一段文本，返回该文本中包含的 key 及对应 value、与及 key 的起止位置
      * <p>
-     * 如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回；
+     * 如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；
      * <p>
      * 如果文本段中的同一起始位置匹配到多个 key，默认仅返回最长的那个。
      * <p>
@@ -222,46 +221,46 @@ public interface Trie<V> {
      * <p>
      * 默认逐字符查找：oneByOne = {@link Boolean#TRUE}
      * <p>
-     * 等同于：trie.contains("xxabcdexx", true, true)
+     * 此方法等同于：trie.match("xxabcdexx", true, true)
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.contains("xxabcdexx") == [{"start":2, "end":5, "value":"abcd"}, {"start":3, "end":5, "value":"bcd"}]
+     *     trie.match("xxabcdexx") == [{"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
      * </pre>
      *
-     * @param text 文本段
-     * @return 文本段包含的所有关键字对应的值的集合
+     * @param text 文本段（不为空且长度大于0）
+     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
      */
     List<Found<V>> match(String text);
 
     /**
-     * 包含匹配：给定一个文本段，查找文本中包含的所有键对应的值
+     * 包含匹配：输入一段文本，返回该文本中包含的 key 及对应 value、与及 key 的起止位置
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
      *
-     *     trie.contains("xxabcdexx", true, true) ==
-     *     [{"start":2, "end":5, "value":"abcd"}, {"start":3, "end":5, "value":"bcd"}]
+     *     trie.match("xxabcdexx", true, true) ==
+     *     [{"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
-     *     trie.contains("xxabcdexx", true, false) ==
-     *     [{"start":2, "end":5, "value":"abcd"}]
+     *     trie.match("xxabcdexx", true, false) ==
+     *     [{"start":2, "end":5, "key":"abcd", "value":"abcd"}]
      *
-     *     trie.contains("xxabcdexx", false, true) ==
-     *     [{"start":2, "end":3, "value":"ab"}, {"start":3, "end":5, "value":"bcd"}]
+     *     trie.match("xxabcdexx", false, true) ==
+     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
-     *     trie.contains("xxabcdexx", false, false) ==
-     *     [{"start":2, "end":3, "value":"ab"}]
+     *     trie.match("xxabcdexx", false, false) ==
+     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}]
      * </pre>
      *
-     * @param text         文本段
+     * @param text         文本段（不为空且长度大于0）
      * @param longestMatch 是否最长匹配（默认：true 最长匹配）
      * @param oneByOne     是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）
-     * @return 文本段包含的所有关键字对应的值的集合
+     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
      */
     List<Found<V>> match(String text, boolean longestMatch, boolean oneByOne);
 
     /**
-     * 包含匹配：输入一段文本，返回文本中包含的 key 对应的 value 和起止位置
+     * 包含匹配：输入一段文本，返回文本中包含的 key 及对应的 value 和 key 的起止位置
      * <p>
      * 如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回；
      * <p>
@@ -273,25 +272,25 @@ public interface Trie<V> {
      * <p>
      * 默认返回全部结果，maximum={@link Integer#MAX_VALUE}
      * <p>
-     * 等同于：trie.containsAll("xxabcdexx", true, Integer.MAX_VALUE)
+     * 等同于：trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE)
      *
      * <pre>
      *     例：
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.containsAll("xxabcdexx") ==
-     *     [{"start":2, "end":3, "value":"ab"}, {"start":2, "end":4, "value":"abc"},
-     *     {"start":2, "end":5, "value":"abcd"}, {"start":3, "end":5, "value":"bcd"}]
+     *     trie.matchAll("xxabcdexx") ==
+     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
      * </pre>
      *
-     * @param text 文本段
-     * @return 文本段包含的所有关键字对应的值的集合
+     * @param text 文本段（不为空且长度大于0）
+     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
      */
     List<Found<V>> matchAll(String text);
 
     /**
-     * 包含匹配：输入一段文本，返回文本中包含的 key 对应的 value 和起止位置
+     * 包含匹配：输入一段文本，返回文本中包含的 key 及对应的 value 和 key 的起止位置
      * <p>
-     * 如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回
+     * 如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回
      * <p>
      * contains：如果文本中的同一起始位置匹配到多个 key，仅返回最长（默认）的那个
      * <p>
@@ -301,24 +300,24 @@ public interface Trie<V> {
      *     例：
      *     Trie中已有：ab, abc, abcd, abd, bcd
      *
-     *     trie.containsAll("xxabcdexx", true, Integer.MAX_VALUE) ==
-     *     [{"start":2, "end":3, "value":"ab"}, {"start":2, "end":4, "value":"abc"},
-     *     {"start":2, "end":5, "value":"abcd"}, {"start":3, "end":5, "value":"bcd"}]
+     *     trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE) ==
+     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
-     *     trie.containsAll("xxabcdexx", false, Integer.MAX_VALUE) ==
-     *     [{"start":2, "end":3, "value":"ab"}, {"start":2, "end":4, "value":"abc"},
-     *     {"start":2, "end":5, "value":"abcd"}]
+     *     trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE) ==
+     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}]
      *
      *
-     *     trie.containsAll("xxabcdexx", true, 1) == [{"start":2, "end":3, "value":"ab"}]
-     *     trie.containsAll("xxabcdexx", false, 1) == [{"start":2, "end":3, "value":"ab"}]
+     *     trie.matchAll("xxabcdexx", true, 1) == [{"start":2, "end":3, "key":"ab", "value":"ab"}]
+     *     trie.matchAll("xxabcdexx", false, 1) == [{"start":2, "end":3, "key":"ab", "value":"ab"}]
      *
      * </pre>
      *
-     * @param text     文本段
+     * @param text     文本段（不为空且长度大于0）
      * @param oneByOne 是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）
      * @param maximum  最大返回结果数量
-     * @return 文本段包含的所有关键字对应的值的集合
+     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
      */
     List<Found<V>> matchAll(String text, boolean oneByOne, int maximum);
 
@@ -333,7 +332,7 @@ public interface Trie<V> {
      * <pre>
      *     例：
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     执行：trie.values(4)
+     *     执行：trie.keys(4)
      *     结果：[ab, abc, abcd, abd, bcd]
      * </pre>
      *
@@ -368,33 +367,32 @@ public interface Trie<V> {
      * <p>
      * {@link ConcurrentArrayTrie#traversal(int, BiFunction)} 采用深度优先遍历和字典序
      * <p>
-     * 考虑到树中包含的键值对可能数量庞大，如果提供 entrySet()方法会消耗大量的内存，甚至会导致内存溢出，
-     * 因此采用用户提供的函数来处理遍历结果，用户可以自定义函数实现序列化等操作。
+     * 考虑到树中包含的键值对可能数量庞大，因此采用用户提供的函数来处理每一个遍历结果，用户可以自定义函数实现序列化等操作。
      * <p>
      * BiFunction 的入参：(key， value)
      *
      * @param depth    遍历深度
-     * @param function 遍历得到的每个键值对会传入给该 function：如果该 function 返回 false，则停止遍历，否则继续遍历
+     * @param function 遍历得到的每个键值对会传入给此 function：如果此 function 返回 false，则停止遍历，否则继续遍历。（不能返回空）
      */
     void traversal(int depth, BiFunction<String, V, Boolean> function);
 
     /**
-     * 精确匹配：判断 Key 是否存在于树中
+     * 精确匹配：判断树中是否存在该 Key
      * <p>
-     * 等同于 hashmap 的 get 方法
+     * 等同于 hashmap 的 contains 方法
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.get("abcd") == abcd
+     *     trie.contains("abcd") == true
      * </pre>
      *
-     * @param key 键(精确匹配)
+     * @param key 键（不为空且长度大于0）
      * @return {@link Boolean#TRUE}：树中存在此 key；{@link Boolean#FALSE}：树中不存在此 key
      */
     boolean contains(String key);
 
     /**
-     * 完全匹配：根据 key 删除 value
+     * 精确匹配：根据 key 删除 value
      * <p>
      * 等同于 HashMap 的 remove 方法
      * <p>
@@ -432,8 +430,8 @@ public interface Trie<V> {
      *              d(grand)
      * </pre>
      *
-     * @param key 键：完全匹配的字符串
-     * @return 如果 key 存在于树中，则删除该 key 并返回该 key 对应的 value；否则，则删除该 key 但返回空。
+     * @param key 键（不为空且长度大于0）
+     * @return 如果 key 存在于树中，则删除该 key 并返回该 key 对应的 value；否则，返回空
      */
     V remove(String key);
 
