@@ -61,7 +61,9 @@ public interface Trie<V> {
     V get(String key);
 
     /**
-     * 前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空
+     * 前缀匹配：使用输入字符串的前缀去匹配树中已有的 key。
+     * <p>
+     * 如果 key 存在，返回 key 和 value；否则，返回空
      * <p>
      * 默认返回最长匹配结果：longestMatch = {@link Boolean#TRUE}
      *
@@ -72,12 +74,14 @@ public interface Trie<V> {
      * </pre>
      *
      * @param word 待匹配词（不为空且长度大于0）
-     * @return 是否匹配到 key：是，返回 key&value；否，返回空
+     * @return 是否匹配到 key。是：返回 key 和 value；否：返回空
      */
     Tuple2<String, V> prefixMatch(String word);
 
     /**
-     * 前缀匹配，使用输入字符串的前缀去匹配树中已有的 key：如 key 存在，则返回 key&value；否则返回空
+     * 前缀匹配，使用输入字符串的前缀去匹配树中已有的 key
+     * <p>
+     * 如果key 存在，返回 key 和 value；否则，返回空
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -89,16 +93,16 @@ public interface Trie<V> {
      *
      * @param word         待匹配词（不为空且长度大于0）
      * @param longestMatch 是否最长匹配
-     * @return 是否匹配到 key：是，返回 key&value；否，返回空
+     * @return 是否匹配到 key：是，返回 key 和 value；否，返回空
      */
     Tuple2<String, V> prefixMatch(String word, boolean longestMatch);
 
     /**
      * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key
      * <p>
-     * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
+     * 如果匹配到多个 key，那么将这些 keys 和 values 都返回
      * <p>
-     * 如果 key 存在，则返回 key&value；如果匹配到多个key，那么将这些 key&value 都返回
+     * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -106,12 +110,14 @@ public interface Trie<V> {
      * </pre>
      *
      * @param word 待匹配文本（不为空且长度大于0）
-     * @return 是否匹配到 key：是，返回所有匹配的 key&value；否，返回空列表
+     * @return 是否匹配到 key：是，返回所有匹配的 key 和 对应的 value；否，返回空列表
      */
     List<Tuple2<String, V>> prefixMatchAll(String word);
 
     /**
-     * 前缀匹配：给定一个字符串，判断该字符串的前缀是否匹配关键字
+     * 前缀匹配：使用输入的字符串的前缀去匹配树中已有的 key
+     * <p>
+     * 如果匹配到多个 key，那么将这些 keys 和 values 都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -122,7 +128,7 @@ public interface Trie<V> {
      *
      * @param word    待匹配文本（不为空且长度大于0）
      * @param maximum 最大返回结果数量（默认：{@link Integer#MAX_VALUE}）
-     * @return 是否匹配到 key：是，返回所有匹配的 key&value；否，返回空列表
+     * @return 是否匹配到 key：是，返回所有匹配的 key 和 对应的 value；否，返回空列表
      */
     List<Tuple2<String, V>> prefixMatchAll(String word, int maximum);
 
@@ -161,7 +167,9 @@ public interface Trie<V> {
     Tuple2<String, V> keyWithPrefix(String prefix, boolean longestMatch);
 
     /**
-     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value，如果有多个 key 都以此前缀开头，将这些 key&value 都返回
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value
+     * <p>
+     * 如果有多个 key 都以此前缀开头，将这些 keys 和对应的 values 都返回
      * <p>
      * 默认返回全部结果，maximum = {@link Integer#MAX_VALUE}
      * <p>
@@ -177,12 +185,14 @@ public interface Trie<V> {
      * </pre>
      *
      * @param prefix 前缀（不为空且长度大于0）
-     * @return 所有包含此前缀的 key 及对应 value
+     * @return 所有包含此前缀的 keys 及对应 values
      */
     List<Tuple2<String, V>> keysWithPrefix(String prefix);
 
     /**
-     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value，如果有多个 key 都以此前缀开头，将这些 key&value 都返回
+     * 匹配前缀：输入前缀，返回以此前缀开头的 key 及对应 value
+     * <p>
+     * 如果有多个 key 都以此前缀开头，将这些 keys 和对应的 values 都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -206,14 +216,14 @@ public interface Trie<V> {
      * @param maximum 最大返回结果数量（默认：{@link Integer#MAX_VALUE}）
      * @param depth   搜索深度（默认：{@link Integer#MAX_VALUE}）
      * @param dfs     是否深度优先遍历（true，深度优先遍历；false，广度优先遍历；默认：{@link Boolean#TRUE}）
-     * @return 所有包含给定前缀的 key 及对应 value。
+     * @return 所有包含给定前缀的 keys 和对应的 values。
      */
     List<Tuple2<String, V>> keysWithPrefix(String prefix, int maximum, int depth, boolean dfs);
 
     /**
      * 包含匹配：输入一段文本，返回该文本中包含的 key 及对应 value、与及 key 的起止位置
      * <p>
-     * 如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回；
+     * 如果文本中包含有多个 key，那么将这些 keys 和 对应的 values 和 起止位置都返回
      * <p>
      * 如果文本段中的同一起始位置匹配到多个 key，默认仅返回最长的那个。
      * <p>
@@ -229,12 +239,14 @@ public interface Trie<V> {
      * </pre>
      *
      * @param text 文本段（不为空且长度大于0）
-     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
+     * @return 返回该文本中包含的所有 keys 及对应 values、与及 key 的起止位置
      */
     List<Found<V>> match(String text);
 
     /**
      * 包含匹配：输入一段文本，返回该文本中包含的 key 及对应 value、与及 key 的起止位置
+     * <p>
+     * 如果文本中包含有多个 key，那么将这些 keys 和 对应的 values 和 起止位置都返回
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
@@ -255,18 +267,18 @@ public interface Trie<V> {
      * @param text         文本段（不为空且长度大于0）
      * @param longestMatch 是否最长匹配（默认：true 最长匹配）
      * @param oneByOne     是否逐字符匹配（是：当前下标 + 1开始查找；否：当前下标 + 找到词长度 + 1 开始查找）
-     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
+     * @return 返回该文本中包含的所有 keys 及对应 values、与及 key 的起止位置
      */
     List<Found<V>> match(String text, boolean longestMatch, boolean oneByOne);
 
     /**
      * 包含匹配：输入一段文本，返回文本中包含的 key 及对应的 value 和 key 的起止位置
      * <p>
-     * 如果文本中包含有多个 key，那么将这些 key 对应的所有 value 和 起止位置都返回；
+     * 如果文本中包含有多个 key，那么将这些 keys 和 对应的 values 和 起止位置都返回
      * <p>
-     * contains：如果文本中的同一起始位置匹配到多个 key，仅返回最长（默认）的那个；
+     * match：如果文本中的同一起始位置匹配到多个 key，仅返回最长（默认）的那个；
      * <p>
-     * containsAll：如果文本中的同一起始位置匹配到多个 key，从短到长全部返回。
+     * matchAll：如果文本中的同一起始位置匹配到多个 key，从短到长全部返回。
      * <p>
      * 默认不跳过长度，逐字符查找：oneByOne = {@link Boolean#TRUE}；
      * <p>
@@ -283,18 +295,18 @@ public interface Trie<V> {
      * </pre>
      *
      * @param text 文本段（不为空且长度大于0）
-     * @return 返回该文本中包含的所有 key 及对应 value、与及 key 的起止位置
+     * @return 返回该文本中包含的所有 keys 及对应 values、与及 key 的起止位置
      */
     List<Found<V>> matchAll(String text);
 
     /**
      * 包含匹配：输入一段文本，返回文本中包含的 key 及对应的 value 和 key 的起止位置
      * <p>
-     * 如果文本中包含有多个 key，那么将这些 key&value 和 起止位置都返回
+     * 如果文本中包含有多个 key，那么将这些 keys 和 对应的 values 和 起止位置都返回
      * <p>
-     * contains：如果文本中的同一起始位置匹配到多个 key，仅返回最长（默认）的那个
+     * match：如果文本中的同一起始位置匹配到多个 key，仅返回最长（默认）的那个
      * <p>
-     * containsAll：如果文本中的同一起始位置匹配到多个 key，从短到长全部返回。
+     * matchAll：如果文本中的同一起始位置匹配到多个 key，从短到长全部返回。
      *
      * <pre>
      *     例：
