@@ -1327,7 +1327,7 @@ public class IntegerValueTest {
 
   非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
 
-字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以参考维基百科中关于[Trie](https://en.wikipedia.org/wiki/Trie) 的介绍。
+字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以阅读维基百科中关于[Trie](https://en.wikipedia.org/wiki/Trie) 的介绍。
 
 现在，我们先来考虑选择什么方式去构造这样的一棵字典树。
 
@@ -1351,7 +1351,7 @@ public class IntegerValueTest {
 
 **自定义节点**
 
-为了能达到 HashMap 的时间性能，又能减少空间消耗，我选择了自定义数据结构：单链表节点和 AVL 节点。
+为了能达到 HashMap 的时间性能，又能减少空间消耗，这里定义了两种数据结构：单链表节点和 AVL 节点。
 
 - **单链表节点**
 
@@ -1405,13 +1405,13 @@ public class AvlNode<V>{
 
 **AvlTree  or RedBlackTree？**
 
-LinkedNode 在Hash 冲突严重时会有性能问题，因此需要树形结构来作为补充，当Hash 冲突超过阈值则将链表转换为树，Java 的HashMap 使用的是 RedBlackTree。
+LinkedNode 在 Hash 冲突严重时会有性能问题，因此需要树形结构来作为补充，当 Hash 冲突超过阈值则将链表转换为树，Java 的HashMap 使用的是 RedBlackTree。
 
-一般来说，RedBlackTree 的增删性能比 AvlTree 要好（实际上大多数场景两者差别细微），AVLTree 的查找性能比 RedBlackTree  要好。考虑到字典树通常不会有频繁的增删操作，因此选择AVLTree。另外， AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
+一般来说，RedBlackTree 的增删性能比 AvlTree 要好（实际上大多数场景两者差别细微），AVLTree 的查找性能比 RedBlackTree  要好。考虑到字典树通常不会有频繁的增删操作，因此选择AVLTree。另外，AvlTree 比 RedBlackTree 需要的信息更少（至少可以省去颜色标识），出于节省空间考虑，同样是选择 AVLTree。
 
 这里定义的 AvlNode 相比 HashMap 中定义的 TreeNode（RedBlackTree），删减了父节点指针、前驱指针、后继指针和颜色标识，会更节省空间，但删减信息带来的副作用就是增加了程序复杂度。
 
-如果是一棵庞大的字典树，节点数过亿，或达到十亿级，每节省一个信息都会减少大量的内存消耗。出于这样的考虑，所以，程序复杂一些也是值得的。
+如果是一棵庞大的字典树，节点数过亿，或达到十亿级，每节省一个信息都会减少大量的内存。出于这样的考虑，所以，程序复杂一些也是值得的。
 
 **AvlNode 与 LinkedNode**
 
