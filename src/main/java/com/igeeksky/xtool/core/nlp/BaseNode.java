@@ -21,7 +21,7 @@ package com.igeeksky.xtool.core.nlp;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-10
  */
-public abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
+abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
 
     public final char c;
     protected V value;

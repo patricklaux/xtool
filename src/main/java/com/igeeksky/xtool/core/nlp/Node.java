@@ -25,7 +25,7 @@ import java.util.*;
  * @since 0.0.4 2021-11-12
  */
 @SuppressWarnings("unchecked")
-public abstract class Node<V> extends BaseNode<V> {
+abstract class Node<V> extends BaseNode<V> {
 
     protected int size;
     protected Node<V>[] table;

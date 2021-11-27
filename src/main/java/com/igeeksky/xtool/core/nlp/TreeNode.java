@@ -21,7 +21,7 @@ package com.igeeksky.xtool.core.nlp;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-16
  */
-public abstract class TreeNode<V> extends Node<V> {
+abstract class TreeNode<V> extends Node<V> {
 
     public TreeNode(char c) {
         super(c);

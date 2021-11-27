@@ -31,7 +31,7 @@ import java.util.function.BiFunction;
  * @since 0.0.4 2021-11-12
  */
 @SuppressWarnings({"unchecked"})
-public class NodeHelper {
+class NodeHelper {
 
     /**
      * 保存键值对

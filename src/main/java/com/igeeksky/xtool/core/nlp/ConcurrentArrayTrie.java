@@ -33,7 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiFunction;
 
 /**
- * <p>使用 Hash 实现的 Trie 树</p>
+ * <p>使用可变数组实现的 Trie </p>
  * 默认使用单链表 和 Avl来解决 hash冲突
  *
  * @author Patrick.Lau

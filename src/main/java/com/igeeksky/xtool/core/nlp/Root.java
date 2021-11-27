@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-12
  */
-public class Root<V> extends BaseNode<V> {
+class Root<V> extends BaseNode<V> {
 
     @SuppressWarnings("unchecked")
     protected final Node<V>[] table = new Node[TrieConstants.TABLE_MAX_CAPACITY];
