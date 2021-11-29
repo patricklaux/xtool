@@ -1,6 +1,6 @@
-# xtool-1.0.6 参考文档
+# xtool-1.0.7 参考文档
 
-Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.6
+Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.7
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)  [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases)  [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits)  [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -27,14 +27,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
 #### 1.2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.6'
+implementation 'com.igeeksky.xtool:xtool:1.0.7'
 ```
 
 #### 1.2.3.编译安装
@@ -1278,11 +1278,11 @@ public class IntegerValueTest {
 > 注1：m为字符串的长度，k 为 key 的数量；
   >
   > 注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
-  
+
 似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
-  
+
 另，Trie 的某些节点可能在主存，某些节点在 cpu 缓存，比对过程可能需要多次访问主存；而 HashMap 可能仅需要访问一次主存。
-  
+
 非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
 
 字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以阅读维基百科中关于[Trie](https://en.wikipedia.org/wiki/Trie) 的介绍。
