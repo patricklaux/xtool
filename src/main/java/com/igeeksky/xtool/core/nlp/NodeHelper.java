@@ -97,11 +97,9 @@ class NodeHelper {
     public static <V> Found<V> match(BaseNode<V> root, String word, int start, int end, boolean longestMatch) {
         BaseNode<V> p = root;
         int last = end - 1;
-
         Found<V> f = null;
         for (int i = start; i < end; i++) {
-            char c = word.charAt(i);
-            BaseNode<V> ch = p.findChild(c);
+            BaseNode<V> ch = p.findChild(word.charAt(i));
             if (ch == null) {
                 return f;
             }
