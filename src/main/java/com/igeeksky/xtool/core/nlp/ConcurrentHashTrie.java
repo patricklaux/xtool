@@ -33,14 +33,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiFunction;
 
 /**
- * <p>使用可变数组实现的 Trie </p>
- * 默认使用单链表 和 Avl来解决 hash冲突
+ * <p>使用动态数组实现的 Trie </p>
+ * 默认使用单链表 和 Avl来处理 hash冲突
  *
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-23
  */
 @Perfect
-public class ConcurrentArrayTrie<V> implements Trie<V> {
+public class ConcurrentHashTrie<V> implements Trie<V> {
 
     private volatile int size = 0;
     private volatile int height = 0;
@@ -54,11 +54,11 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
     private final Object lock = new Object();
     private final ReadWriteLock[] locks = new ReadWriteLock[TrieConstants.TABLE_MAX_CAPACITY];
 
-    public ConcurrentArrayTrie() {
+    public ConcurrentHashTrie() {
         this(new LinkedNodeCreator<>(), new LinkedToAvlConvertor<>());
     }
 
-    public ConcurrentArrayTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
+    public ConcurrentHashTrie(NodeCreator<V> creator, NodeConvertor<? extends Node<V>, ? extends TreeNode<V>> convertor) {
         this.creator = creator;
         this.convertor = convertor;
         Arrays.fill(locks, new ReentrantReadWriteLock());
@@ -104,7 +104,15 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
 
     @Override
     public V get(String key) {
-        Found<V> found = prefixMatch(key, true, true);
+        Assert.hasLength(key, "key must not be null or blank");
+        BaseNode<V> found;
+        Lock readLock = getReadLock(key.charAt(0));
+        readLock.lock();
+        try {
+            found = NodeHelper.exactlyMatch(root, key);
+        } finally {
+            readLock.unlock();
+        }
         return (found != null) ? found.getValue() : null;
     }
 
@@ -115,24 +123,17 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
 
     @Override
     public Tuple2<String, V> prefixMatch(String word, boolean longestMatch) {
-        Found<V> found = prefixMatch(word, false, longestMatch);
-        if (found != null) {
-            return Tuples.of(found.getKey(), found.getValue());
-        }
-        return null;
-    }
-
-    private Found<V> prefixMatch(String word, boolean exactlyMatch, boolean longestMatch) {
         Assert.hasLength(word, "word must not be null or blank");
-
         int length = word.length();
+        Found<V> found;
         Lock readLock = getReadLock(word.charAt(0));
         readLock.lock();
         try {
-            return NodeHelper.match(root, word, 0, length, exactlyMatch, longestMatch);
+            found = NodeHelper.match(root, word, 0, length, longestMatch);
         } finally {
             readLock.unlock();
         }
+        return (found == null) ? null : Tuples.of(found.getKey(), found.getValue());
     }
 
     @Override
@@ -177,18 +178,17 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
         Lock readLock = getReadLock(prefix.charAt(0));
         readLock.lock();
         try {
-            Found<V> found = NodeHelper.match(root, prefix, 0, length, true, true);
+            BaseNode<V> found = NodeHelper.exactlyMatch(root, prefix);
             if (null == found) {
                 return null;
             }
-            BaseNode<V> root0 = found.getNode();
-            V val = root0.getValue();
+            V val = found.getValue();
             if (val != null) {
                 if (!function.apply(prefix, val)) {
                     return Tuples.of(function.getKey(), function.getValue());
                 }
             }
-            NodeHelper.search(root0, prefix.toCharArray(), depth, false, function);
+            NodeHelper.search(found, prefix.toCharArray(), depth, false, function);
             String key = function.getKey();
             return (key == null) ? null : Tuples.of(key, function.getValue());
         } finally {
@@ -220,12 +220,11 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
         Lock readLock = getReadLock(prefix.charAt(0));
         readLock.lock();
         try {
-            Found<V> found = NodeHelper.match(root, prefix, 0, length, true, true);
+            BaseNode<V> found = NodeHelper.exactlyMatch(root, prefix);
             if (null == found) {
                 return values;
             }
-            BaseNode<V> root0 = found.getNode();
-            V val = root0.getValue();
+            V val = found.getValue();
             if (val != null) {
                 if (!function.apply(prefix, val)) {
                     return values;
@@ -234,7 +233,7 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
             if (depth == 0) {
                 return values;
             }
-            NodeHelper.search(root0, prefix.toCharArray(), depth, dfs, function);
+            NodeHelper.search(found, prefix.toCharArray(), depth, dfs, function);
         } finally {
             readLock.unlock();
         }
@@ -257,7 +256,7 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
             Lock readLock = getReadLock(text.charAt(i));
             readLock.lock();
             try {
-                found = NodeHelper.match(root, text, i, length, false, longestMatch);
+                found = NodeHelper.match(root, text, i, length, longestMatch);
             } finally {
                 readLock.unlock();
             }
@@ -268,7 +267,7 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
                 }
             }
         }
-        return toResult(founds);
+        return founds;
     }
 
     @Override
@@ -293,7 +292,7 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
             }
             int size = founds.size();
             if (size >= maximum) {
-                return toResult(founds);
+                return founds;
             }
             if (!oneByOne && size > 0) {
                 if (founds.getLast() != last) {
@@ -302,21 +301,49 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
                 }
             }
         }
-        return toResult(founds);
+        return founds;
     }
 
+    /**
+     * 遍历值（深度优先遍历 + 字典序）
+     * <p>
+     * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会有一些性能开销）
+     * <p>
+     * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
+     * 具体一致性的描述同 {@link ConcurrentHashTrie#traversal} 方法
+     *
+     * @param depth 遍历深度
+     * @return 当前 trie 包含的全部键的集合
+     */
     @Override
     public List<String> keys(int depth) {
         List<String> keys = new LinkedList<>();
-        NodeHelper.KeysCollector<V> function = new NodeHelper.KeysCollector<>(Integer.MAX_VALUE, keys);
-        traversal(depth, function);
+        traversal(depth, new NodeHelper.KeysCollector<>(Integer.MAX_VALUE, keys));
         return keys;
     }
 
     /**
-     * 遍历值：默认采用 深度优先搜索 + 字典序
+     * 遍历值（深度优先遍历 + 字典序）
      * <p>
-     * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会带来一些性能消耗）
+     * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会有一些性能开销）
+     * <p>
+     * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
+     * 具体一致性的描述同 {@link ConcurrentHashTrie#traversal} 方法
+     *
+     * @param depth 遍历深度
+     * @return 当前 trie 包含的全部值的集合
+     */
+    @Override
+    public List<V> values(int depth) {
+        List<V> values = new LinkedList<>();
+        traversal(depth, new NodeHelper.ValuesCollector<>(Integer.MAX_VALUE, values));
+        return values;
+    }
+
+    /**
+     * 遍历键值对（深度优先遍历 + 字典序）
+     * <p>
+     * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会有一些性能开销）
      * <p>
      * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
      * <pre>
@@ -326,50 +353,32 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
      *     当遍历 f 及其后缀时，释放 b，锁定 f，新增或删除 g,h,i,j……等为前缀的 key 可以被感知。
      * </pre>
      *
-     * @return 当前 trie 包含的全部值的集合
-     */
-    @Override
-    public List<V> values(int depth) {
-        List<V> values = new LinkedList<>();
-        NodeHelper.ValuesCollector<V> function = new NodeHelper.ValuesCollector<>(Integer.MAX_VALUE, values);
-        traversal(depth, function);
-        return values;
-    }
-
-    /**
-     * 遍历键值对：默认采用 深度优先搜索 + 字典序
-     * <p>
-     * 考虑到大多数的应用场景，因此采用字典序排列（排序过程会带来一些性能消耗）
-     * <p>
-     * 此方法比较耗时，全局锁会带来较大的性能问题，因此仅执行局部锁定，所以此方法仅支持弱一致性。
-     * 具体一致性的描述同 {@link ConcurrentArrayTrie#values(int)} 方法
-     *
      * @param depth    遍历深度
-     * @param function 每个键值对会作为参数调用 function的 apply 方法，如果此 apply 方法返回 false，则停止遍历，否则继续遍历
+     * @param function 每个键值对会作为参数调用此 function 的 apply 方法，如果 apply 方法返回 false，则停止遍历，否则继续遍历
      */
     @Override
     public void traversal(int depth, BiFunction<String, V, Boolean> function) {
         if (depth < 1 || height < 1) {
             return;
         }
-        for (Node<V> next : root) {
-            Lock readLock = getReadLock(next.c);
+        for (Node<V> node : root) {
+            Lock readLock = getReadLock(node.c);
             readLock.lock();
             try {
                 depth = Math.min(depth, height);
                 if (depth < 1) {
                     return;
                 }
-                V val = next.getValue();
+                V val = node.getValue();
                 if (val != null) {
-                    if (!function.apply(String.valueOf(next.c), val)) {
+                    if (!function.apply(String.valueOf(node.c), val)) {
                         return;
                     }
                 }
                 if (depth < 2) {
                     continue;
                 }
-                NodeHelper.search(next, new char[]{next.c}, depth - 1, true, function);
+                NodeHelper.search(node, new char[]{node.c}, depth - 1, true, function);
             } finally {
                 readLock.unlock();
             }
@@ -378,16 +387,7 @@ public class ConcurrentArrayTrie<V> implements Trie<V> {
 
     @Override
     public boolean contains(String key) {
-        Found<V> found = prefixMatch(key, true, true);
-        if (found != null) {
-            return found.getValue() != null;
-        }
-        return false;
-    }
-
-    private List<Found<V>> toResult(List<Found<V>> founds) {
-        founds.forEach(Found::setNodeNull);
-        return founds;
+        return get(key) != null;
     }
 
     @Override

@@ -124,7 +124,7 @@ public class Pair<K, V> {
 ```java
 
 @Perfect
-public class ConcurrentArrayTrie<V> implements Trie<V> {
+public class ConcurrentHashTrie<V> implements Trie<V> {
     //......
 }
 ```
@@ -1217,7 +1217,7 @@ public class IntegerValueTest {
 
 ## 8. NLP 相关
 
-### 8.1. 字典树 ConcurrentArrayTrie
+### 8.1. 字典树 ConcurrentHashTrie
 
 2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在 Hash 冲突严重的情况下会有性能问题。
 
@@ -1232,7 +1232,7 @@ public class IntegerValueTest {
 
 #### 8.1.1. 什么是字典树？
 
-字典树 [Trie](https://en.wikipedia.org/wiki/Trie) 又称为前缀树，是一种搜索树。
+字典树 [Trie](https://en.wikipedia.org/wiki/Trie) 又称为前缀树（prefix tree），是一种搜索树。
 
 假如有五个单词：ab, abc, abcd, abd, bcd
 
@@ -1251,7 +1251,7 @@ public class IntegerValueTest {
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
-- 蓝色节点 root 为起始节点，不保存字符和值；
+- 蓝色节点 root 为起始节点，不保存有意义的字符和值；
 - 白色节点和红色节点仅保存一个字符；
 - 所有节点的子节点的字符不同。
 - 白色节点为无值节点：表示从根节点到该白色节点的路径不构成一个完整的 Key。
@@ -1273,18 +1273,17 @@ public class IntegerValueTest {
 
   Trie 不需要计算哈希值，HashMap 需要计算哈希值。
 
-  查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(
-  mlogk)。
-
-  > 注1：m为字符串的长度，k 为 key 的数量；
+  查找的时间复杂度：Trie 最好的情况下为O(m)，如果不考虑内存消耗，理论上最坏的情况也是O(m)，但真正实现通常都会考虑内存消耗，因此最坏的情况是O(mlog256)；HashMap 最好的情况下 为O(m)，最坏的情况是O(mlogk)。
+  
+> 注1：m为字符串的长度，k 为 key 的数量；
   >
   > 注2：HashMap 会调用 Key 的 equals 方法，如果 Key 为 String，其 equals 方法是逐字符对比是否相同。因此，最好的情况下，HashMap 的查找时间复杂度需要 O(m)。我们常说 HashMap 的时间复杂度为O(1)，其实是将 Key 比较看作是常数时间。
-
-  似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
-
-  另，Trie 的某些节点可能在主存，某些节点在 cpu 缓存，比对过程可能需要多次访问主存；而 HashMap 可能仅需要访问一次主存。
-
-  非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
+  
+似乎，Trie 会更快。😀 但，String 的 字符数组在内存中分配的是连续空间，逐个比对的速度非常快；而 Trie 的每个字符的节点是非连续分配的，逐个比对的速度会比较慢。
+  
+另，Trie 的某些节点可能在主存，某些节点在 cpu 缓存，比对过程可能需要多次访问主存；而 HashMap 可能仅需要访问一次主存。
+  
+非严格测试：我随机生成 2500万个长度为5~8的字符串，HashMap的查找时间约为7秒，Trie 约为15秒，差距并不大。
 
 字典树还有好多变种和进化，或优化空间性能，或优化时间性能，这里不深入讨论，如有兴趣可以阅读维基百科中关于[Trie](https://en.wikipedia.org/wiki/Trie) 的介绍。
 
@@ -1570,11 +1569,11 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 **代码示例**
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     @Test
     public void putAndGet() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentArrayTrie<>();
+        Trie<Integer> trie = new ConcurrentHashTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         String key = "abc";
@@ -1603,7 +1602,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void putAllAndRemove() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentArrayTrie<>();
+        Trie<Integer> trie = new ConcurrentHashTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         TreeMap<String, Integer> keyValues = new TreeMap<>();
@@ -1637,7 +1636,7 @@ public class ConcurrentArrayTrieTest {
     public void mapMethod() {
         // 思维导图中的方法示例
         // 测试 put, contains, size, isEmpty, clear 方法
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1697,11 +1696,11 @@ public class ConcurrentArrayTrieTest {
 期望输出：true
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     @Test
     public void prefixMatch() {
         // 网址安全校验
-        Trie<Boolean> trie = new ConcurrentArrayTrie<>();
+        Trie<Boolean> trie = new ConcurrentHashTrie<>();
         trie.put("baidu.com", true);
         trie.put("qq.com", true);
         trie.put("github.com", true);
@@ -1724,7 +1723,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void prefixMatchAndPrefixMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1799,11 +1798,11 @@ public class ConcurrentArrayTrieTest {
 现在，我们可以用字典树来实现这样的一个功能：
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     @Test
     public void keyWithPrefix() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -1823,7 +1822,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void testKeyWithPrefix() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1844,7 +1843,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void keysWithPrefix() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -1864,7 +1863,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void testKeysWithPrefix() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -1911,11 +1910,11 @@ public class ConcurrentArrayTrieTest {
 输入这样的一份评论：“为什么不准发布？敏感词真敏感！”
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     @Test
     public void match() {
         // 敏感词过滤
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("敏感", "敏感");
         trie.put("敏感词", "敏感词");
 
@@ -1932,7 +1931,7 @@ public class ConcurrentArrayTrieTest {
     @Test
     public void matchAndMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2017,17 +2016,17 @@ public class ConcurrentArrayTrieTest {
 
 如果有兴趣的话可以看看 com.igeeksky.xtool.core.nlp.NodeHelper 的 traversal方法，实现还是非常巧妙的。😀 得意ing！
 
-ConcurrentArrayTrie
+ConcurrentHashTrie
 其实花了很多时间去优化，考虑到了很多使用边界。这些其实在学习算法的过程中是很少关注的，再次说明生产级别的代码其实与学习时写的玩具代码是完全不一样的。生产级别需要花几倍甚至几十倍的时间去优化，还有写注释、写文档和测试代码，才能够保证程序的健壮性和可读性。
 
-后续有时间再来完整介绍 ConcurrentArrayTrie 的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 keys, values 和 traversal 方法。
+后续有时间再来完整介绍 ConcurrentHashTrie 的实现，然后再来聊聊这个比较巧妙的算法吧，这里先继续介绍如何使用 keys, values 和 traversal 方法。
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     // 遍历键
     @Test
     public void keys() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2046,7 +2045,7 @@ public class ConcurrentArrayTrieTest {
     // 遍历值
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2065,7 +2064,7 @@ public class ConcurrentArrayTrieTest {
     // 遍历键值对
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -2112,10 +2111,10 @@ public class ConcurrentArrayTrieTest {
 - **height**：字典树的高度（即字典树中最长的 key 的长度）
 
 ```java
-public class ConcurrentArrayTrieTest {
+public class ConcurrentHashTrieTest {
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
 
         trie.put("ab", "ab");
         int height = trie.height();

@@ -339,7 +339,7 @@ public interface Trie<V> {
      * 调用此方法需慎重，此方法会将所有遍历得到的 Key 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
      * 当无法判断是否会导致内存溢出时，请使用{@link Trie#traversal}方法
      * <p>
-     * {@link ConcurrentArrayTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
+     * {@link ConcurrentHashTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
      *
      * <pre>
      *     例：
@@ -360,7 +360,7 @@ public interface Trie<V> {
      * 调用此方法需慎重，此方法会将所有遍历得到的 value 添加到返回的 List中；如果树中存在的键值对数量很多，可能会导致内存溢出，因此一定要限制深度。
      * 当无法判断是否会导致内存溢出时，请使用{@link Trie#traversal}方法
      * <p>
-     * {@link ConcurrentArrayTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
+     * {@link ConcurrentHashTrie#values} 默认采用深度优先遍历和字典序，具体结果执行如下：
      *
      * <pre>
      *     例：
@@ -377,7 +377,7 @@ public interface Trie<V> {
     /**
      * 遍历键值对
      * <p>
-     * {@link ConcurrentArrayTrie#traversal(int, BiFunction)} 采用深度优先遍历和字典序
+     * {@link ConcurrentHashTrie#traversal(int, BiFunction)} 采用深度优先遍历和字典序
      * <p>
      * 考虑到树中包含的键值对可能数量庞大，因此采用用户提供的函数来处理每一个遍历结果，用户可以自定义函数实现序列化等操作。
      * <p>

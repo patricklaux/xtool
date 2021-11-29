@@ -58,19 +58,43 @@ class NodeHelper {
     }
 
     /**
+     * 精确匹配
+     *
+     * @param root 根节点
+     * @param word 待匹配的字符串
+     * @param <V>  值类型
+     * @return 匹配得到的节点
+     */
+    public static <V> BaseNode<V> exactlyMatch(BaseNode<V> root, String word) {
+        BaseNode<V> p = root;
+        int len = word.length();
+        int last = len - 1;
+        for (int i = 0; i < len; i++) {
+            char c = word.charAt(i);
+            BaseNode<V> ch = p.findChild(c);
+            if (ch == null) {
+                return null;
+            }
+            if (i == last) {
+                return ch;
+            }
+            p = ch;
+        }
+        return null;
+    }
+
+    /**
      * 匹配键（仅返回一个值）
      *
      * @param root         根节点
      * @param word         待匹配的字符串
      * @param start        char 数组的起始匹配位置
      * @param end          char 数组的结束匹配位置
-     * @param exactlyMatch 是否精确匹配
      * @param longestMatch 是否最长匹配
      * @param <V>          值类型
      * @return 匹配得到的节点
      */
-    public static <V> Found<V> match(BaseNode<V> root, String word, int start, int end,
-                                     boolean exactlyMatch, boolean longestMatch) {
+    public static <V> Found<V> match(BaseNode<V> root, String word, int start, int end, boolean longestMatch) {
         BaseNode<V> p = root;
         int last = end - 1;
 
@@ -81,20 +105,13 @@ class NodeHelper {
             if (ch == null) {
                 return f;
             }
-            if (exactlyMatch) {
-                if (i == last) {
-                    String key = (start == 0) ? word : String.valueOf(word.toCharArray(), start, end - start);
-                    return new Found<>(start, i, key, ch);
-                }
-            } else {
-                if (ch.value != null) {
-                    // 如果当前节点的值不为空，待返回值置为当前节点的值
-                    String key = (start == 0 && i == last) ? word : String.valueOf(word.toCharArray(), start, i + 1 - start);
-                    f = new Found<>(start, i, key, ch);
-                    // 如为最短匹配，返回当前值；否则继续对剩余字符进行匹配，直至所有字符匹配完毕
-                    if (!longestMatch) {
-                        return f;
-                    }
+            if (ch.value != null) {
+                // 如果当前节点的值不为空，待返回值置为当前节点的值
+                String key = (start == 0 && i == last) ? word : word.substring(start, i + 1);
+                f = new Found<>(start, i, key, ch.value);
+                // 如为最短匹配，返回当前值；否则继续对剩余字符进行匹配，直至所有字符匹配完毕
+                if (!longestMatch) {
+                    return f;
                 }
             }
             p = ch;
@@ -122,8 +139,8 @@ class NodeHelper {
                 return;
             }
             if (ch.value != null) {
-                String key = (start == 0 && i == last) ? word : String.valueOf(word.toCharArray(), start, i + 1 - start);
-                founds.add(new Found<>(start, i, key, ch));
+                String key = (start == 0 && i == last) ? word : word.substring(start, i + 1);
+                founds.add(new Found<>(start, i, key, ch.value));
                 // 如果已经达到最大返回数量，返回当前列表；否则继续对剩余字符进行匹配，直至所有字符匹配完毕
                 if (founds.size() >= maximum) {
                     return;
@@ -280,6 +297,7 @@ class NodeHelper {
             if (ch.size() == 0) {
                 return null;
             }
+            // 记录无效分支的可能起点
             if (ch.size() == 1 && ch.value == null) {
                 if (dp == null) {
                     dp = p;

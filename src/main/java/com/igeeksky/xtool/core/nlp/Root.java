@@ -19,7 +19,6 @@ package com.igeeksky.xtool.core.nlp;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author Patrick.Lau

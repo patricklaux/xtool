@@ -17,11 +17,13 @@
 
 package com.igeeksky.xtool.core.nlp;
 
+import java.util.Map;
+
 /**
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-10
  */
-abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
+abstract class BaseNode<V> implements Iterable<Node<V>>, Map.Entry<Character, V> {
 
     public final char c;
     protected V value;
@@ -35,14 +37,23 @@ abstract class BaseNode<V> implements Iterable<Node<V>>, Entry<V> {
         this.value = value;
     }
 
-    @Override
     public char getC() {
+        return c;
+    }
+
+    @Override
+    public Character getKey() {
         return c;
     }
 
     @Override
     public V getValue() {
         return value;
+    }
+
+    @Override
+    public V setValue(V value) {
+        return this.value = value;
     }
 
     /**

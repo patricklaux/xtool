@@ -28,11 +28,11 @@ import java.util.*;
  * @since 0.0.4 2021-11-15
  */
 @Ignore
-public class ConcurrentArrayTriePerformanceTest {
+public class ConcurrentHashTriePerformanceTest {
 
     @Test
     public void get() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
         String method = "ConcurrentArrayTrie-get\t";
 
@@ -105,7 +105,7 @@ public class ConcurrentArrayTriePerformanceTest {
 
     @Test
     public void prefixMatchAll() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         long t1 = System.currentTimeMillis();
         String method = "ConcurrentArrayTrie-prefixMatchAll\t";
 
@@ -166,7 +166,7 @@ public class ConcurrentArrayTriePerformanceTest {
 
     @Test
     public void match() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         String method = "ConcurrentArrayTrie-match\t";
         long t1 = System.currentTimeMillis();
 
@@ -222,7 +222,7 @@ public class ConcurrentArrayTriePerformanceTest {
         String method = "ConcurrentArrayTrie-matchAll\t";
         long t1 = System.currentTimeMillis();
 
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         Random random = new Random();
         int size = 5000000;
         TreeMap<String, String> pairs = new TreeMap<>();

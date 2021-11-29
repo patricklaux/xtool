@@ -26,8 +26,6 @@ package com.igeeksky.xtool.core.nlp;
  */
 public class Found<V> {
 
-    private final String key;
-
     /**
      * key 在文本段中的起始位置
      */
@@ -38,22 +36,18 @@ public class Found<V> {
      */
     private final int end;
 
-    /**
-     * 节点
-     */
-    private BaseNode<V> node;
+    private final String key;
 
     /**
      * key 对应的 value
      */
     private final V value;
 
-    public Found(int start, int end, String key, BaseNode<V> node) {
+    public Found(int start, int end, String key, V value) {
         this.start = start;
         this.end = end;
         this.key = key;
-        this.node = node;
-        this.value = node != null ? node.getValue() : null;
+        this.value = value;
     }
 
     /**
@@ -72,20 +66,6 @@ public class Found<V> {
 
     public String getKey() {
         return key;
-    }
-
-    /**
-     * @return 节点
-     */
-    BaseNode<V> getNode() {
-        return node;
-    }
-
-    /**
-     * 将节点置为空
-     */
-    protected void setNodeNull() {
-        this.node = null;
     }
 
     /**
@@ -115,9 +95,6 @@ public class Found<V> {
         if (getKey() != null ? !getKey().equals(found.getKey()) : found.getKey() != null) {
             return false;
         }
-        if (getNode() != null ? !getNode().equals(found.getNode()) : found.getNode() != null) {
-            return false;
-        }
         return getValue() != null ? getValue().equals(found.getValue()) : found.getValue() == null;
     }
 
@@ -126,7 +103,6 @@ public class Found<V> {
         int result = getKey() != null ? getKey().hashCode() : 0;
         result = 31 * result + getStart();
         result = 31 * result + getEnd();
-        result = 31 * result + (getNode() != null ? getNode().hashCode() : 0);
         result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
         return result;
     }

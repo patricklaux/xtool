@@ -83,7 +83,7 @@ abstract class Node<V> extends BaseNode<V> {
 
     @Override
     public Node<V> findChild(char c) {
-        if (null == table) {
+        if (table == null || table.length == 0) {
             return null;
         }
         Node<V> head = table[c & (table.length - 1)];

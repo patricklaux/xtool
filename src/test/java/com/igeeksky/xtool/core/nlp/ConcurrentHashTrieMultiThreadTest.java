@@ -27,7 +27,7 @@ import org.junit.Assert;
  */
 public class ConcurrentHashTrieMultiThreadTest {
 
-    private static final Trie<String> TRIE = new ConcurrentArrayTrie<>();
+    private static final Trie<String> TRIE = new ConcurrentHashTrie<>();
     private static final String[] ARRAY = new String[]{"aaaa", "bbbbb", "ccccc"};
     private static volatile boolean empty = true;
     private static final int MAX_LOOP = 1000000;

@@ -29,12 +29,12 @@ import java.util.function.BiFunction;
  * @author Patrick.Lau
  * @since 1.0.4 2021-11-23
  */
-public class ConcurrentArrayTrie2Test {
+public class ConcurrentHashTrie2Test {
 
     @Test
     public void putAndGet() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentArrayTrie<>();
+        Trie<Integer> trie = new ConcurrentHashTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         String key = "abc";
@@ -63,7 +63,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void putAllAndRemove() {
         // 与HashMap 比较方法结果
-        Trie<Integer> trie = new ConcurrentArrayTrie<>();
+        Trie<Integer> trie = new ConcurrentHashTrie<>();
         Map<String, Integer> map = new HashMap<>(8);
 
         TreeMap<String, Integer> keyValues = new TreeMap<>();
@@ -97,7 +97,7 @@ public class ConcurrentArrayTrie2Test {
     public void mapMethod() {
         // 思维导图中的方法示例
         // 测试 put, contains, size, isEmpty, clear 方法
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -130,7 +130,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void prefixMatch() {
         // 网址安全校验
-        Trie<Boolean> trie = new ConcurrentArrayTrie<>();
+        Trie<Boolean> trie = new ConcurrentHashTrie<>();
         trie.put("baidu.com", true);
         trie.put("qq.com", true);
         trie.put("github.com", true);
@@ -153,7 +153,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void prefixMatchAndPrefixMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -192,7 +192,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void keyWithPrefix() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -212,7 +212,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void testKeyWithPrefix() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -233,7 +233,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void keysWithPrefix() {
         // 搜索引擎输入框提示列表
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("罗纳尔多C罗", "罗纳尔多C罗");
         trie.put("罗纳尔多进球集锦高清", "罗纳尔多进球集锦高清");
         trie.put("罗纳尔多图片", "罗纳尔多图片");
@@ -253,7 +253,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void testKeysWithPrefix() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -271,7 +271,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void match() {
         // 敏感词过滤
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("敏感", "敏感");
         trie.put("敏感词", "敏感词");
 
@@ -288,7 +288,7 @@ public class ConcurrentArrayTrie2Test {
     @Test
     public void matchAndMatchAll() {
         // 思维导图中的示例
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -342,7 +342,7 @@ public class ConcurrentArrayTrie2Test {
 
     @Test
     public void height() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
 
         trie.put("ab", "ab");
         int height = trie.height();
@@ -372,7 +372,7 @@ public class ConcurrentArrayTrie2Test {
     // 遍历键
     @Test
     public void keys() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -391,7 +391,7 @@ public class ConcurrentArrayTrie2Test {
     // 遍历值
     @Test
     public void values() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
@@ -410,7 +410,7 @@ public class ConcurrentArrayTrie2Test {
     // 遍历键值对
     @Test
     public void traversal() {
-        Trie<String> trie = new ConcurrentArrayTrie<>();
+        Trie<String> trie = new ConcurrentHashTrie<>();
         trie.put("ab", "ab");
         trie.put("abc", "abc");
         trie.put("abcd", "abcd");
