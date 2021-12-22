@@ -224,15 +224,17 @@ class AvlNode<V> extends TreeNode<V> {
     }
 
     public static <V> AvlNode<V> insert(AvlNode<V> root, AvlNode<V> node) {
-        int maxDepth = root.height + 1;
-        AvlNode<V>[] path = new AvlNode[maxDepth];
         AvlNode<V> p = root;
-        int depth = 0;
+        int depth = 0, maxDepth = root.height + 1;
+        AvlNode<V>[] path = new AvlNode[maxDepth];
         while (depth < maxDepth) {
             path[depth] = p;
             if (p.c > node.c) {
                 if (p.left == null) {
                     p.left = node;
+                    if (p.right != null) {
+                        return node;
+                    }
                     break;
                 } else {
                     p = p.left;
@@ -241,6 +243,9 @@ class AvlNode<V> extends TreeNode<V> {
             } else if (p.c < node.c) {
                 if (p.right == null) {
                     p.right = node;
+                    if (p.left != null) {
+                        return node;
+                    }
                     break;
                 } else {
                     p = p.right;
@@ -251,7 +256,7 @@ class AvlNode<V> extends TreeNode<V> {
                 return p;
             }
         }
-        retracing(path, depth);
+        backtrack(path, depth);
         return node;
     }
 
@@ -260,138 +265,116 @@ class AvlNode<V> extends TreeNode<V> {
         if (node == null) {
             return this;
         }
-        AvlNode<V> root = this;
-        AvlNode<V> delete = (AvlNode<V>) node;
-        if (root.c == delete.c) {
-            root = swap(root);
-        } else {
-            root = delete(root, delete);
-        }
-        if (root != null) {
-            if (root.height < TrieConstants.FROM_TREE_NODE_THRESHOLD) {
-                return ((NodeConvertor<? extends Node<V>, AvlNode<V>>) convertor).fromTreeNode(root);
-            }
+        AvlNode<V> del = (AvlNode<V>) node;
+        AvlNode<V> root = delete(this, del);
+        if (root != null && root.height < TrieConstants.FROM_TREE_NODE_THRESHOLD) {
+            return ((NodeConvertor<? extends Node<V>, AvlNode<V>>) convertor).fromTreeNode(root);
         }
         return root;
     }
 
-    private static <V> AvlNode<V> delete(AvlNode<V> root, AvlNode<V> delete) {
-        // 计算深度，生成 root --- delete 的路径
-        int maxDepth = root.height - delete.height;
-        // 建立 根节点 至 删除节点之间的 回溯路径；因为父节点缺失，所以需要额外的数组来保存回溯路径
-        AvlNode<V>[] path = new AvlNode[maxDepth];
-        AvlNode<V> p = root;
+    private static <V> AvlNode<V> delete(AvlNode<V> root, AvlNode<V> del) {
         int depth = 0;
-        for (; depth < maxDepth; depth++) {
-            path[depth] = p;
-            if (p.c > delete.c) {
-                if (p.left == null) {
-                    return root;
+        AvlNode<V> p = root;
+        // 建立根节点至删除节点之间的回溯路径
+        AvlNode<V>[] path = new AvlNode[root.height - del.height];
+        while (p != null) {
+            if (p.c == del.c) {
+                if (root == p) {
+                    return swap(root);
                 }
-                if (p.left.c == delete.c) {
-                    break;
+                AvlNode<V> pp = path[--depth];
+                if (pp.right == p) {
+                    pp.right = swap(p);
+                } else {
+                    pp.left = swap(p);
                 }
-                p = p.left;
-            } else {
-                if (p.right == null) {
-                    return root;
-                }
-                if (p.right.c == delete.c) {
-                    break;
-                }
-                p = p.right;
+                backtrack(path, depth);
+                return balance(root);
             }
+            path[depth] = p;
+            p = (p.c > del.c) ? p.left : p.right;
+            depth++;
         }
-
-        // p 为删除节点的父节点
-        p = path[depth];
-        if (p.left != null && p.left.c == delete.c) {
-            p.left = swap(delete);
-        } else {
-            p.right = swap(delete);
-        }
-
-        retracing(path, depth);
-        return balance(root);
+        return root;
     }
 
     /**
      * 待删除节点与其前驱节点或后继节点交换位置
      *
-     * @param delete 待删除节点
-     * @param <V>    值类型
+     * @param del 待删除节点
+     * @param <V> 值类型
      * @return 与删除节点同位置的节点
      */
-    private static <V> AvlNode<V> swap(AvlNode<V> delete) {
-        AvlNode<V> pl = delete.left, pr = delete.right;
-        if (height(pl) >= height(pr)) {
-            if (pl != null) {
+    private static <V> AvlNode<V> swap(AvlNode<V> del) {
+        AvlNode<V> dl = del.left, dr = del.right;
+        if (height(dl) >= height(dr)) {
+            if (dl != null) {
                 // 查找左子树最大节点并交换删除节点
-                return swapPredecessor(delete, pl);
+                return swapPredecessor(del, dl);
             }
             //没有子节点
             return null;
         }
         // 查找右子树最小节点并交换删除节点
-        return swapSuccessor(delete, pr);
+        return swapSuccessor(del, dr);
     }
 
     /**
      * 使用左子树的最大节点（排序后的前驱节点） 替换 删除节点
      *
-     * @param delete 待删除节点
-     * @param pred   前驱节点（左孩子）
-     * @param <V>    值类型
+     * @param del  待删除节点
+     * @param swap 前驱节点（左孩子）
+     * @param <V>  值类型
      * @return 与删除节点同位置的节点（可能为左子树的最大节点）
      */
-    private static <V> AvlNode<V> swapPredecessor(AvlNode<V> delete, AvlNode<V> pred) {
-        AvlNode<V>[] path = new AvlNode[delete.height];
+    private static <V> AvlNode<V> swapPredecessor(AvlNode<V> del, AvlNode<V> swap) {
+        AvlNode<V>[] path = new AvlNode[del.height];
         int depth = 0;
-        while (pred.right != null) {
+        while (swap.right != null) {
             depth++;
-            path[depth] = pred;
-            pred = pred.right;
+            path[depth] = swap;
+            swap = swap.right;
         }
 
         if (depth > 0) {
             AvlNode<V> parent = path[depth];
-            parent.right = pred.left;
-            pred.left = delete.left;
+            parent.right = swap.left;
+            swap.left = del.left;
         }
-        pred.right = delete.right;
+        swap.right = del.right;
 
-        path[0] = pred;
-        retracing(path, depth);
-        return balance(pred);
+        path[0] = swap;
+        backtrack(path, depth);
+        return balance(swap);
     }
 
     /**
      * 使用右子树的最小节点（排序后的后驱节点） 替换 删除节点
      *
-     * @param delete 待删除节点
-     * @param succ   右孩子
-     * @param <V>    值类型
+     * @param del  待删除节点
+     * @param swap 右孩子
+     * @param <V>  值类型
      * @return 与删除节点同位置的节点（可能为右子树的最小节点）
      */
-    private static <V> AvlNode<V> swapSuccessor(AvlNode<V> delete, AvlNode<V> succ) {
-        AvlNode<V>[] path = new AvlNode[delete.height];
+    private static <V> AvlNode<V> swapSuccessor(AvlNode<V> del, AvlNode<V> swap) {
+        AvlNode<V>[] path = new AvlNode[del.height];
         int depth = 0;
-        while (succ.left != null) {
+        while (swap.left != null) {
             depth++;
-            path[depth] = succ;
-            succ = succ.left;
+            path[depth] = swap;
+            swap = swap.left;
         }
 
         if (depth > 0) {
             AvlNode<V> parent = path[depth];
-            parent.left = succ.right;
-            succ.right = delete.right;
+            parent.left = swap.right;
+            swap.right = del.right;
         }
-        succ.left = delete.left;
-
-        path[0] = succ;
-        retracing(path, depth);
-        return balance(succ);
+        swap.left = del.left;
+        path[0] = swap;
+        backtrack(path, depth);
+        return balance(swap);
     }
 
     /**
@@ -401,7 +384,7 @@ class AvlNode<V> extends TreeNode<V> {
      * @param depth 回溯深度
      * @param <V>   值类型
      */
-    private static <V> void retracing(AvlNode<V>[] path, int depth) {
+    private static <V> void backtrack(AvlNode<V>[] path, int depth) {
         for (int j = depth; j > 0; j--) {
             AvlNode<V> p = path[j];
             int height = p.height;
@@ -412,8 +395,8 @@ class AvlNode<V> extends TreeNode<V> {
                 pp.right = balance(p);
             }
             updateHeight(p);
-            // 高度不变，无需继续回溯
             if (p.height == height) {
+                // 高度不变，无需继续回溯
                 break;
             }
         }
