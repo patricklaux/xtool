@@ -20,10 +20,8 @@ package com.igeeksky.xtool.core.io;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @author Patrick.Lau
@@ -40,13 +38,13 @@ public class IOUtilsTest {
 
     @Test
     public void testClose() {
-        IOUtils.close(null);
+        IOUtils.close((Closeable) null);
     }
 
     @Test
     public void testClose2() {
         try {
-            IOUtils.close(new InputStream() {
+            InputStream errStream = new InputStream() {
                 @Override
                 public int read() {
                     return 0;
@@ -54,12 +52,33 @@ public class IOUtilsTest {
 
                 @Override
                 public void close() throws IOException {
-                    throw new IOException();
+                    throw new IOException("test-close-IOException");
                 }
-            });
+            };
+            IOUtils.close(null, errStream);
         } catch (Exception e) {
             Assert.assertTrue(e instanceof com.igeeksky.xtool.core.io.IOException);
         }
+    }
+
+    @Test
+    public void testCloseQuietly() {
+        IOUtils.closeQuietly(null, new ByteArrayInputStream(new byte[0]));
+    }
+
+    @Test
+    public void testCloseQuietly2() {
+        IOUtils.closeQuietly(new InputStream() {
+            @Override
+            public int read() {
+                return 0;
+            }
+
+            @Override
+            public void close() throws IOException {
+                throw new IOException();
+            }
+        });
     }
 
     @Test

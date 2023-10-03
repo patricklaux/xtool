@@ -40,14 +40,39 @@ public class IOUtils {
      * <p>
      * 如果出现 {@link java.io.IOException}，转换为{@link IOException} 再抛出
      *
-     * @param closeable {@link Closeable}
+     * @param closeables {@link Closeable}
      */
-    public static void close(Closeable closeable) {
-        if (null != closeable) {
-            try {
-                closeable.close();
-            } catch (java.io.IOException e) {
-                throw new IOException(e);
+    public static void close(Closeable... closeables) {
+        if (closeables == null) {
+            return;
+        }
+        for (Closeable closeable : closeables) {
+            if (closeable != null) {
+                try {
+                    closeable.close();
+                } catch (java.io.IOException e) {
+                    throw new IOException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 关闭流（忽略异常）
+     *
+     * @param closeables {@link AutoCloseable}
+     * @since 1.0.7
+     */
+    public static void closeQuietly(AutoCloseable... closeables) {
+        if (closeables == null) {
+            return;
+        }
+        for (AutoCloseable closeable : closeables) {
+            if (closeable != null) {
+                try {
+                    closeable.close();
+                } catch (Exception ignored) {
+                }
             }
         }
     }
