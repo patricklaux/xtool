@@ -20,10 +20,7 @@ package com.igeeksky.xtool.core.collection;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Patrick.Lau
@@ -77,11 +74,31 @@ public class CollectionUtilsTest {
         return null;
     }
 
-    private static List<String> emptyList() {
-        return Collections.emptyList();
-    }
-
     private static List<String> singletonList() {
         return Collections.singletonList("a");
+    }
+
+    @Test
+    public void newHashSet() {
+        HashSet<String> set = CollectionUtils.newHashSet();
+        Assert.assertEquals(0, set.size());
+    }
+
+    @Test
+    public void testNewHashSet() {
+        HashSet<String> set = CollectionUtils.newHashSet(8);
+        Assert.assertEquals(0, set.size());
+    }
+
+    @Test
+    public void newLinkedHashSet() {
+        LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet();
+        Assert.assertEquals(0, set.size());
+    }
+
+    @Test
+    public void testNewLinkedHashSet() {
+        LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet(8);
+        Assert.assertEquals(0, set.size());
     }
 }

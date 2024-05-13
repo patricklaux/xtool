@@ -18,6 +18,8 @@
 package com.igeeksky.xtool.core.collection;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 
 /**
@@ -68,5 +70,21 @@ public class CollectionUtils {
             first.addAll(collections[i]);
         }
         return first;
+    }
+
+    public static <E> HashSet<E> newHashSet() {
+        return new HashSet<>();
+    }
+
+    public static <E> HashSet<E> newHashSet(int capacity) {
+        return new HashSet<>(capacity / 3 * 4 + 1);
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet() {
+        return new LinkedHashSet<>();
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet(int capacity) {
+        return new LinkedHashSet<>(capacity / 3 * 4 + 1);
     }
 }
