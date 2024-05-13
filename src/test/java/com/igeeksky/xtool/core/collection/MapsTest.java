@@ -628,6 +628,24 @@ public class MapsTest {
         Assert.assertEquals("defaultValue must not be null", message);
     }
 
+    @Test
+    public void testNewHashMap() {
+        HashMap<String, String> map1 = Maps.newHashMap();
+        Assert.assertEquals(0, map1.size());
+
+        HashMap<String, String> map2 = Maps.newHashMap(2);
+        Assert.assertEquals(0, map2.size());
+    }
+
+    @Test
+    public void testNewLinkedHashMap() {
+        HashMap<String, String> map1 = Maps.newLinkedHashMap();
+        Assert.assertEquals(0, map1.size());
+
+        HashMap<String, String> map2 = Maps.newLinkedHashMap(2);
+        Assert.assertEquals(0, map2.size());
+    }
+
     private static Map<String, String> nullMap() {
         return null;
     }
