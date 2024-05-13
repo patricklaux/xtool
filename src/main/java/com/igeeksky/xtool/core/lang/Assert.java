@@ -64,7 +64,7 @@ public class Assert {
      */
     public static void isTrue(boolean expression, Supplier<String> supplier) {
         if (!expression) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -109,7 +109,7 @@ public class Assert {
      */
     public static void isFalse(boolean expression, Supplier<String> supplier) {
         if (expression) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -157,7 +157,7 @@ public class Assert {
      */
     public static <T> void notEmpty(T[] array, Supplier<String> supplier) {
         if (ArrayUtils.isEmpty(array)) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -205,7 +205,7 @@ public class Assert {
      */
     public static void notEmpty(List<?> list, Supplier<String> supplier) {
         if (CollectionUtils.isEmpty(list)) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -252,7 +252,7 @@ public class Assert {
      */
     public static void notEmpty(Map<?, ?> map, Supplier<String> supplier) {
         if (Maps.isEmpty(map)) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -297,7 +297,7 @@ public class Assert {
      */
     public static void hasText(String text, Supplier<String> supplier) {
         if (!StringUtils.hasText(text)) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -342,7 +342,7 @@ public class Assert {
      */
     public static void hasLength(String text, Supplier<String> supplier) {
         if (!StringUtils.hasLength(text)) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -389,7 +389,7 @@ public class Assert {
      */
     public static void notNull(Object object, Supplier<String> supplier) {
         if (object == null) {
-            throw new IllegalArgumentException(safeGetMessage(supplier));
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
@@ -405,7 +405,7 @@ public class Assert {
         }
     }
 
-    private static String safeGetMessage(Supplier<String> supplier) {
+    private static <T> T safeGet(Supplier<T> supplier) {
         return (supplier != null ? supplier.get() : null);
     }
 }
