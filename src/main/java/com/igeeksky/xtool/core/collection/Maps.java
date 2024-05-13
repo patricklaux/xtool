@@ -21,9 +21,7 @@ import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.lang.BooleanUtils;
 import com.igeeksky.xtool.core.math.NumberUtils;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Map 工具类
@@ -328,5 +326,21 @@ public class Maps {
         Assert.notNull(defaultValue, "defaultValue must not be null");
         V value = getValue(map, key);
         return (value == null) ? defaultValue : value;
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap() {
+        return new HashMap<>();
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(int capacity) {
+        return new HashMap<>(capacity / 3 * 4 + 1);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
+        return new LinkedHashMap<>();
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(int capacity) {
+        return new LinkedHashMap<>(capacity / 3 * 4 + 1);
     }
 }
