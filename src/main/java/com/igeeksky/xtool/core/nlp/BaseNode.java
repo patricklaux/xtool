@@ -23,7 +23,7 @@ import java.util.Map;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-10
  */
-abstract class BaseNode<V> implements Iterable<Node<V>>, Map.Entry<Character, V> {
+public abstract class BaseNode<V> implements Iterable<Node<V>>, Map.Entry<Character, V> {
 
     public final char c;
     protected V value;

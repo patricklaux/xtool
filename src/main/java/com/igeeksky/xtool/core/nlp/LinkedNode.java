@@ -26,7 +26,7 @@ import java.util.Objects;
  * @since 0.0.4 2021-11-12
  */
 @SuppressWarnings("unchecked")
-class LinkedNode<V> extends Node<V> {
+public class LinkedNode<V> extends Node<V> {
 
     protected LinkedNode<V> next;
 
