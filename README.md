@@ -21,7 +21,7 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 
@@ -79,14 +79,15 @@ mvn clean install
 
 ## 4. 更新日志
 
-| 版本  | 说明                                      |
-| ----- |-----------------------------------------|
-| 1.0.7 | 1. 添加 IOUtils.closeQuietly方法            |
+| 版本  | 说明                                                 |
+| ----- | ---------------------------------------------------- |
+| 1.0.8 | 1. 添加 Maps.newHashMap方法                          |
+| 1.0.7 | 1. 添加 IOUtils.closeQuietly方法                     |
 | 1.0.6 | 1. Found 删除 node 字段，NodeHelper 增加精确匹配方法 |
-| 1.0.5 | 1. 调整部分方法返回值                            |
-| 1.0.4 | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码            |
-| 1.0.3 | 1. 调整DigestUtils默认小写                    |
-| 1.0.2 | 1. 补充完整注释                               |
-| 1.0.1 | 1. 增加测试用例 2. 删除 Lists类                  |
-| 1.0.0 | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树 |
+| 1.0.5 | 1. 调整部分方法返回值                                |
+| 1.0.4 | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码     |
+| 1.0.3 | 1. 调整DigestUtils默认小写                           |
+| 1.0.2 | 1. 补充完整注释                                      |
+| 1.0.1 | 1. 增加测试用例 2. 删除 Lists类                      |
+| 1.0.0 | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树  |
 
