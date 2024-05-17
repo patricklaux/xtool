@@ -28,7 +28,7 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 ### 2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.7'
+implementation 'com.igeeksky.xtool:xtool:1.0.9'
 ```
 
 ### 2.3.编译安装
@@ -81,6 +81,7 @@ mvn clean install
 
 | 版本  | 说明                                                 |
 | ----- | ---------------------------------------------------- |
+| 1.0.9 | 1. 添加 RandomUtils                                  |
 | 1.0.8 | 1. 添加 Maps.newHashMap方法                          |
 | 1.0.7 | 1. 添加 IOUtils.closeQuietly方法                     |
 | 1.0.6 | 1. Found 删除 node 字段，NodeHelper 增加精确匹配方法 |
