@@ -202,7 +202,7 @@ public class RandomUtils {
     /**
      * 随机生成 int 值
      *
-     * @return 随机 int 值： 0 <= result < Integer.MAX_VALUE
+     * @return 随机 int 值： 0 &lt;= result &lt; Integer.MAX_VALUE
      */
     public static int nextInt() {
         return ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
@@ -211,7 +211,7 @@ public class RandomUtils {
     /**
      * 随机生成 int 值
      *
-     * @return 随机 int 值： 0 <= result < endExclusive
+     * @return 随机 int 值： 0 &lt;= result &lt; endExclusive
      */
     public static int nextInt(int endExclusive) {
         return nextInt(0, endExclusive);
@@ -220,9 +220,9 @@ public class RandomUtils {
     /**
      * 随机生成 int 值
      *
-     * @param startInclusive startInclusive >= 0
-     * @param endExclusive   endExclusive > 0 && endExclusive > startInclusive
-     * @return 随机 int 值： startInclusive <= result < endExclusive
+     * @param startInclusive startInclusive &gt;= 0
+     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @return 随机 int 值： startInclusive &lt;= result &lt; endExclusive
      */
     public static int nextInt(int startInclusive, int endExclusive) {
         if (startInclusive < 0) {
@@ -237,7 +237,7 @@ public class RandomUtils {
     /**
      * 随机生成 long 值
      *
-     * @return 随机 long 值： 0 <= result < Long.MAX_VALUE
+     * @return 随机 long 值： 0 &lt;= result &lt; Long.MAX_VALUE
      */
     public static long nextLong() {
         return ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
@@ -246,8 +246,8 @@ public class RandomUtils {
     /**
      * 随机生成 long 值
      *
-     * @param endExclusive endExclusive > 0
-     * @return 随机 long 值： 0 <= result < endExclusive
+     * @param endExclusive endExclusive &gt; 0
+     * @return 随机 long 值： 0 &lt;= result &lt; endExclusive
      */
     public static long nextLong(long endExclusive) {
         return ThreadLocalRandom.current().nextLong(endExclusive);
@@ -256,9 +256,9 @@ public class RandomUtils {
     /**
      * 随机生成 long 值
      *
-     * @param startInclusive startInclusive >= 0
-     * @param endExclusive   endExclusive > 0 && endExclusive > startInclusive
-     * @return 随机 long 值： startInclusive <= result < endExclusive
+     * @param startInclusive startInclusive &gt;= 0
+     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @return 随机 long 值： startInclusive &lt;= result &lt; endExclusive
      */
     public static long nextLong(long startInclusive, long endExclusive) {
         if (startInclusive < 0) {
@@ -273,7 +273,7 @@ public class RandomUtils {
     /**
      * 随机生成 float 值
      *
-     * @return 随机 float 值： 0 <= result <= Float.MAX_VALUE
+     * @return 随机 float 值： 0 &lt;= result &lt;= Float.MAX_VALUE
      */
     public static float nextFloat() {
         return nextFloat(0, Float.MAX_VALUE);
@@ -282,8 +282,8 @@ public class RandomUtils {
     /**
      * 随机生成 float 值
      *
-     * @param endInclusive endInclusive >= 0
-     * @return 随机 float 值： 0 <= result <= endInclusive；
+     * @param endInclusive endInclusive &gt;= 0
+     * @return 随机 float 值： 0 &lt;= result &lt;= endInclusive；
      */
     public static float nextFloat(float endInclusive) {
         return nextFloat(0, endInclusive);
@@ -292,9 +292,9 @@ public class RandomUtils {
     /**
      * 随机生成 float 值
      *
-     * @param startInclusive startInclusive >= 0
-     * @param endInclusive   endInclusive > 0 && endInclusive >= startInclusive
-     * @return 随机 float 值： startInclusive <= result <= endInclusive
+     * @param startInclusive startInclusive &gt;= 0
+     * @param endInclusive   endInclusive &gt; 0 && endInclusive &gt;= startInclusive
+     * @return 随机 float 值： startInclusive &lt;= result &lt;= endInclusive
      */
     public static float nextFloat(float startInclusive, float endInclusive) {
         if (startInclusive < 0) {
@@ -312,7 +312,7 @@ public class RandomUtils {
     /**
      * 随机生成 double 值
      *
-     * @return 随机 double 值： 0 <= result <= Double.MAX_VALUE
+     * @return 随机 double 值： 0 &lt;= result &lt;= Double.MAX_VALUE
      */
     public static double nextDouble() {
         return nextDouble(0, Double.MAX_VALUE);
@@ -321,8 +321,8 @@ public class RandomUtils {
     /**
      * 随机生成 double 值
      *
-     * @param endExclusive endExclusive > 0
-     * @return 随机 double 值： 0 <= result <= endExclusive
+     * @param endExclusive endExclusive &gt; 0
+     * @return 随机 double 值： 0 &lt;= result &lt;= endExclusive
      */
     public static double nextDouble(double endExclusive) {
         return nextDouble(0, endExclusive);
@@ -331,9 +331,9 @@ public class RandomUtils {
     /**
      * 随机生成 double 值
      *
-     * @param startInclusive startInclusive >= 0
-     * @param endExclusive   endExclusive > 0 && endExclusive > startInclusive
-     * @return 随机 double 值： startInclusive <= result <= endExclusive
+     * @param startInclusive startInclusive &gt;= 0
+     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @return 随机 double 值： startInclusive &lt;= result &lt;= endExclusive
      */
     public static double nextDouble(double startInclusive, double endExclusive) {
         if (startInclusive < 0) {
