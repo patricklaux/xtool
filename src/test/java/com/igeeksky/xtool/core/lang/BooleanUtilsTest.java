@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.lang;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -30,27 +30,27 @@ public class BooleanUtilsTest {
     public void toBoolean() {
         // 情形一：布尔字符串转Boolean，toBoolean == false
         Boolean toBoolean = BooleanUtils.toBoolean("false");
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形二：空字符串转Boolean，toBoolean == null
         toBoolean = BooleanUtils.toBoolean("");
-        Assert.assertNull(toBoolean);
+        Assertions.assertNull(toBoolean);
 
         // 情形三：空白字符串转Boolean，toBoolean == null
         toBoolean = BooleanUtils.toBoolean("   ");
-        Assert.assertNull(toBoolean);
+        Assertions.assertNull(toBoolean);
 
         // 情形四：含空白的布尔字符串转Boolean，toBoolean == false
         toBoolean = BooleanUtils.toBoolean("  false  ");
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形五：空对象转Boolean，toBoolean == null
         toBoolean = BooleanUtils.toBoolean(nullObject());
-        Assert.assertNull(toBoolean);
+        Assertions.assertNull(toBoolean);
 
         // 情形六：Boolean转Boolean，toBoolean == false
         toBoolean = BooleanUtils.toBoolean(false);
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形七：非布尔字符串转Boolean，异常
         String message = null;
@@ -59,7 +59,7 @@ public class BooleanUtilsTest {
         } catch (IllegalArgumentException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"error\"", message);
+        Assertions.assertEquals("For input string: \"error\"", message);
     }
 
     private Object nullObject() {
@@ -70,30 +70,30 @@ public class BooleanUtilsTest {
     public void testToBoolean() {
         // 情形一：布尔字符串转Boolean，toBoolean == false
         boolean toBoolean = BooleanUtils.toBoolean("false", true);
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形二：空字符串转Boolean，toBoolean == defaultValue == true
         toBoolean = BooleanUtils.toBoolean("", true);
-        Assert.assertTrue(toBoolean);
+        Assertions.assertTrue(toBoolean);
 
         // 情形三：空白字符串转Boolean，toBoolean == defaultValue == true
         toBoolean = BooleanUtils.toBoolean("   ", true);
-        Assert.assertTrue(toBoolean);
+        Assertions.assertTrue(toBoolean);
 
         // 情形四：含空白的布尔字符串转Boolean，toBoolean == false
         toBoolean = BooleanUtils.toBoolean("  false  ", true);
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形五：空对象转Boolean，toBoolean == defaultValue == true
         toBoolean = BooleanUtils.toBoolean(null, true);
-        Assert.assertTrue(toBoolean);
+        Assertions.assertTrue(toBoolean);
 
         // 情形六：Boolean转Boolean，toBoolean == false
         toBoolean = BooleanUtils.toBoolean(false, true);
-        Assert.assertFalse(toBoolean);
+        Assertions.assertFalse(toBoolean);
 
         // 情形七：非布尔字符串转Boolean，toBoolean == defaultValue == true
         toBoolean = BooleanUtils.toBoolean("error", true);
-        Assert.assertTrue(toBoolean);
+        Assertions.assertTrue(toBoolean);
     }
 }

@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.io;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -31,7 +31,7 @@ public class IOExceptionTest {
         try {
             throw new IOException("aa");
         } catch (IOException e) {
-            Assert.assertEquals("aa", e.getMessage());
+            Assertions.assertEquals("aa", e.getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ public class IOExceptionTest {
         try {
             throw new IOException(new java.io.IOException("aa"));
         } catch (IOException e) {
-            Assert.assertEquals("java.io.IOException: aa", e.getMessage());
+            Assertions.assertEquals("java.io.IOException: aa", e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class IOExceptionTest {
         try {
             throw new IOException("io error", new java.io.IOException("aa"));
         } catch (IOException e) {
-            Assert.assertEquals("io error", e.getMessage());
+            Assertions.assertEquals("io error", e.getMessage());
         }
     }
 }

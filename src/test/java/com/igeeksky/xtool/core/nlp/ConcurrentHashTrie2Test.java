@@ -19,8 +19,8 @@ package com.igeeksky.xtool.core.nlp;
 
 import com.igeeksky.xtool.core.function.tuple.Tuple2;
 import com.igeeksky.xtool.core.function.tuple.Tuples;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -43,21 +43,21 @@ public class ConcurrentHashTrie2Test {
         // 首次 put，旧值都为 null
         Integer triePut = trie.put(key, value);
         Integer mapPut = map.put(key, value);
-        Assert.assertNull(triePut);
-        Assert.assertEquals(triePut, mapPut);
+        Assertions.assertNull(triePut);
+        Assertions.assertEquals(triePut, mapPut);
 
         // 再次 put，旧值都为 100
         triePut = trie.put(key, value);
         mapPut = map.put(key, value);
-        Assert.assertNotNull(triePut);
-        Assert.assertEquals(value, mapPut);
-        Assert.assertEquals(triePut, mapPut);
+        Assertions.assertNotNull(triePut);
+        Assertions.assertEquals(value, mapPut);
+        Assertions.assertEquals(triePut, mapPut);
 
         // get，返回值都为 100
         Integer trieGet = trie.put(key, value);
         Integer mapGet = map.put(key, value);
-        Assert.assertEquals(value, mapGet);
-        Assert.assertEquals(trieGet, mapGet);
+        Assertions.assertEquals(value, mapGet);
+        Assertions.assertEquals(trieGet, mapGet);
     }
 
     @Test
@@ -80,16 +80,16 @@ public class ConcurrentHashTrie2Test {
             String key = prefix + i;
             int trieGet = trie.get(key);
             int mapGet = map.get(key);
-            Assert.assertEquals(i, trieGet);
-            Assert.assertEquals(trieGet, mapGet);
+            Assertions.assertEquals(i, trieGet);
+            Assertions.assertEquals(trieGet, mapGet);
         }
 
         for (int i = 0; i < 8; i++) {
             String key = prefix + i;
             int trieGet = trie.remove(key);
             int mapGet = map.remove(key);
-            Assert.assertEquals(i, trieGet);
-            Assert.assertEquals(trieGet, mapGet);
+            Assertions.assertEquals(i, trieGet);
+            Assertions.assertEquals(trieGet, mapGet);
         }
     }
 
@@ -105,25 +105,25 @@ public class ConcurrentHashTrie2Test {
         trie.put("bcd", "bcd");
 
         boolean contains = trie.contains("abcd");
-        Assert.assertTrue(contains);
+        Assertions.assertTrue(contains);
         int size = trie.size();
-        Assert.assertEquals(5, size);
+        Assertions.assertEquals(5, size);
         boolean isEmpty = trie.isEmpty();
-        Assert.assertFalse(isEmpty);
+        Assertions.assertFalse(isEmpty);
 
         trie.remove("abcd");
         contains = trie.contains("abcd");
-        Assert.assertFalse(contains);
+        Assertions.assertFalse(contains);
         size = trie.size();
-        Assert.assertEquals(4, size);
+        Assertions.assertEquals(4, size);
         isEmpty = trie.isEmpty();
-        Assert.assertFalse(isEmpty);
+        Assertions.assertFalse(isEmpty);
 
         trie.clear();
         size = trie.size();
-        Assert.assertEquals(0, size);
+        Assertions.assertEquals(0, size);
         isEmpty = trie.isEmpty();
-        Assert.assertTrue(isEmpty);
+        Assertions.assertTrue(isEmpty);
     }
 
 
@@ -138,15 +138,15 @@ public class ConcurrentHashTrie2Test {
 
         // 安全
         Tuple2<String, Boolean> prefixMatch = trie.prefixMatch("github.com/patricklaux/xtool");
-        Assert.assertTrue(prefixMatch.getT2());
+        Assertions.assertTrue(prefixMatch.getT2());
 
         // 不安全
         prefixMatch = trie.prefixMatch("xxdfdfsdaxdsfdsff.com/error/wrong");
-        Assert.assertFalse(prefixMatch.getT2());
+        Assertions.assertFalse(prefixMatch.getT2());
 
         // 未知
         prefixMatch = trie.prefixMatch("unkndfsasfdownaaaaadfdsfds.com/unknown/unknown");
-        Assert.assertNull(prefixMatch);
+        Assertions.assertNull(prefixMatch);
     }
 
 
@@ -162,31 +162,31 @@ public class ConcurrentHashTrie2Test {
 
         // prefixMatch：仅返回最长的匹配结果
         Tuple2<String, String> prefixMatch = trie.prefixMatch("abcdef");
-        Assert.assertEquals("[abcd, abcd]", prefixMatch.toString());
+        Assertions.assertEquals("[abcd, abcd]", prefixMatch.toString());
 
         // prefixMatchAll：返回从短到长全部匹配到的结果
         List<Tuple2<String, String>> prefixMatchAll = trie.prefixMatchAll("abcdef");
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
 
 
         // prefixMatch 的参数测试
         // prefixMatch：最长匹配
         prefixMatch = trie.prefixMatch("abcdef", true);
-        Assert.assertEquals("[abcd, abcd]", prefixMatch.toString());
+        Assertions.assertEquals("[abcd, abcd]", prefixMatch.toString());
 
         // prefixMatch：最短匹配
         prefixMatch = trie.prefixMatch("abcdef", false);
-        Assert.assertEquals("[ab, ab]", prefixMatch.toString());
+        Assertions.assertEquals("[ab, ab]", prefixMatch.toString());
 
 
         // prefixMatchAll 的参数测试
         // prefixMatchAll：最大返回数量为 1
         prefixMatchAll = trie.prefixMatchAll("abcdef", 1);
-        Assert.assertEquals("[[ab, ab]]", prefixMatchAll.toString());
+        Assertions.assertEquals("[[ab, ab]]", prefixMatchAll.toString());
 
         // prefixMatchAll：最大返回数量为10
         prefixMatchAll = trie.prefixMatchAll("abcdef", 10);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", prefixMatchAll.toString());
     }
 
     @Test
@@ -203,10 +203,10 @@ public class ConcurrentHashTrie2Test {
         trie.put("梅西c罗", "梅西c罗");
 
         Tuple2<String, String> ronaldo = trie.keyWithPrefix("罗纳尔多");
-        Assert.assertEquals("[罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]", ronaldo.toString());
+        Assertions.assertEquals("[罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]", ronaldo.toString());
 
         Tuple2<String, String> messi = trie.keyWithPrefix("梅西");
-        Assert.assertEquals("[梅西现在在哪个球队, 梅西现在在哪个球队]", messi.toString());
+        Assertions.assertEquals("[梅西现在在哪个球队, 梅西现在在哪个球队]", messi.toString());
     }
 
     @Test
@@ -220,13 +220,13 @@ public class ConcurrentHashTrie2Test {
         trie.put("bcd", "bcd");
 
         Tuple2<String, String> keyWithPrefix = trie.keyWithPrefix("ab");
-        Assert.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
+        Assertions.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
 
         keyWithPrefix = trie.keyWithPrefix("ab", true);
-        Assert.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
+        Assertions.assertEquals("[abcd, abcd]", keyWithPrefix.toString());
 
         keyWithPrefix = trie.keyWithPrefix("ab", false);
-        Assert.assertEquals("[ab, ab]", keyWithPrefix.toString());
+        Assertions.assertEquals("[ab, ab]", keyWithPrefix.toString());
     }
 
 
@@ -244,10 +244,10 @@ public class ConcurrentHashTrie2Test {
         trie.put("梅西c罗", "梅西c罗");
 
         List<Tuple2<String, String>> ronaldo = trie.keysWithPrefix("罗纳尔多");
-        Assert.assertEquals("[[罗纳尔多C罗, 罗纳尔多C罗], [罗纳尔多图片, 罗纳尔多图片], [罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]]", ronaldo.toString());
+        Assertions.assertEquals("[[罗纳尔多C罗, 罗纳尔多C罗], [罗纳尔多图片, 罗纳尔多图片], [罗纳尔多进球集锦高清, 罗纳尔多进球集锦高清]]", ronaldo.toString());
 
         List<Tuple2<String, String>> messi = trie.keysWithPrefix("梅西");
-        Assert.assertEquals("[[梅西c罗, 梅西c罗], [梅西图片, 梅西图片], [梅西法甲首球, 梅西法甲首球], [梅西现在在哪个球队, 梅西现在在哪个球队]]", messi.toString());
+        Assertions.assertEquals("[[梅西c罗, 梅西c罗], [梅西图片, 梅西图片], [梅西法甲首球, 梅西法甲首球], [梅西现在在哪个球队, 梅西现在在哪个球队]]", messi.toString());
     }
 
     @Test
@@ -261,10 +261,10 @@ public class ConcurrentHashTrie2Test {
         trie.put("bcd", "bcd");
 
         List<Tuple2<String, String>> keysWithPrefix = trie.keysWithPrefix("ab");
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", keysWithPrefix.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", keysWithPrefix.toString());
 
         keysWithPrefix = trie.keysWithPrefix("abc");
-        Assert.assertEquals("[[abc, abc], [abcd, abcd]]", keysWithPrefix.toString());
+        Assertions.assertEquals("[[abc, abc], [abcd, abcd]]", keysWithPrefix.toString());
     }
 
 
@@ -277,11 +277,11 @@ public class ConcurrentHashTrie2Test {
 
         String text = "为什么不准发布？敏感词真敏感！";
         List<Found<String>> match = trie.match(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
 
         // match 与 matchAll 对比，起始位置 8：contains只返回“敏感”；matchAll 返回了“敏感”和“敏感词”；
         List<Found<String>> matchAll = trie.matchAll(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
     }
 
 
@@ -298,46 +298,46 @@ public class ConcurrentHashTrie2Test {
 
         // match 与 matchAll 对比
         List<Found<String>> match = trie.match("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         List<Found<String>> matchAll = trie.matchAll("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
 
         // match 参数变化对比
         // 最长匹配；逐字符扫描
         match = trie.match("xxabcdexx", true, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", true, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
 
         // 最短匹配；逐字符扫描
         match = trie.match("xxabcdexx", false, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", false, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
 
 
         // matchAll 参数变化对比
         // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
 
         // 逐字符扫描；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", true, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", false, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
     }
 
     @Test
@@ -346,27 +346,27 @@ public class ConcurrentHashTrie2Test {
 
         trie.put("ab", "ab");
         int height = trie.height();
-        Assert.assertEquals(2, height);
+        Assertions.assertEquals(2, height);
 
         trie.put("abc", "abc");
         height = trie.height();
-        Assert.assertEquals(3, height);
+        Assertions.assertEquals(3, height);
 
         trie.put("abcd", "abcd");
         height = trie.height();
-        Assert.assertEquals(4, height);
+        Assertions.assertEquals(4, height);
 
         trie.put("abd", "abd");
         height = trie.height();
-        Assert.assertEquals(4, height);
+        Assertions.assertEquals(4, height);
 
         trie.put("bcd", "bcd");
         height = trie.height();
-        Assert.assertEquals(4, height);
+        Assertions.assertEquals(4, height);
 
         trie.remove("abcd");
         height = trie.height();
-        Assert.assertEquals(3, height);
+        Assertions.assertEquals(3, height);
     }
 
     // 遍历键
@@ -381,11 +381,11 @@ public class ConcurrentHashTrie2Test {
 
         // 搜索深度为4
         List<String> keys = trie.keys(4);
-        Assert.assertEquals("[ab, abc, abcd, abd, bcd]", keys.toString());
+        Assertions.assertEquals("[ab, abc, abcd, abd, bcd]", keys.toString());
 
         // 搜索深度为3
         keys = trie.keys(3);
-        Assert.assertEquals("[ab, abc, abd, bcd]", keys.toString());
+        Assertions.assertEquals("[ab, abc, abd, bcd]", keys.toString());
     }
 
     // 遍历值
@@ -400,11 +400,11 @@ public class ConcurrentHashTrie2Test {
 
         // 搜索深度为4
         List<String> values = trie.values(4);
-        Assert.assertEquals("[ab, abc, abcd, abd, bcd]", values.toString());
+        Assertions.assertEquals("[ab, abc, abcd, abd, bcd]", values.toString());
 
         // 搜索深度为3
         values = trie.values(3);
-        Assert.assertEquals("[ab, abc, abd, bcd]", values.toString());
+        Assertions.assertEquals("[ab, abc, abd, bcd]", values.toString());
     }
 
     // 遍历键值对
@@ -421,14 +421,14 @@ public class ConcurrentHashTrie2Test {
 
         // 搜索深度为4
         trie.traversal(4, new TraversalFunction(5, entries));
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd], [bcd, bcd]]", entries.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd], [bcd, bcd]]", entries.toString());
 
 
         entries = new ArrayList<>(5);
 
         // 搜索深度为3
         trie.traversal(3, new TraversalFunction(5, entries));
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [bcd, bcd]]", entries.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [bcd, bcd]]", entries.toString());
     }
 
     // 示例：键值对的遍历函数（！！生产环境不建议使用容器来保存键值对，应该每一个分别处理，否则可能内存溢出！！）

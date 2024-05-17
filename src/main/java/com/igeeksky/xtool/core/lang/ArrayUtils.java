@@ -167,4 +167,30 @@ public class ArrayUtils {
 
         return dest;
     }
+
+    /**
+     * 拼接多个字符数组
+     *
+     * @param arrays 多个字节数组
+     * @return 字节数组（包含所有数组的所有元素）
+     */
+    public static char[] concat(char[]... arrays) {
+        int total = 0;
+        for (char[] array : arrays) {
+            total += array.length;
+        }
+
+        char[] first = arrays[0];
+        char[] dest = Arrays.copyOf(first, total);
+
+        int offset = first.length;
+
+        for (int i = 1; i < arrays.length; i++) {
+            char[] src = arrays[i];
+            System.arraycopy(src, 0, dest, offset, src.length);
+            offset += src.length;
+        }
+
+        return dest;
+    }
 }

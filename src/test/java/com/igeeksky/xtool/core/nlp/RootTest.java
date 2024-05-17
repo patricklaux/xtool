@@ -17,11 +17,10 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author Patrick.Lau
@@ -36,10 +35,10 @@ public class RootTest {
 
         Iterator<Node<String>> iterator = root.iterator();
         boolean hasNext = iterator.hasNext();
-        Assert.assertTrue(hasNext);
+        Assertions.assertTrue(hasNext);
         iterator.next();
         hasNext = iterator.hasNext();
-        Assert.assertFalse(hasNext);
-        Assert.assertNull(iterator.next());
+        Assertions.assertFalse(hasNext);
+        Assertions.assertNull(iterator.next());
     }
 }

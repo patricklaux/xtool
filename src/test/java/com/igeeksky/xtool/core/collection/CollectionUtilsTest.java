@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.collection;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -32,42 +32,42 @@ public class CollectionUtilsTest {
     public void isEmpty() {
         // 场景一：集合不含元素，isEmpty == true
         boolean isEmpty = CollectionUtils.isEmpty(Collections.emptyList());
-        Assert.assertTrue(isEmpty);
+        Assertions.assertTrue(isEmpty);
 
         // 场景二：集合为空对象，isEmpty == true
         isEmpty = CollectionUtils.isEmpty(nullList());
-        Assert.assertTrue(isEmpty);
+        Assertions.assertTrue(isEmpty);
 
         // 场景三：集合含有至少一个元素，isEmpty == false
         isEmpty = CollectionUtils.isEmpty(Collections.singletonList("a"));
-        Assert.assertFalse(isEmpty);
+        Assertions.assertFalse(isEmpty);
     }
 
     @Test
     public void isNotEmpty() {
         // 场景一：集合不含元素，isNotEmpty == false
         boolean isNotEmpty = CollectionUtils.isNotEmpty(Collections.emptyList());
-        Assert.assertFalse(isNotEmpty);
+        Assertions.assertFalse(isNotEmpty);
 
         // 场景二：集合为空对象，isNotEmpty == false
         isNotEmpty = CollectionUtils.isNotEmpty(nullList());
-        Assert.assertFalse(isNotEmpty);
+        Assertions.assertFalse(isNotEmpty);
 
         // 场景三：集合含有至少一个元素，isNotEmpty == true
         isNotEmpty = CollectionUtils.isNotEmpty(Collections.singletonList("a"));
-        Assert.assertTrue(isNotEmpty);
+        Assertions.assertTrue(isNotEmpty);
     }
 
     @Test
     public void concat() {
         Collection<String> concat = CollectionUtils.concat(new ArrayList<>(2), singletonList(), singletonList());
-        Assert.assertEquals("[a, a]", concat.toString());
+        Assertions.assertEquals("[a, a]", concat.toString());
     }
 
     @Test
     public void testConcat() {
         Collection<String> concat = CollectionUtils.concat(new ArrayList<>(2));
-        Assert.assertEquals("[]", concat.toString());
+        Assertions.assertEquals("[]", concat.toString());
     }
 
     private static List<String> nullList() {
@@ -81,24 +81,24 @@ public class CollectionUtilsTest {
     @Test
     public void newHashSet() {
         HashSet<String> set = CollectionUtils.newHashSet();
-        Assert.assertEquals(0, set.size());
+        Assertions.assertEquals(0, set.size());
     }
 
     @Test
     public void testNewHashSet() {
         HashSet<String> set = CollectionUtils.newHashSet(8);
-        Assert.assertEquals(0, set.size());
+        Assertions.assertEquals(0, set.size());
     }
 
     @Test
     public void newLinkedHashSet() {
         LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet();
-        Assert.assertEquals(0, set.size());
+        Assertions.assertEquals(0, set.size());
     }
 
     @Test
     public void testNewLinkedHashSet() {
         LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet(8);
-        Assert.assertEquals(0, set.size());
+        Assertions.assertEquals(0, set.size());
     }
 }

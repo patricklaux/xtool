@@ -19,8 +19,8 @@ package com.igeeksky.xtool.core.nlp;
 
 import com.igeeksky.xtool.core.function.tuple.Tuple2;
 import com.igeeksky.xtool.core.function.tuple.Tuples;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -35,17 +35,17 @@ public class ConcurrentHashTrieTest {
     public void put() {
         Trie<String> trie = new ConcurrentHashTrie<>();
         String put = trie.put("a", "a");
-        Assert.assertNull(put);
+        Assertions.assertNull(put);
 
         put = trie.put("ab", "ab");
-        Assert.assertNull(put);
+        Assertions.assertNull(put);
         put = trie.put("ab", "ab");
-        Assert.assertEquals("ab", put);
+        Assertions.assertEquals("ab", put);
 
         put = trie.put("ach", "ach");
-        Assert.assertNull(put);
+        Assertions.assertNull(put);
         put = trie.put("ach", "ach");
-        Assert.assertEquals("ach", put);
+        Assertions.assertEquals("ach", put);
 
         trie.put("aci", "aci");
         trie.put("adjn", "adjn");
@@ -55,7 +55,7 @@ public class ConcurrentHashTrieTest {
         trie.put("ag", "ag");
 
         List<String> values = trie.values(4);
-        Assert.assertEquals("[a, ab, ach, aci, adjn, aek, afl, afmo, ag]", values.toString());
+        Assertions.assertEquals("[a, ab, ach, aci, adjn, aek, afl, afmo, ag]", values.toString());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class ConcurrentHashTrieTest {
         trie.putAll(treeMap);
 
         List<String> values = trie.values(6);
-        Assert.assertEquals("[aaaa, bbbbb, cccccc]", values.toString());
+        Assertions.assertEquals("[aaaa, bbbbb, cccccc]", values.toString());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class ConcurrentHashTrieTest {
             result.add(trie.get(key));
         }
 
-        Assert.assertEquals(strings, result);
+        Assertions.assertEquals(strings, result);
     }
 
     @Test
@@ -97,11 +97,11 @@ public class ConcurrentHashTrieTest {
         trie.put(key3, key3);
         Tuple2<String, String> longMatch = trie.prefixMatch("abcdefgh");
         System.out.println("longMatch:\t\t" + longMatch);
-        Assert.assertEquals(key3, longMatch.getT2());
+        Assertions.assertEquals(key3, longMatch.getT2());
 
         Tuple2<String, String> shortMatch = trie.prefixMatch("abcdefgh", false);
         System.out.println("shortMatch1:\t" + shortMatch);
-        Assert.assertEquals(key1, shortMatch.getT2());
+        Assertions.assertEquals(key1, shortMatch.getT2());
     }
 
     @Test
@@ -116,11 +116,11 @@ public class ConcurrentHashTrieTest {
 
         Tuple2<String, String> longMatch = trie.prefixMatch("abcdefg");
         System.out.println("longMatch:\t\t" + longMatch);
-        Assert.assertEquals(key2, longMatch.getT2());
+        Assertions.assertEquals(key2, longMatch.getT2());
 
         Tuple2<String, String> shortMatch = trie.prefixMatch("abcdefgh", false);
         System.out.println("shortMatch1:\t" + shortMatch);
-        Assert.assertEquals(key1, shortMatch.getT2());
+        Assertions.assertEquals(key1, shortMatch.getT2());
     }
 
     @Test
@@ -137,11 +137,11 @@ public class ConcurrentHashTrieTest {
 
         List<Tuple2<String, String>> matches = trie.prefixMatchAll("123456789");
         System.out.println(matches);
-        Assert.assertEquals(key3, matches.get(2).getT2());
+        Assertions.assertEquals(key3, matches.get(2).getT2());
 
         List<Tuple2<String, String>> limitMatches = trie.prefixMatchAll("123456789", 2);
         System.out.println(limitMatches);
-        Assert.assertEquals(2, limitMatches.size());
+        Assertions.assertEquals(2, limitMatches.size());
     }
 
     @Test
@@ -166,81 +166,81 @@ public class ConcurrentHashTrieTest {
         // 不存在该前缀
         List<Tuple2<String, String>> dfs = trie.keysWithPrefix("b", 1, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[]", dfs.toString());
+        Assertions.assertEquals("[]", dfs.toString());
 
         // 仅返回前缀的值
         dfs = trie.keysWithPrefix("a", 1, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[a, a]]", dfs.toString());
+        Assertions.assertEquals("[[a, a]]", dfs.toString());
 
         dfs = trie.keysWithPrefix("a", 10, 10, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs.toString());
 
         // DFS
         dfs = trie.keysWithPrefix("a");
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs.toString());
 
         // DFS
         List<Tuple2<String, String>> dfs0 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 0, false);
         System.out.println("DFS0:\t" + dfs0);
-        Assert.assertEquals("[[a, a]]", dfs0.toString());
+        Assertions.assertEquals("[[a, a]]", dfs0.toString());
 
         // BFS
         List<Tuple2<String, String>> bfs0 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 0, true);
         System.out.println("BFS0:\t" + bfs0);
-        Assert.assertEquals("[[a, a]]", bfs0.toString());
+        Assertions.assertEquals("[[a, a]]", bfs0.toString());
 
         // DFS
         List<Tuple2<String, String>> dfs1 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 1, false);
         System.out.println("DFS1:\t" + dfs1);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", dfs1.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", dfs1.toString());
 
         // BFS
         List<Tuple2<String, String>> bfs1 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 1, false);
         System.out.println("BFS1:\t" + bfs1);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", bfs1.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag]]", bfs1.toString());
 
         // DFS
         List<Tuple2<String, String>> dfs2 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 2, true);
         System.out.println("DFS2:\t" + dfs2);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [ag, ag]]", dfs2.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [ag, ag]]", dfs2.toString());
 
         // BFS
         List<Tuple2<String, String>> bfs2 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 2, false);
         System.out.println("BFS2:\t" + bfs2);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl]]", bfs2.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl]]", bfs2.toString());
 
         // DFS
         List<Tuple2<String, String>> dfs3 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 3, true);
         System.out.println("DFS3:\t" + dfs3);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs3.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]", dfs3.toString());
 
         // BFS
         List<Tuple2<String, String>> bfs3 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 3, false);
         System.out.println("BFS3:\t" + bfs3);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo]]", bfs3.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo]]", bfs3.toString());
 
         // DFS
         List<Tuple2<String, String>> dfs4 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 4, true);
         System.out.println("DFS4:\t" + dfs4);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs4.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", dfs4.toString());
 
         // BFS
         List<Tuple2<String, String>> bfs4 = trie.keysWithPrefix("a", Integer.MAX_VALUE, 4, false);
         System.out.println("BFS4:\t" + bfs4);
-        Assert.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", bfs4.toString());
+        Assertions.assertEquals("[[a, a], [ab, ab], [ac, ac], [ag, ag], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [adjn, adjn], [afmo, afmo], [agfff, agfff], [ahfff, ahfff], [aifff, aifff], [ajfff, ajfff]]", bfs4.toString());
 
         // DFS（测试不存在的前缀）
         List<Tuple2<String, String>> dfs5 = trie.keysWithPrefix("b", Integer.MAX_VALUE, 4, true);
         System.out.println("DFS5:\t" + dfs5);
-        Assert.assertEquals("[]", dfs5.toString());
+        Assertions.assertEquals("[]", dfs5.toString());
 
         // BFS（测试不存在的前缀）
         List<Tuple2<String, String>> bfs5 = trie.keysWithPrefix("b", Integer.MAX_VALUE, 4, false);
         System.out.println("BFS5:\t" + bfs5);
-        Assert.assertEquals("[]", bfs5.toString());
+        Assertions.assertEquals("[]", bfs5.toString());
     }
 
     @Test
@@ -255,59 +255,59 @@ public class ConcurrentHashTrieTest {
         // DFS
         List<Tuple2<String, String>> dfs = trie.keysWithPrefix("ab");
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
 
         dfs = trie.keysWithPrefix("ab", 0, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[]", dfs.toString());
+        Assertions.assertEquals("[]", dfs.toString());
 
         dfs = trie.keysWithPrefix("ab", 1000, -1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[]", dfs.toString());
+        Assertions.assertEquals("[]", dfs.toString());
 
         dfs = trie.keysWithPrefix("ab", 1000, 0, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab]]", dfs.toString());
 
         List<Tuple2<String, String>> bfs = trie.keysWithPrefix("ab", 1000, 0, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[[ab, ab]]", bfs.toString());
+        Assertions.assertEquals("[[ab, ab]]", bfs.toString());
 
 
         dfs = trie.keysWithPrefix("ab", 1000, 1, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", dfs.toString());
 
         bfs = trie.keysWithPrefix("ab", 1000, 1, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
 
 
         dfs = trie.keysWithPrefix("ab", 1000, 2, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
 
         bfs = trie.keysWithPrefix("ab", 1000, 2, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
 
         dfs = trie.keysWithPrefix("ab", 1000, 3, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd], [abd, abd]]", dfs.toString());
 
         bfs = trie.keysWithPrefix("ab", 1000, 3, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd], [abcd, abcd]]", bfs.toString());
 
         // 限定搜索数量
         dfs = trie.keysWithPrefix("ab", 3, 3, true);
         System.out.println("DFS:\t" + dfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", dfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abcd, abcd]]", dfs.toString());
 
         // 限定搜索数量
         bfs = trie.keysWithPrefix("ab", 3, 3, false);
         System.out.println("BFS:\t" + bfs);
-        Assert.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
+        Assertions.assertEquals("[[ab, ab], [abc, abc], [abd, abd]]", bfs.toString());
     }
 
     @Test
@@ -328,30 +328,30 @@ public class ConcurrentHashTrieTest {
         List<Found<String>> shortMatches = trie.match("abcdefg");
         System.out.println(shortMatches);
         String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
-        Assert.assertEquals(expected, shortMatches.toString());
+        Assertions.assertEquals(expected, shortMatches.toString());
 
 
         List<Found<String>> shortMatches2 = trie.match("abcdefg", true, true);
         System.out.println(shortMatches2);
-        Assert.assertEquals(expected, shortMatches2.toString());
+        Assertions.assertEquals(expected, shortMatches2.toString());
 
 
         List<Found<String>> longMatches = trie.match("abcdefg", true, true);
         System.out.println(longMatches);
         expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
-        Assert.assertEquals(expected, longMatches.toString());
+        Assertions.assertEquals(expected, longMatches.toString());
 
 
         List<Found<String>> skipMatches2 = trie.match("abcdefg", false, false);
         System.out.println(skipMatches2);
         expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}]";
-        Assert.assertEquals(expected, skipMatches2.toString());
+        Assertions.assertEquals(expected, skipMatches2.toString());
 
 
         List<Found<String>> skipMatches = trie.match("abcdefg", true, false);
         System.out.println(skipMatches);
         expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
-        Assert.assertEquals(expected, skipMatches.toString());
+        Assertions.assertEquals(expected, skipMatches.toString());
     }
 
     @Test
@@ -371,23 +371,23 @@ public class ConcurrentHashTrieTest {
         List<Found<String>> shortMatches = trie.matchAll("abcdefg");
         System.out.println(shortMatches);
         String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
-        Assert.assertEquals(expected, shortMatches.toString());
+        Assertions.assertEquals(expected, shortMatches.toString());
 
 
         List<Found<String>> shortMatches1 = trie.matchAll("abcdefg", true, Integer.MAX_VALUE);
         System.out.println(shortMatches1);
-        Assert.assertEquals(expected, shortMatches1.toString());
+        Assertions.assertEquals(expected, shortMatches1.toString());
 
 
         List<Found<String>> shortMatches2 = trie.matchAll("abcdefg", false, Integer.MAX_VALUE);
         System.out.println(shortMatches2);
         expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
-        Assert.assertEquals(expected, shortMatches2.toString());
+        Assertions.assertEquals(expected, shortMatches2.toString());
 
         List<Found<String>> shortMatches3 = trie.matchAll("abcdefg", false, 1);
         System.out.println(shortMatches3);
         expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}]";
-        Assert.assertEquals(expected, shortMatches3.toString());
+        Assertions.assertEquals(expected, shortMatches3.toString());
     }
 
     @Test
@@ -403,7 +403,7 @@ public class ConcurrentHashTrieTest {
         trie.put("afmo", "afmo");
         trie.put("ag", "ag");
         List<String> values = trie.values(5);
-        Assert.assertEquals("[a, ab, ach, aci, adjn, aek, afl, afmo, ag]", values.toString());
+        Assertions.assertEquals("[a, ab, ach, aci, adjn, aek, afl, afmo, ag]", values.toString());
     }
 
     @Test
@@ -426,7 +426,7 @@ public class ConcurrentHashTrieTest {
         });
         System.out.println(list1);
         String expected = "[[a, a]]";
-        Assert.assertEquals(expected, list1.toString());
+        Assertions.assertEquals(expected, list1.toString());
 
 
         List<Tuple2<String, String>> list2 = new LinkedList<>();
@@ -437,7 +437,7 @@ public class ConcurrentHashTrieTest {
         System.out.println(list2);
         expected = "[[a, a], [ab, ab], [ag, ag]]";
 
-        Assert.assertEquals(expected, list2.toString());
+        Assertions.assertEquals(expected, list2.toString());
 
 
         List<Tuple2<String, String>> list3 = new LinkedList<>();
@@ -447,7 +447,7 @@ public class ConcurrentHashTrieTest {
         });
         System.out.println(list3);
         expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [aek, aek], [afl, afl], [ag, ag]]";
-        Assert.assertEquals(expected, list3.toString());
+        Assertions.assertEquals(expected, list3.toString());
 
 
         List<Tuple2<String, String>> list4 = new LinkedList<>();
@@ -457,7 +457,7 @@ public class ConcurrentHashTrieTest {
         });
         System.out.println(list4);
         expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]";
-        Assert.assertEquals(expected, list4.toString());
+        Assertions.assertEquals(expected, list4.toString());
 
 
         List<Tuple2<String, String>> list5 = new LinkedList<>();
@@ -467,7 +467,7 @@ public class ConcurrentHashTrieTest {
         });
         System.out.println(list5);
         expected = "[[a, a], [ab, ab], [ach, ach], [aci, aci], [adjn, adjn], [aek, aek], [afl, afl], [afmo, afmo], [ag, ag]]";
-        Assert.assertEquals(expected, list5.toString());
+        Assertions.assertEquals(expected, list5.toString());
     }
 
     @Test
@@ -484,27 +484,27 @@ public class ConcurrentHashTrieTest {
 
         Tuple2<String, String> longMatch1 = trie.prefixMatch("abcdefghi");
         System.out.println("longMatch1:\t\t" + longMatch1);
-        Assert.assertEquals(key4, longMatch1.getT2());
+        Assertions.assertEquals(key4, longMatch1.getT2());
 
         String remove = trie.remove(key4);
         System.out.println("remove:\t\t\t" + remove);
-        Assert.assertEquals(key4, remove);
+        Assertions.assertEquals(key4, remove);
 
         Tuple2<String, String> longMatch2 = trie.prefixMatch("abcdefghi");
         System.out.println("longMatch2:\t\t" + longMatch2);
-        Assert.assertEquals(key3, longMatch2.getT2());
+        Assertions.assertEquals(key3, longMatch2.getT2());
 
         Tuple2<String, String> shortMatch1 = trie.prefixMatch("abcdefghi", false);
         System.out.println("shortMatch1:\t" + shortMatch1);
-        Assert.assertEquals(key1, shortMatch1.getT2());
+        Assertions.assertEquals(key1, shortMatch1.getT2());
 
         String remove2 = trie.remove(key1);
         System.out.println("remove2:\t\t" + remove2);
-        Assert.assertEquals(key1, remove2);
+        Assertions.assertEquals(key1, remove2);
 
         Tuple2<String, String> shortMatch2 = trie.prefixMatch("abcdefghi", false);
         System.out.println("shortMatch2:\t" + shortMatch2);
-        Assert.assertEquals(key2, shortMatch2.getT2());
+        Assertions.assertEquals(key2, shortMatch2.getT2());
     }
 
     /**
@@ -523,11 +523,11 @@ public class ConcurrentHashTrieTest {
         trie.put(key3, key3);
 
         String remove = trie.remove(key3);
-        Assert.assertEquals(key3, remove);
+        Assertions.assertEquals(key3, remove);
 
         List<String> values = trie.values(6);
         System.out.println(values);
-        Assert.assertEquals("[abc, abcdef]", values.toString());
+        Assertions.assertEquals("[abc, abcdef]", values.toString());
     }
 
     /**
@@ -546,11 +546,11 @@ public class ConcurrentHashTrieTest {
         trie.put(key3, key3);
 
         String remove = trie.remove(key3);
-        Assert.assertEquals(key3, remove);
+        Assertions.assertEquals(key3, remove);
 
         List<String> values = trie.values(4);
         System.out.println(values);
-        Assert.assertEquals("[abc, abcd]", values.toString());
+        Assertions.assertEquals("[abc, abcd]", values.toString());
     }
 
     /**
@@ -572,14 +572,14 @@ public class ConcurrentHashTrieTest {
 
         List<String> values = trie.values(10);
         System.out.println(values);
-        Assert.assertEquals("[abc, abcde, abce]", values.toString());
+        Assertions.assertEquals("[abc, abcde, abce]", values.toString());
 
         String remove3 = trie.remove(key3);
-        Assert.assertNull(key2, remove3);
+        Assertions.assertNull(remove3);
 
         values = trie.values(10);
         System.out.println(values);
-        Assert.assertEquals("[abc, abcde, abce]", values.toString());
+        Assertions.assertEquals("[abc, abcde, abce]", values.toString());
     }
 
     @Test
@@ -597,28 +597,28 @@ public class ConcurrentHashTrieTest {
         trie.put(key4, key4);
         trie.put(key5, key5);
 
-        Assert.assertEquals(5, trie.height());
+        Assertions.assertEquals(5, trie.height());
 
         trie.remove(key5);
-        Assert.assertEquals(5, trie.height());
+        Assertions.assertEquals(5, trie.height());
 
         trie.remove(key4);
-        Assert.assertEquals(4, trie.height());
+        Assertions.assertEquals(4, trie.height());
 
         trie.remove(key3);
-        Assert.assertEquals(3, trie.height());
+        Assertions.assertEquals(3, trie.height());
 
         trie.remove(key2);
-        Assert.assertEquals(3, trie.height());
+        Assertions.assertEquals(3, trie.height());
 
         trie.remove(key2);
-        Assert.assertEquals(3, trie.height());
+        Assertions.assertEquals(3, trie.height());
 
         trie.remove(key1);
-        Assert.assertEquals(0, trie.height());
+        Assertions.assertEquals(0, trie.height());
 
         trie.remove(key1);
-        Assert.assertEquals(0, trie.height());
+        Assertions.assertEquals(0, trie.height());
     }
 
     @Test
@@ -638,33 +638,33 @@ public class ConcurrentHashTrieTest {
         trie.put(key5, key5);
         trie.put(key6, key6);
 
-        Assert.assertEquals(5, trie.size());
+        Assertions.assertEquals(5, trie.size());
 
         trie.remove(key6);
-        Assert.assertEquals(4, trie.size());
+        Assertions.assertEquals(4, trie.size());
 
         trie.remove(key5);
-        Assert.assertEquals(4, trie.size());
+        Assertions.assertEquals(4, trie.size());
 
         trie.remove(key4);
-        Assert.assertEquals(3, trie.size());
+        Assertions.assertEquals(3, trie.size());
 
         trie.remove(key4);
-        Assert.assertEquals(3, trie.size());
+        Assertions.assertEquals(3, trie.size());
 
         trie.remove(key3);
-        Assert.assertEquals(2, trie.size());
+        Assertions.assertEquals(2, trie.size());
 
         trie.remove(key2);
-        Assert.assertEquals(1, trie.size());
+        Assertions.assertEquals(1, trie.size());
 
         trie.remove(key1);
-        Assert.assertEquals(0, trie.size());
+        Assertions.assertEquals(0, trie.size());
 
         trie.put(key6, key6);
 
         trie.remove(key1);
-        Assert.assertEquals(1, trie.size());
+        Assertions.assertEquals(1, trie.size());
     }
 
     @Test
@@ -684,28 +684,28 @@ public class ConcurrentHashTrieTest {
         trie.put(key5, key5);
         trie.put(key6, key6);
 
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key6);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key5);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key4);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key4);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key3);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key2);
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
 
         trie.remove(key1);
-        Assert.assertTrue(trie.isEmpty());
+        Assertions.assertTrue(trie.isEmpty());
     }
 
     @Test
@@ -725,11 +725,10 @@ public class ConcurrentHashTrieTest {
         trie.put(key5, key5);
         trie.put(key6, key6);
 
-        Assert.assertFalse(trie.isEmpty());
+        Assertions.assertFalse(trie.isEmpty());
         trie.clear();
-        Assert.assertTrue(trie.isEmpty());
+        Assertions.assertTrue(trie.isEmpty());
     }
-
 
 
 }

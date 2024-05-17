@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.function.tuple;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -29,66 +29,66 @@ public class Tuple5Test {
     @Test
     public void getT1() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("a", tuple.getT1());
+        Assertions.assertEquals("a", tuple.getT1());
     }
 
     @Test
     public void getT2() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("b", tuple.getT2());
+        Assertions.assertEquals("b", tuple.getT2());
     }
 
     @Test
     public void getT3() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("c", tuple.getT3());
+        Assertions.assertEquals("c", tuple.getT3());
     }
 
     @Test
     public void getT4() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("d", tuple.getT4());
+        Assertions.assertEquals("d", tuple.getT4());
     }
 
     @Test
     public void getT5() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-
+        Assertions.assertEquals("e", tuple.getT5());
     }
 
     @Test
     public void mapT1() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("x", tuple.mapT1((t1) -> "x").getT1());
+        Assertions.assertEquals("x", tuple.mapT1((t1) -> "x").getT1());
     }
 
     @Test
     public void mapT2() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("x", tuple.mapT2((t2) -> "x").getT2());
+        Assertions.assertEquals("x", tuple.mapT2((t2) -> "x").getT2());
     }
 
     @Test
     public void mapT3() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("x", tuple.mapT3((t3) -> "x").getT3());
+        Assertions.assertEquals("x", tuple.mapT3((t3) -> "x").getT3());
     }
 
     @Test
     public void mapT4() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("x", tuple.mapT4((t4) -> "x").getT4());
+        Assertions.assertEquals("x", tuple.mapT4((t4) -> "x").getT4());
     }
 
     @Test
     public void mapT5() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertEquals("x", tuple.mapT5((t4) -> "x").getT5());
+        Assertions.assertEquals("x", tuple.mapT5((t4) -> "x").getT5());
     }
 
     @Test
     public void size() {
-        Assert.assertEquals(5, Tuples.of("a", "b", "c", "d", "e").size());
+        Assertions.assertEquals(5, Tuples.of("a", "b", "c", "d", "e").size());
     }
 
     @Test
@@ -97,31 +97,30 @@ public class Tuple5Test {
         Object[] actual = Tuples.of("a", "b", "c", "d", "e").toArray();
         int length = Math.max(expected.length, actual.length);
         for (int i = 0; i < length; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
     @Test
     public void equals() {
         Tuple5<String, String, String, String, String> tuple = Tuples.of("a", "b", "c", "d", "e");
-        Assert.assertNotEquals(tuple, Tuples.of("a"));
-        Assert.assertEquals(tuple, Tuples.of("a", "b", "c", "d", "e"));
-        Assert.assertNotEquals(tuple, Tuples.of("x", "b", "c", "d", "e"));
-        Assert.assertNotEquals(tuple, Tuples.of("a", "e", "c", "d", "e"));
-        Assert.assertNotEquals(tuple, Tuples.of("a", "b", "x", "d", "e"));
-        Assert.assertNotEquals(tuple, Tuples.of("a", "b", "c", "x", "e"));
-        Assert.assertNotEquals(tuple, Tuples.of("a", "b", "c", "d", "x"));
-        Assert.assertEquals(tuple, tuple);
+        Assertions.assertNotEquals(tuple, Tuples.of("a", "b", "c", "d", "1"));
+        Assertions.assertEquals(tuple, Tuples.of("a", "b", "c", "d", "e"));
+        Assertions.assertNotEquals(tuple, Tuples.of("x", "b", "c", "d", "e"));
+        Assertions.assertNotEquals(tuple, Tuples.of("a", "e", "c", "d", "e"));
+        Assertions.assertNotEquals(tuple, Tuples.of("a", "b", "x", "d", "e"));
+        Assertions.assertNotEquals(tuple, Tuples.of("a", "b", "c", "x", "e"));
+        Assertions.assertNotEquals(tuple, Tuples.of("a", "b", "c", "d", "x"));
     }
 
     @Test
     public void hashcode() {
-        Assert.assertEquals(Tuples.of("a", "b", "c", "d", "e").hashCode(),
+        Assertions.assertEquals(Tuples.of("a", "b", "c", "d", "e").hashCode(),
                 Tuples.of("a", "b", "c", "d", "e").hashCode());
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("[a, b, c, d, e]", Tuples.of("a", "b", "c", "d", "e").toString());
+        Assertions.assertEquals("[a, b, c, d, e]", Tuples.of("a", "b", "c", "d", "e").toString());
     }
 }

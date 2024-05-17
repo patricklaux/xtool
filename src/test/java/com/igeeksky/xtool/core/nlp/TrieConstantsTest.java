@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -28,7 +28,7 @@ public class TrieConstantsTest {
 
     @Test
     public void test() {
-        Assert.assertEquals(65535, TrieConstants.TABLE_MAX_MASK);
+        Assertions.assertEquals(65535, TrieConstants.TABLE_MAX_MASK);
     }
 
 }

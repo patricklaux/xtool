@@ -22,6 +22,7 @@ import com.igeeksky.xtool.core.collection.Maps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -358,6 +359,30 @@ public class Assert {
         }
     }
 
+    public static void hasLength(char[] chars) {
+        if (chars == null || chars.length == 0) {
+            throw new IllegalArgumentException("array dimensions must be greater than 0.");
+        }
+    }
+
+    public static void hasLength(char[] chars, String message) {
+        if (chars == null || chars.length == 0) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void hasLength(char[] chars, Supplier<String> supplier) {
+        if (chars == null || chars.length == 0) {
+            throw new IllegalArgumentException(safeGet(supplier));
+        }
+    }
+
+    public static void hasLength(char[] chars, RuntimeException e) {
+        if (chars == null || chars.length == 0) {
+            throw e;
+        }
+    }
+
     /**
      * 对象是否不为空
      *
@@ -365,7 +390,7 @@ public class Assert {
      */
     public static void notNull(Object object) {
         if (object == null) {
-            throw new IllegalArgumentException("[Assertion failed] - this object must not be null");
+            throw new IllegalArgumentException("[Assertion failed] - this object must not be null.");
         }
     }
 
@@ -402,6 +427,24 @@ public class Assert {
     public static void notNull(Object object, RuntimeException e) {
         if (object == null) {
             throw e;
+        }
+    }
+
+    public static void equals(Object a, Object b) {
+        if (!Objects.equals(a, b)) {
+            throw new IllegalArgumentException("[Assertion failed] - these objects is not equals");
+        }
+    }
+
+    public static void equals(Object a, Object b, String message) {
+        if (!Objects.equals(a, b)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void equals(Object a, Object b, Supplier<String> supplier) {
+        if (!Objects.equals(a, b)) {
+            throw new IllegalArgumentException(safeGet(supplier));
         }
     }
 
