@@ -211,6 +211,7 @@ public class RandomUtils {
     /**
      * 随机生成 int 值
      *
+     * @param endExclusive endExclusive &gt; 0
      * @return 随机 int 值： 0 &lt;= result &lt; endExclusive
      */
     public static int nextInt(int endExclusive) {
@@ -221,7 +222,7 @@ public class RandomUtils {
      * 随机生成 int 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @param endExclusive   endExclusive &gt; 0 &amp;&amp; endExclusive &gt; startInclusive
      * @return 随机 int 值： startInclusive &lt;= result &lt; endExclusive
      */
     public static int nextInt(int startInclusive, int endExclusive) {
@@ -257,7 +258,7 @@ public class RandomUtils {
      * 随机生成 long 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @param endExclusive   endExclusive &gt; 0 &amp;&amp; endExclusive &gt; startInclusive
      * @return 随机 long 值： startInclusive &lt;= result &lt; endExclusive
      */
     public static long nextLong(long startInclusive, long endExclusive) {
@@ -293,7 +294,7 @@ public class RandomUtils {
      * 随机生成 float 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endInclusive   endInclusive &gt; 0 && endInclusive &gt;= startInclusive
+     * @param endInclusive   endInclusive &gt; 0 &amp;&amp; endInclusive &gt;= startInclusive
      * @return 随机 float 值： startInclusive &lt;= result &lt;= endInclusive
      */
     public static float nextFloat(float startInclusive, float endInclusive) {
@@ -332,7 +333,7 @@ public class RandomUtils {
      * 随机生成 double 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endExclusive   endExclusive &gt; 0 && endExclusive &gt; startInclusive
+     * @param endExclusive   endExclusive &gt; 0 &amp;&amp; endExclusive &gt; startInclusive
      * @return 随机 double 值： startInclusive &lt;= result &lt;= endExclusive
      */
     public static double nextDouble(double startInclusive, double endExclusive) {
