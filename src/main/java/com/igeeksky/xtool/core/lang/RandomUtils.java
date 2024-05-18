@@ -294,7 +294,7 @@ public class RandomUtils {
      * 随机生成 float 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endInclusive   endInclusive &gt; 0 &amp;&amp; endInclusive &gt;= startInclusive
+     * @param endInclusive   endInclusive &gt;= 0 &amp;&amp; endInclusive &gt;= startInclusive
      * @return 随机 float 值： startInclusive &lt;= result &lt;= endInclusive
      */
     public static float nextFloat(float startInclusive, float endInclusive) {
@@ -322,7 +322,7 @@ public class RandomUtils {
     /**
      * 随机生成 double 值
      *
-     * @param endInclusive endInclusive &gt; 0
+     * @param endInclusive endInclusive &gt;= 0
      * @return 随机 double 值： 0 &lt;= result &lt;= endInclusive
      */
     public static double nextDouble(double endInclusive) {
@@ -333,7 +333,7 @@ public class RandomUtils {
      * 随机生成 double 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endInclusive   endInclusive &gt; 0 &amp;&amp; endInclusive &gt; startInclusive
+     * @param endInclusive   endInclusive &gt;= 0 &amp;&amp; endInclusive &gt;= startInclusive
      * @return 随机 double 值： startInclusive &lt;= result &lt;= endInclusive
      */
     public static double nextDouble(double startInclusive, double endInclusive) {
