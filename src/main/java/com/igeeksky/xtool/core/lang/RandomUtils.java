@@ -322,31 +322,31 @@ public class RandomUtils {
     /**
      * 随机生成 double 值
      *
-     * @param endExclusive endExclusive &gt; 0
-     * @return 随机 double 值： 0 &lt;= result &lt;= endExclusive
+     * @param endInclusive endInclusive &gt; 0
+     * @return 随机 double 值： 0 &lt;= result &lt;= endInclusive
      */
-    public static double nextDouble(double endExclusive) {
-        return nextDouble(0, endExclusive);
+    public static double nextDouble(double endInclusive) {
+        return nextDouble(0, endInclusive);
     }
 
     /**
      * 随机生成 double 值
      *
      * @param startInclusive startInclusive &gt;= 0
-     * @param endExclusive   endExclusive &gt; 0 &amp;&amp; endExclusive &gt; startInclusive
-     * @return 随机 double 值： startInclusive &lt;= result &lt;= endExclusive
+     * @param endInclusive   endInclusive &gt; 0 &amp;&amp; endInclusive &gt; startInclusive
+     * @return 随机 double 值： startInclusive &lt;= result &lt;= endInclusive
      */
-    public static double nextDouble(double startInclusive, double endExclusive) {
+    public static double nextDouble(double startInclusive, double endInclusive) {
         if (startInclusive < 0) {
-            throw new IllegalArgumentException("StartInclusive and endExclusive must be non-negative.");
+            throw new IllegalArgumentException("StartInclusive and endInclusive must be non-negative.");
         }
-        if (startInclusive > endExclusive) {
-            throw new IllegalArgumentException("endExclusive must be greater than startInclusive.");
+        if (startInclusive > endInclusive) {
+            throw new IllegalArgumentException("endInclusive must be greater than startInclusive.");
         }
-        if (endExclusive == startInclusive) {
+        if (endInclusive == startInclusive) {
             return startInclusive;
         }
-        return startInclusive + ((endExclusive - startInclusive) * ThreadLocalRandom.current().nextDouble());
+        return startInclusive + ((endInclusive - startInclusive) * ThreadLocalRandom.current().nextDouble());
     }
 
     /**

@@ -245,10 +245,10 @@ public class RandomUtilsTest {
 
     @Test
     public void testNextFloat0() {
-        float endExclusive = 0;
+        float endInclusive = 0;
         for (int i = 0; i < 1000; i++) {
-            float v = RandomUtils.nextFloat(endExclusive);
-            Assertions.assertTrue(v <= endExclusive);
+            float v = RandomUtils.nextFloat(endInclusive);
+            Assertions.assertTrue(v <= endInclusive);
         }
     }
 
@@ -275,11 +275,11 @@ public class RandomUtilsTest {
 
     @Test
     public void nextDouble() {
-        double endExclusive = 0.0000000000000009D;
+        double endInclusive = 0.0000000000000009D;
         for (int i = 0; i < 1000; i++) {
-            double v = RandomUtils.nextDouble(endExclusive);
-            Assertions.assertTrue(v <= endExclusive);
-            if (v == endExclusive) {
+            double v = RandomUtils.nextDouble(endInclusive);
+            Assertions.assertTrue(v <= endInclusive);
+            if (v == endInclusive) {
                 System.out.println(v);
             }
         }
