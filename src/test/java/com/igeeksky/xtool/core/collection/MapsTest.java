@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.collection;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,23 +32,23 @@ public class MapsTest {
 
     @Test
     public void isEmpty() {
-        Assert.assertTrue(Maps.isEmpty(nullMap()));
-        Assert.assertTrue(Maps.isEmpty(emptyMap()));
-        Assert.assertFalse(Maps.isEmpty(singletonMap()));
+        Assertions.assertTrue(Maps.isEmpty(nullMap()));
+        Assertions.assertTrue(Maps.isEmpty(emptyMap()));
+        Assertions.assertFalse(Maps.isEmpty(singletonMap()));
     }
 
     @Test
     public void isNotEmpty() {
-        Assert.assertFalse(Maps.isNotEmpty(nullMap()));
-        Assert.assertFalse(Maps.isNotEmpty(emptyMap()));
-        Assert.assertTrue(Maps.isNotEmpty(singletonMap()));
+        Assertions.assertFalse(Maps.isNotEmpty(nullMap()));
+        Assertions.assertFalse(Maps.isNotEmpty(emptyMap()));
+        Assertions.assertTrue(Maps.isNotEmpty(singletonMap()));
     }
 
     @Test
     public void merge() {
         HashMap<String, String> target = new HashMap<>();
         Map<String, String> merge = Maps.merge(target, singletonMap());
-        Assert.assertEquals("{a=a}", merge.toString());
+        Assertions.assertEquals("{a=a}", merge.toString());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class MapsTest {
 
         Map<String, String> merge = Maps.merge(target, singletonMap());
 
-        Assert.assertEquals("{a=b}", merge.toString());
+        Assertions.assertEquals("{a=b}", merge.toString());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class MapsTest {
         target.put("b", "b");
 
         Map<String, String> merge = Maps.merge(target, singletonMap());
-        Assert.assertEquals("{a=a, b=b}", merge.toString());
+        Assertions.assertEquals("{a=a, b=b}", merge.toString());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class MapsTest {
         // 情况二：targetMap 含有 sourceMap 的键 "b"，即使 "b"对应的value为空，依然保留 targetMap 的空值，并不覆盖；
         // 情况三：targetMap 没有 sourceMap 的键 "c"，将 sourceMap 的 c=c 复制到 targetMap
         // 情况四：targetMap 没有 sourceMap 的键 "d"，将 sourceMap 的 d=null 复制到 targetMap
-        Assert.assertEquals("{a=a, b=null, c=c, d=null}", merge.toString());
+        Assertions.assertEquals("{a=a, b=null, c=c, d=null}", merge.toString());
     }
 
     @Test
@@ -101,15 +101,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，值转换为 Long 并返回
         Long value = Maps.getLong(map, "a");
         Long expected = 1000L;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getLong(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getLong(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -118,7 +118,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -132,19 +132,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，值转换为 Long 并返回
         long value = Maps.getLong(map, "a", defaultValue);
-        Assert.assertEquals(1000L, value);
+        Assertions.assertEquals(1000L, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getLong(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getLong(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getLong(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
     }
 
     @Test
@@ -157,15 +157,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Integer value = Maps.getInteger(map, "a");
         Integer expected = 1000;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getInteger(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getInteger(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -174,7 +174,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -188,19 +188,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         int value = Maps.getInteger(map, "a", defaultValue);
-        Assert.assertEquals(1000, value);
+        Assertions.assertEquals(1000, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getInteger(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getInteger(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getInteger(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
     }
 
     @Test
@@ -213,15 +213,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Short value = Maps.getShort(map, "a");
         Short expected = 1000;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getShort(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getShort(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -230,7 +230,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -244,19 +244,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         short value = Maps.getShort(map, "a", defaultValue);
-        Assert.assertEquals(1000, value);
+        Assertions.assertEquals(1000, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getShort(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getShort(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getShort(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
     }
 
     @Test
@@ -269,15 +269,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Byte value = Maps.getByte(map, "a");
         Byte expected = 100;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getByte(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getByte(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -286,7 +286,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -300,19 +300,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         byte value = Maps.getByte(map, "a", defaultValue);
-        Assert.assertEquals(100, value);
+        Assertions.assertEquals(100, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getByte(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getByte(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getByte(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
     }
 
     @Test
@@ -325,15 +325,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Double value = Maps.getDouble(map, "a");
         Double expected = 10000000000000.222D;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getDouble(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getDouble(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -342,7 +342,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -356,19 +356,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         double value = Maps.getDouble(map, "a", defaultValue);
-        Assert.assertEquals(10000000000000.222D, value, 0.001D);
+        Assertions.assertEquals(10000000000000.222D, value, 0.001D);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getDouble(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001D);
+        Assertions.assertEquals(defaultValue, value, 0.001D);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getDouble(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001D);
+        Assertions.assertEquals(defaultValue, value, 0.001D);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getDouble(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001D);
+        Assertions.assertEquals(defaultValue, value, 0.001D);
     }
 
     @Test
@@ -381,15 +381,15 @@ public class MapsTest {
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Float value = Maps.getFloat(map, "a");
         Float expected = 10000000000000.222F;
-        Assert.assertEquals(expected, value);
+        Assertions.assertEquals(expected, value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getFloat(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getFloat(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "error"，值不为空，但转换异常，抛出异常
         String message = null;
@@ -398,7 +398,7 @@ public class MapsTest {
         } catch (NumberFormatException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notNumber\"", message);
+        Assertions.assertEquals("For input string: \"notNumber\"", message);
     }
 
     @Test
@@ -412,19 +412,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         float value = Maps.getFloat(map, "a", defaultValue);
-        Assert.assertEquals(10000000000000.222F, value, 0.001F);
+        Assertions.assertEquals(10000000000000.222F, value, 0.001F);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getFloat(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001F);
+        Assertions.assertEquals(defaultValue, value, 0.001F);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getFloat(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001F);
+        Assertions.assertEquals(defaultValue, value, 0.001F);
 
         // 情形四：map中包含键 "notNumber"，值不为空，但转换异常，返回 defaultValue
         value = Maps.getFloat(map, "notNumber", defaultValue);
-        Assert.assertEquals(defaultValue, value, 0.001F);
+        Assertions.assertEquals(defaultValue, value, 0.001F);
     }
 
 
@@ -437,15 +437,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Boolean value = Maps.getBoolean(map, "a");
-        Assert.assertTrue(value);
+        Assertions.assertTrue(value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getBoolean(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getBoolean(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形四：map中包含含键 "notBoolean"，值不为空，但非布尔值，返回 false
         String message = null;
@@ -454,7 +454,7 @@ public class MapsTest {
         } catch (IllegalArgumentException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("For input string: \"notBoolean\"", message);
+        Assertions.assertEquals("For input string: \"notBoolean\"", message);
     }
 
     @Test
@@ -466,19 +466,19 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         boolean value = Maps.getBoolean(map, "a", false);
-        Assert.assertTrue(value);
+        Assertions.assertTrue(value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getBoolean(map, "b", false);
-        Assert.assertFalse(value);
+        Assertions.assertFalse(value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getBoolean(map, "c", false);
-        Assert.assertFalse(value);
+        Assertions.assertFalse(value);
 
         // 情形四：map中包含键 "notBoolean"，值不为空，但非布尔值，返回 defaultValue
         value = Maps.getBoolean(map, "notBoolean", true);
-        Assert.assertTrue(value);
+        Assertions.assertTrue(value);
     }
 
     @Test
@@ -489,15 +489,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         String value = Maps.getString(map, "a");
-        Assert.assertEquals("a", value);
+        Assertions.assertEquals("a", value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getString(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getString(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
     }
 
     @Test
@@ -510,15 +510,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         String value = Maps.getString(map, "a", defaultValue);
-        Assert.assertEquals("a", value);
+        Assertions.assertEquals("a", value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getString(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getString(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：defaultValue 为空，抛出异常
         String message = null;
@@ -527,7 +527,7 @@ public class MapsTest {
         } catch (IllegalArgumentException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("defaultValue must not be null", message);
+        Assertions.assertEquals("defaultValue must not be null", message);
     }
 
     @Test
@@ -538,15 +538,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         String value = Maps.getString(map, "a");
-        Assert.assertEquals("1000", value);
+        Assertions.assertEquals("1000", value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getString(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getString(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
     }
 
     @Test
@@ -559,15 +559,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         String value = Maps.getString(map, "a", defaultValue);
-        Assert.assertEquals("1000", value);
+        Assertions.assertEquals("1000", value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getString(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getString(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：defaultValue 为空，抛出异常
         String message = null;
@@ -576,7 +576,7 @@ public class MapsTest {
         } catch (IllegalArgumentException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("defaultValue must not be null", message);
+        Assertions.assertEquals("defaultValue must not be null", message);
     }
 
     @Test
@@ -587,15 +587,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Integer value = Maps.getValue(map, "a");
-        Assert.assertEquals(Integer.valueOf(1000), value);
+        Assertions.assertEquals(Integer.valueOf(1000), value);
 
         // 情形二：map中包含键"b"，但值为空，返回 null
         value = Maps.getValue(map, "b");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
 
         // 情形三：map中不含键"c"，返回 null
         value = Maps.getValue(map, "c");
-        Assert.assertNull(value);
+        Assertions.assertNull(value);
     }
 
     @Test
@@ -608,15 +608,15 @@ public class MapsTest {
 
         // 情形一：map中包含键"a"，值不为空，转换正常，转换值并返回
         Integer value = Maps.getValue(map, "a", defaultValue);
-        Assert.assertEquals(Integer.valueOf(1000), value);
+        Assertions.assertEquals(Integer.valueOf(1000), value);
 
         // 情形二：map中包含键"b"，但值为空，返回 defaultValue
         value = Maps.getValue(map, "b", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形三：map中不含键"c"，返回 defaultValue
         value = Maps.getValue(map, "c", defaultValue);
-        Assert.assertEquals(defaultValue, value);
+        Assertions.assertEquals(defaultValue, value);
 
         // 情形四：defaultValue 为空，抛出异常
         String message = null;
@@ -625,25 +625,25 @@ public class MapsTest {
         } catch (IllegalArgumentException e) {
             message = e.getMessage();
         }
-        Assert.assertEquals("defaultValue must not be null", message);
+        Assertions.assertEquals("defaultValue must not be null", message);
     }
 
     @Test
     public void testNewHashMap() {
         HashMap<String, String> map1 = Maps.newHashMap();
-        Assert.assertEquals(0, map1.size());
+        Assertions.assertEquals(0, map1.size());
 
         HashMap<String, String> map2 = Maps.newHashMap(2);
-        Assert.assertEquals(0, map2.size());
+        Assertions.assertEquals(0, map2.size());
     }
 
     @Test
     public void testNewLinkedHashMap() {
         HashMap<String, String> map1 = Maps.newLinkedHashMap();
-        Assert.assertEquals(0, map1.size());
+        Assertions.assertEquals(0, map1.size());
 
         HashMap<String, String> map2 = Maps.newLinkedHashMap(2);
-        Assert.assertEquals(0, map2.size());
+        Assertions.assertEquals(0, map2.size());
     }
 
     private static Map<String, String> nullMap() {

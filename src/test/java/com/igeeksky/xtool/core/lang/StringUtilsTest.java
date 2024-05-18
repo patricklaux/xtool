@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.lang;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -28,20 +28,20 @@ public class StringUtilsTest {
 
     @Test
     public void hasText() {
-        Assert.assertFalse(StringUtils.hasText(null));
-        Assert.assertFalse(StringUtils.hasText(""));
-        Assert.assertFalse(StringUtils.hasText(" "));
-        Assert.assertTrue(StringUtils.hasText("a"));
-        Assert.assertTrue(StringUtils.hasText(" a "));
+        Assertions.assertFalse(StringUtils.hasText(null));
+        Assertions.assertFalse(StringUtils.hasText(""));
+        Assertions.assertFalse(StringUtils.hasText(" "));
+        Assertions.assertTrue(StringUtils.hasText("a"));
+        Assertions.assertTrue(StringUtils.hasText(" a "));
     }
 
     @Test
     public void hasLength() {
-        Assert.assertFalse(StringUtils.hasLength(nullString()));
-        Assert.assertFalse(StringUtils.hasLength(""));
-        Assert.assertTrue(StringUtils.hasLength(" "));
-        Assert.assertTrue(StringUtils.hasLength("a"));
-        Assert.assertTrue(StringUtils.hasLength(" a "));
+        Assertions.assertFalse(StringUtils.hasLength(nullString()));
+        Assertions.assertFalse(StringUtils.hasLength(""));
+        Assertions.assertTrue(StringUtils.hasLength(" "));
+        Assertions.assertTrue(StringUtils.hasLength("a"));
+        Assertions.assertTrue(StringUtils.hasLength(" a "));
     }
 
     private String nullString() {
@@ -50,74 +50,74 @@ public class StringUtilsTest {
 
     @Test
     public void trim() {
-        Assert.assertNull(StringUtils.trim(nullString()));
-        Assert.assertEquals("", StringUtils.trim(""));
-        Assert.assertEquals("", StringUtils.trim(" "));
-        Assert.assertEquals("a", StringUtils.trim("a"));
-        Assert.assertEquals("a", StringUtils.trim("  a  "));
+        Assertions.assertNull(StringUtils.trim(nullString()));
+        Assertions.assertEquals("", StringUtils.trim(""));
+        Assertions.assertEquals("", StringUtils.trim(" "));
+        Assertions.assertEquals("a", StringUtils.trim("a"));
+        Assertions.assertEquals("a", StringUtils.trim("  a  "));
     }
 
     @Test
     public void trimToNull() {
-        Assert.assertNull(StringUtils.trimToNull(nullString()));
-        Assert.assertNull(StringUtils.trimToNull(""));
-        Assert.assertNull(StringUtils.trimToNull(" "));
-        Assert.assertEquals("a", StringUtils.trimToNull("a"));
-        Assert.assertEquals("a", StringUtils.trimToNull("  a  "));
+        Assertions.assertNull(StringUtils.trimToNull(nullString()));
+        Assertions.assertNull(StringUtils.trimToNull(""));
+        Assertions.assertNull(StringUtils.trimToNull(" "));
+        Assertions.assertEquals("a", StringUtils.trimToNull("a"));
+        Assertions.assertEquals("a", StringUtils.trimToNull("  a  "));
     }
 
     @Test
     public void toUpperCase() {
         // 情形一：字符串为空对象，upperCase == null
         String upperCase = StringUtils.toUpperCase(null);
-        Assert.assertNull(upperCase);
+        Assertions.assertNull(upperCase);
 
         // 情形二：字符串无字符，upperCase == null
         upperCase = StringUtils.toUpperCase("");
-        Assert.assertNull(upperCase);
+        Assertions.assertNull(upperCase);
 
         // 情形三：字符串只有空白字符，upperCase == null
         upperCase = StringUtils.toUpperCase("   ");
-        Assert.assertNull(upperCase);
+        Assertions.assertNull(upperCase);
 
         // 情形四：字符串有非空白字符，upperCase == "AAA"
         upperCase = StringUtils.toUpperCase("aaa");
-        Assert.assertEquals("AAA", upperCase);
+        Assertions.assertEquals("AAA", upperCase);
 
         // 情形五：字符串有非空白字符，upperCase == "AAA"
         upperCase = StringUtils.toUpperCase(" aaa ");
-        Assert.assertEquals("AAA", upperCase);
+        Assertions.assertEquals("AAA", upperCase);
     }
 
     @Test
     public void toLowerCase() {
         // 情形一：字符串为空对象，lowerCase == null
         String lowerCase = StringUtils.toLowerCase(null);
-        Assert.assertNull(lowerCase);
+        Assertions.assertNull(lowerCase);
 
         // 情形二：字符串无字符，lowerCase == null
         lowerCase = StringUtils.toLowerCase("");
-        Assert.assertNull(lowerCase);
+        Assertions.assertNull(lowerCase);
 
         // 情形三：字符串只有空白字符，lowerCase == null
         lowerCase = StringUtils.toLowerCase("   ");
-        Assert.assertNull(lowerCase);
+        Assertions.assertNull(lowerCase);
 
         // 情形四：字符串有非空白字符，lowerCase == "aaa"
         lowerCase = StringUtils.toLowerCase("AAA");
-        Assert.assertEquals("aaa", lowerCase);
+        Assertions.assertEquals("aaa", lowerCase);
 
         // 情形五：字符串有非空白字符，lowerCase == "aaa"
         lowerCase = StringUtils.toLowerCase(" AAA ");
-        Assert.assertEquals("aaa", lowerCase);
+        Assertions.assertEquals("aaa", lowerCase);
     }
 
     @Test
     public void unCapitalize() {
-        Assert.assertNull(StringUtils.unCapitalize(nullString()));
-        Assert.assertEquals("", StringUtils.unCapitalize(""));
-        Assert.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("Practice Is Perfect."));
-        Assert.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("practice Is Perfect."));
+        Assertions.assertNull(StringUtils.unCapitalize(nullString()));
+        Assertions.assertEquals("", StringUtils.unCapitalize(""));
+        Assertions.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("Practice Is Perfect."));
+        Assertions.assertEquals("practice Is Perfect.", StringUtils.unCapitalize("practice Is Perfect."));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class StringUtilsTest {
         char[] actual = StringUtils.unCapitalize("Practice Is Perfect.".toCharArray());
         int maxLen = expected.length;
         for (int i = 0; i < maxLen; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -136,17 +136,17 @@ public class StringUtilsTest {
         char[] actual = StringUtils.unCapitalize("practice Is Perfect.".toCharArray());
         int maxLen = expected.length;
         for (int i = 0; i < maxLen; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
     @Test
     public void testUnCapitalize2() {
         char[] unCapitalize = StringUtils.unCapitalize("".toCharArray());
-        Assert.assertEquals(0, unCapitalize.length);
+        Assertions.assertEquals(0, unCapitalize.length);
 
         unCapitalize = StringUtils.unCapitalize(nullArray());
-        Assert.assertNull(unCapitalize);
+        Assertions.assertNull(unCapitalize);
     }
 
     private char[] nullArray() {
@@ -158,27 +158,27 @@ public class StringUtilsTest {
         // 情形一：字符串为空对象，capitalize == null
         String original = null;
         String capitalize = StringUtils.capitalize(original);
-        Assert.assertNull(capitalize);
+        Assertions.assertNull(capitalize);
 
         // 情形二：字符串无字符，capitalize == ""
         capitalize = StringUtils.capitalize("");
-        Assert.assertEquals("", capitalize);
+        Assertions.assertEquals("", capitalize);
 
         // 情形三：字符串只有空白字符，capitalize == "   "
         capitalize = StringUtils.capitalize("   ");
-        Assert.assertEquals("   ", capitalize);
+        Assertions.assertEquals("   ", capitalize);
 
         // 情形四：字符串有非空白字符，首字符为字母且为小写，capitalize == "Aaa"
         capitalize = StringUtils.capitalize("aaa");
-        Assert.assertEquals("Aaa", capitalize);
+        Assertions.assertEquals("Aaa", capitalize);
 
         // 情形五：字符串有非空白字符，首字符为字母且为大写，capitalize == "Aaa"
         capitalize = StringUtils.capitalize("Aaa");
-        Assert.assertEquals("Aaa", capitalize);
+        Assertions.assertEquals("Aaa", capitalize);
 
         // 情形六：字符串有非空白字符，首字符为非字母，capitalize == " aaa "
         capitalize = StringUtils.capitalize(" aaa ");
-        Assert.assertEquals(" aaa ", capitalize);
+        Assertions.assertEquals(" aaa ", capitalize);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class StringUtilsTest {
         char[] actual = StringUtils.capitalize("practice Is Perfect.".toCharArray());
         int maxLen = expected.length;
         for (int i = 0; i < maxLen; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -197,16 +197,16 @@ public class StringUtilsTest {
         char[] actual = StringUtils.capitalize("Practice Is Perfect.".toCharArray());
         int maxLen = expected.length;
         for (int i = 0; i < maxLen; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
     @Test
     public void testCapitalize2() {
         char[] capitalize = StringUtils.capitalize("".toCharArray());
-        Assert.assertEquals(0, capitalize.length);
+        Assertions.assertEquals(0, capitalize.length);
 
         capitalize = StringUtils.capitalize(nullArray());
-        Assert.assertNull(capitalize);
+        Assertions.assertNull(capitalize);
     }
 }

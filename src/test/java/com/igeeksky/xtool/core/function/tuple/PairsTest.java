@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.function.tuple;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -29,14 +29,14 @@ public class PairsTest {
     @Test
     public void of() {
         Pair<String, String> pair = Pairs.of("key", "value");
-        Assert.assertEquals("key", pair.getKey());
-        Assert.assertEquals("value", pair.getValue());
+        Assertions.assertEquals("key", pair.getKey());
+        Assertions.assertEquals("value", pair.getValue());
     }
 
     @Test
     public void emptyPair() {
         Pair<String, String> pair = Pairs.emptyPair();
-        Assert.assertNull(pair.getKey());
-        Assert.assertNull(pair.getValue());
+        Assertions.assertNull(pair.getKey());
+        Assertions.assertNull(pair.getValue());
     }
 }

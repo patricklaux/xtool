@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class LinkedNodeTest {
         LinkedNode<String> next = new LinkedNode<>('b');
         node.setNext(next);
         Node<String> find = node.find('b');
-        Assert.assertSame(next, find);
+        Assertions.assertSame(next, find);
     }
 
     @Test
@@ -47,13 +47,13 @@ public class LinkedNodeTest {
         head.setNext(next);
 
         Node<String> find = head.find('a');
-        Assert.assertSame(head, find);
+        Assertions.assertSame(head, find);
 
         find = head.find('b');
-        Assert.assertSame(next, find);
+        Assertions.assertSame(next, find);
 
         find = head.find('c');
-        Assert.assertNull(find);
+        Assertions.assertNull(find);
     }
 
     @Test
@@ -62,16 +62,16 @@ public class LinkedNodeTest {
         for (char c = 'a'; c <= 'z'; c++) {
             parent.addChild(c, creator, convertor);
         }
-        Assert.assertEquals(26, parent.size);
-        Assert.assertEquals(16, parent.table.length);
+        Assertions.assertEquals(26, parent.size);
+        Assertions.assertEquals(16, parent.table.length);
 
         Node<String> head = parent.table['a' & (16 - 1)];
 
         List<Node<String>> all = head.findAll();
-        Assert.assertEquals(2, all.size());
+        Assertions.assertEquals(2, all.size());
 
-        Assert.assertEquals('a', all.get(0).c);
-        Assert.assertEquals('q', all.get(1).c);
+        Assertions.assertEquals('a', all.get(0).c);
+        Assertions.assertEquals('q', all.get(1).c);
     }
 
     @Test
@@ -82,20 +82,20 @@ public class LinkedNodeTest {
             Node<String> head = parent.table[0];
             head.insert(parent, 0, c, convertor);
         }
-        Assert.assertEquals(7, parent.size);
+        Assertions.assertEquals(7, parent.size);
 
         Node<String> head = parent.table[0];
         List<Node<String>> all = head.findAll();
-        Assert.assertEquals(7, all.size());
-        Assert.assertTrue(head instanceof LinkedNode);
+        Assertions.assertEquals(7, all.size());
+        Assertions.assertInstanceOf(LinkedNode.class, head);
 
         head.insert(parent, 0, 'h', convertor);
-        Assert.assertEquals(8, parent.size);
+        Assertions.assertEquals(8, parent.size);
 
         head = parent.table[0];
         all = head.findAll();
-        Assert.assertEquals(8, all.size());
-        Assert.assertTrue(head instanceof AvlNode);
+        Assertions.assertEquals(8, all.size());
+        Assertions.assertInstanceOf(AvlNode.class, head);
     }
 
     @Test
@@ -106,30 +106,30 @@ public class LinkedNodeTest {
             Node<String> head = parent.table[0];
             head.insert(parent, 0, c, convertor);
         }
-        Assert.assertEquals(7, parent.size);
+        Assertions.assertEquals(7, parent.size);
 
         Node<String> head = parent.table[0];
         List<Node<String>> all = head.findAll();
-        Assert.assertEquals(7, all.size());
-        Assert.assertTrue(head instanceof LinkedNode);
+        Assertions.assertEquals(7, all.size());
+        Assertions.assertInstanceOf(LinkedNode.class, head);
 
-        Assert.assertEquals('a', head.c);
+        Assertions.assertEquals('a', head.c);
 
         Node<String> delete = head.find('a');
         head = head.delete(delete, convertor);
 
-        Assert.assertEquals('b', head.c);
-        Assert.assertTrue(head instanceof LinkedNode);
+        Assertions.assertEquals('b', head.c);
+        Assertions.assertInstanceOf(LinkedNode.class, head);
 
         all = head.findAll();
-        Assert.assertEquals(6, all.size());
+        Assertions.assertEquals(6, all.size());
 
         head = head.delete(new LinkedNode<>('f'), convertor);
-        Assert.assertEquals('b', head.c);
-        Assert.assertTrue(head instanceof LinkedNode);
+        Assertions.assertEquals('b', head.c);
+        Assertions.assertInstanceOf(LinkedNode.class, head);
 
         all = head.findAll();
-        Assert.assertEquals(5, all.size());
+        Assertions.assertEquals(5, all.size());
     }
 
     @Test
@@ -176,20 +176,20 @@ public class LinkedNodeTest {
         }
 
         String expected = "{\"c\":\"A\", \"next\":{\"c\":\"C\", \"next\":{\"c\":\"E\", \"next\":{\"c\":\"G\", \"next\":{\"c\":\"I\", \"next\":{\"c\":\"K\", \"next\":{\"c\":\"M\", \"next\":{\"c\":\"O\", \"next\":{\"c\":\"Q\", \"next\":{\"c\":\"S\", \"next\":{\"c\":\"U\", \"next\":{\"c\":\"W\", \"next\":{\"c\":\"Y\"}}}}}}}}}}}}}";
-        Assert.assertEquals(expected, head.toString());
+        Assertions.assertEquals(expected, head.toString());
 
         head.split(newTab, oldCap, oldIndex, convertor);
 
         expected = "{\"c\":\"A\", \"next\":{\"c\":\"E\", \"next\":{\"c\":\"I\", \"next\":{\"c\":\"M\", \"next\":{\"c\":\"Q\", \"next\":{\"c\":\"U\", \"next\":{\"c\":\"Y\"}}}}}}}";
-        Assert.assertEquals(expected, newTab[oldIndex].toString());
+        Assertions.assertEquals(expected, newTab[oldIndex].toString());
         System.out.println(split1);
-        Assert.assertEquals(split1.toString(), newTab[oldIndex].toString());
+        Assertions.assertEquals(split1.toString(), newTab[oldIndex].toString());
 
         expected = "{\"c\":\"C\", \"next\":{\"c\":\"G\", \"next\":{\"c\":\"K\", \"next\":{\"c\":\"O\", \"next\":{\"c\":\"S\", \"next\":{\"c\":\"W\"}}}}}}";
-        Assert.assertEquals(expected, newTab[oldIndex + oldCap].toString());
+        Assertions.assertEquals(expected, newTab[oldIndex + oldCap].toString());
         System.out.println(split2);
-        Assert.assertNotNull(split2);
-        Assert.assertEquals(split2.toString(), newTab[oldIndex + oldCap].toString());
+        Assertions.assertNotNull(split2);
+        Assertions.assertEquals(split2.toString(), newTab[oldIndex + oldCap].toString());
     }
 
     @Test
@@ -206,8 +206,8 @@ public class LinkedNodeTest {
         head = head.join(head2, convertor);
 
         String expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
-        Assert.assertEquals(expected, head3.toString());
-        Assert.assertEquals(expected, head.toString());
+        Assertions.assertEquals(expected, head3.toString());
+        Assertions.assertEquals(expected, head.toString());
     }
 
     @Test
@@ -224,22 +224,22 @@ public class LinkedNodeTest {
         head = head.join(head2, convertor);
 
         String expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
-        Assert.assertEquals(expected, head3.toString());
-        Assert.assertEquals(expected, head.toString());
+        Assertions.assertEquals(expected, head3.toString());
+        Assertions.assertEquals(expected, head.toString());
     }
 
     @Test
     public void testEquals() {
         LinkedNode<String> root = new LinkedNode<>('a');
         LinkedNode<String> root2 = new LinkedNode<>('a');
-        Assert.assertEquals(root, root2);
+        Assertions.assertEquals(root, root2);
     }
 
     @Test
     public void testHashCode() {
         LinkedNode<String> root = new LinkedNode<>('a');
         LinkedNode<String> root2 = new LinkedNode<>('a');
-        Assert.assertEquals(root.hashCode(), root2.hashCode());
+        Assertions.assertEquals(root.hashCode(), root2.hashCode());
     }
 
     private Node<String> insert(String text) {
