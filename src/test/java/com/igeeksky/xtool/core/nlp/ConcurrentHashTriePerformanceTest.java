@@ -17,9 +17,9 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -27,7 +27,7 @@ import java.util.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-15
  */
-@Ignore
+@Disabled
 public class ConcurrentHashTriePerformanceTest {
 
     @Test
@@ -100,7 +100,7 @@ public class ConcurrentHashTriePerformanceTest {
 
         System.out.println(method + "trie-size:\t" + result2.size());
         System.out.println(method + " map-size:\t" + result.size());
-        Assert.assertEquals(result.size(), result2.size());
+        Assertions.assertEquals(result.size(), result2.size());
     }
 
     @Test

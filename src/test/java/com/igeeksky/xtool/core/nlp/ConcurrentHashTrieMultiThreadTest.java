@@ -17,7 +17,7 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * 多线程测试
@@ -39,12 +39,11 @@ public class ConcurrentHashTrieMultiThreadTest {
                 if (empty) {
                     String oldVal = TRIE.put(ARRAY[0], ARRAY[0]);
                     empty = false;
-                    Assert.assertNull(oldVal);
+                    Assertions.assertNull(oldVal);
                     if (i++ > MAX_LOOP) {
                         break;
                     }
                 }
-
             }
         }).start();
 
@@ -53,10 +52,10 @@ public class ConcurrentHashTrieMultiThreadTest {
             while (true) {
                 if (!empty) {
                     int size = TRIE.size();
-                    Assert.assertEquals(1, size);
+                    Assertions.assertEquals(1, size);
                     String oldVal = TRIE.remove(ARRAY[0]);
                     empty = true;
-                    Assert.assertNotNull(oldVal);
+                    Assertions.assertNotNull(oldVal);
                     if (i++ > MAX_LOOP) {
                         break;
                     }

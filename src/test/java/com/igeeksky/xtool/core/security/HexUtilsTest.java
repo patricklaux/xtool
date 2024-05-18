@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.security;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Patrick.Lau
@@ -29,24 +29,24 @@ public class HexUtilsTest {
     @Test
     public void encodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6e6f707172737475", HexUtils.encodeHexStr(bytes, true));
+        Assertions.assertEquals("6e6f707172737475", HexUtils.encodeHexStr(bytes, true));
     }
 
     @Test
     public void testEncodeHexString() {
         byte[] bytes = new byte[]{110, 111, 112, 113, 114, 115, 116, 117};
-        Assert.assertEquals("6E6F707172737475", HexUtils.encodeHexStr(bytes, false));
+        Assertions.assertEquals("6E6F707172737475", HexUtils.encodeHexStr(bytes, false));
     }
 
     @Test
     public void testEncodeHexString1() {
         byte[] bytes = new byte[0];
-        Assert.assertEquals("", HexUtils.encodeHexStr(bytes, false));
+        Assertions.assertEquals("", HexUtils.encodeHexStr(bytes, false));
     }
 
     @Test
     public void testEncodeHexString2() {
-        Assert.assertNull(HexUtils.encodeHexStr(nullBytes(), false));
+        Assertions.assertNull(HexUtils.encodeHexStr(nullBytes(), false));
     }
 
     private byte[] nullBytes() {

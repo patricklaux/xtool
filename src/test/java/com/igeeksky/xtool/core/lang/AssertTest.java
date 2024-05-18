@@ -17,7 +17,8 @@
 
 package com.igeeksky.xtool.core.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
@@ -52,7 +53,7 @@ public class AssertTest {
         try {
             Assert.isTrue(false, "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class AssertTest {
         try {
             Assert.isTrue(false, () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -70,7 +71,7 @@ public class AssertTest {
         try {
             Assert.isTrue(false, new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -99,7 +100,7 @@ public class AssertTest {
         try {
             Assert.isFalse(true, "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -108,7 +109,7 @@ public class AssertTest {
         try {
             Assert.isFalse(true, () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -117,7 +118,7 @@ public class AssertTest {
         try {
             Assert.isFalse(true, new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -186,7 +187,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(new String[0], "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -195,7 +196,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(new String[0], () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -204,7 +205,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(new String[0], new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -213,7 +214,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyList(), "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -222,7 +223,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyList());
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("[Assertion failed] - this list must not be null or empty", e.getMessage());
+            Assertions.assertEquals("[Assertion failed] - this list must not be null or empty", e.getMessage());
         }
     }
 
@@ -231,7 +232,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyList(), () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -240,7 +241,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyList(), new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -249,7 +250,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyMap(), "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -258,7 +259,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyMap());
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("[Assertion failed] - this map must not be null or empty", e.getMessage());
+            Assertions.assertEquals("[Assertion failed] - this map must not be null or empty", e.getMessage());
         }
     }
 
@@ -267,7 +268,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyMap(), () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -276,7 +277,7 @@ public class AssertTest {
         try {
             Assert.notEmpty(Collections.emptyMap(), new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -305,7 +306,7 @@ public class AssertTest {
         try {
             Assert.hasText("  ", "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -314,7 +315,7 @@ public class AssertTest {
         try {
             Assert.hasText("  ", () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -323,7 +324,7 @@ public class AssertTest {
         try {
             Assert.hasText("  ", new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -352,7 +353,7 @@ public class AssertTest {
         try {
             Assert.hasLength("", "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -361,7 +362,7 @@ public class AssertTest {
         try {
             Assert.hasLength("", () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -370,7 +371,47 @@ public class AssertTest {
         try {
             Assert.hasLength("", new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHasLength6() {
+        char[] chars = new char[0];
+        try {
+            Assert.hasLength(chars, new RuntimeException("error"));
+        } catch (Exception e) {
+            Assertions.assertEquals("error", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHasLength7() {
+        char[] chars = new char[0];
+        try {
+            Assert.hasLength(chars, () -> "error");
+        } catch (Exception e) {
+            Assertions.assertEquals("error", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHasLength8() {
+        char[] chars = new char[0];
+        try {
+            Assert.hasLength(chars, "error");
+        } catch (Exception e) {
+            Assertions.assertEquals("error", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHasLength9() {
+        char[] chars = new char[0];
+        try {
+            Assert.hasLength(chars);
+        } catch (Exception e) {
+            Assertions.assertEquals("array dimensions must be greater than 0.", e.getMessage());
         }
     }
 
@@ -399,7 +440,7 @@ public class AssertTest {
         try {
             Assert.notNull(null, "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -408,7 +449,7 @@ public class AssertTest {
         try {
             Assert.notNull(null, () -> "error");
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -417,7 +458,7 @@ public class AssertTest {
         try {
             Assert.notNull(null, new RuntimeException("error"));
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("error", e.getMessage());
+            Assertions.assertEquals("error", e.getMessage());
         }
     }
 
@@ -426,7 +467,7 @@ public class AssertTest {
         try {
             Assert.notNull(null);
         } catch (Exception e) {
-            org.junit.Assert.assertEquals("[Assertion failed] - this object must not be null", e.getMessage());
+            Assertions.assertEquals("[Assertion failed] - this object must not be null.", e.getMessage());
         }
     }
 

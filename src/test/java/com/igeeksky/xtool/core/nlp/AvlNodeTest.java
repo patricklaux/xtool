@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class AvlNodeTest {
         root = AvlNode.balance(root);
         System.out.println(root);
         String expected = "{\"height\":1, \"c\":\"b\", \"left\":{\"height\":0, \"c\":\"a\"}, \"right\":{\"height\":0, \"c\":\"c\"}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
     }
 
     @Test
@@ -58,11 +58,11 @@ public class AvlNodeTest {
         }
 
         System.out.println(AvlNode.balanceFactor(root));
-        Assert.assertEquals(2, AvlNode.balanceFactor(root));
+        Assertions.assertEquals(2, AvlNode.balanceFactor(root));
 
         root = AvlNode.balance(root);
         System.out.println(AvlNode.balanceFactor(root));
-        Assert.assertEquals(0, AvlNode.balanceFactor(root));
+        Assertions.assertEquals(0, AvlNode.balanceFactor(root));
     }
 
     @Test
@@ -76,11 +76,11 @@ public class AvlNodeTest {
         }
 
         System.out.println(AvlNode.height(root));
-        Assert.assertEquals(2, AvlNode.height(root));
+        Assertions.assertEquals(2, AvlNode.height(root));
 
         root = AvlNode.balance(root);
         System.out.println(AvlNode.height(root));
-        Assert.assertEquals(1, AvlNode.height(root));
+        Assertions.assertEquals(1, AvlNode.height(root));
     }
 
     @Test
@@ -97,9 +97,9 @@ public class AvlNodeTest {
         root = AvlNode.rotateLeft(root);
         System.out.println(root);
 
-        Assert.assertEquals(0, AvlNode.balanceFactor(root));
+        Assertions.assertEquals(0, AvlNode.balanceFactor(root));
         String expected = "{\"height\":1, \"c\":\"b\", \"left\":{\"height\":0, \"c\":\"a\"}, \"right\":{\"height\":0, \"c\":\"c\"}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
     }
 
     @Test
@@ -116,9 +116,9 @@ public class AvlNodeTest {
         root = AvlNode.rotateRight(root);
         System.out.println(root);
 
-        Assert.assertEquals(0, AvlNode.balanceFactor(root));
+        Assertions.assertEquals(0, AvlNode.balanceFactor(root));
         String expected = "{\"height\":1, \"c\":\"b\", \"left\":{\"height\":0, \"c\":\"a\"}, \"right\":{\"height\":0, \"c\":\"c\"}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
     }
 
     /**
@@ -151,12 +151,12 @@ public class AvlNodeTest {
         AvlNode.insert(root, new AvlNode<>(chars[last]));
 
         String expected = "{\"height\":4, \"c\":\"n\", \"left\":{\"height\":3, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":2, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"j\"}, \"right\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
 
         root = AvlNode.rotateLeftRight(root);
         expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
         findError(expected, root.toString());
-        Assert.assertEquals("fhijklmnop", convert(root));
+        Assertions.assertEquals("fhijklmnop", convert(root));
     }
 
     /**
@@ -190,12 +190,12 @@ public class AvlNodeTest {
         AvlNode.insert(root, new AvlNode<>(chars[last]));
 
         String expected = "{\"height\":4, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":3, \"c\":\"n\", \"left\":{\"height\":2, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"j\"}, \"right\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
 
         root = AvlNode.rotateRightLeft(root);
         expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
         findError(expected, root.toString());
-        Assert.assertEquals("fhijklmnop", convert(root));
+        Assertions.assertEquals("fhijklmnop", convert(root));
     }
 
     @Test
@@ -240,19 +240,19 @@ public class AvlNodeTest {
         }
 
         String expected = "{\"height\":3, \"c\":\"O\", \"left\":{\"height\":2, \"c\":\"G\", \"left\":{\"height\":1, \"c\":\"C\", \"left\":{\"height\":0, \"c\":\"A\"}, \"right\":{\"height\":0, \"c\":\"E\"}}, \"right\":{\"height\":1, \"c\":\"K\", \"left\":{\"height\":0, \"c\":\"I\"}, \"right\":{\"height\":0, \"c\":\"M\"}}}, \"right\":{\"height\":2, \"c\":\"S\", \"left\":{\"height\":0, \"c\":\"Q\"}, \"right\":{\"height\":1, \"c\":\"W\", \"left\":{\"height\":0, \"c\":\"U\"}, \"right\":{\"height\":0, \"c\":\"Y\"}}}}";
-        Assert.assertEquals(expected, head.toString());
+        Assertions.assertEquals(expected, head.toString());
 
         head.split(newTab, oldCap, oldIndex, convertor);
 
         expected = "{\"c\":\"A\", \"next\":{\"c\":\"E\", \"next\":{\"c\":\"I\", \"next\":{\"c\":\"M\", \"next\":{\"c\":\"Q\", \"next\":{\"c\":\"U\", \"next\":{\"c\":\"Y\"}}}}}}}";
-        Assert.assertEquals(expected, newTab[oldIndex].toString());
+        Assertions.assertEquals(expected, newTab[oldIndex].toString());
         System.out.println(split1);
-        Assert.assertEquals(convertor.fromTreeNode(split1).toString(), newTab[oldIndex].toString());
+        Assertions.assertEquals(convertor.fromTreeNode(split1).toString(), newTab[oldIndex].toString());
 
         expected = "{\"c\":\"C\", \"next\":{\"c\":\"G\", \"next\":{\"c\":\"K\", \"next\":{\"c\":\"O\", \"next\":{\"c\":\"S\", \"next\":{\"c\":\"W\"}}}}}}";
-        Assert.assertEquals(expected, newTab[oldIndex + oldCap].toString());
+        Assertions.assertEquals(expected, newTab[oldIndex + oldCap].toString());
         System.out.println(split2);
-        Assert.assertEquals(convertor.fromTreeNode(split2).toString(), newTab[oldIndex + oldCap].toString());
+        Assertions.assertEquals(convertor.fromTreeNode(split2).toString(), newTab[oldIndex + oldCap].toString());
     }
 
     @Test
@@ -269,8 +269,8 @@ public class AvlNodeTest {
         AvlNode<String> head3 = buildAvlTree(text3, text3.length());
 
         String expected = "{\"height\":3, \"c\":\"l\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":1, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"j\"}}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":0, \"c\":\"m\"}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
-        Assert.assertEquals(expected, head3.toString());
-        Assert.assertEquals(head3.toString(), head.toString());
+        Assertions.assertEquals(expected, head3.toString());
+        Assertions.assertEquals(head3.toString(), head.toString());
     }
 
     @Test
@@ -285,7 +285,7 @@ public class AvlNodeTest {
             node = node.next;
         }
 
-        Assert.assertEquals("fhijklmnop", builder.toString());
+        Assertions.assertEquals("fhijklmnop", builder.toString());
     }
 
     @Test
@@ -300,7 +300,7 @@ public class AvlNodeTest {
         AvlNode<String> root = convertor.toTreeNode(head);
         System.out.println(root);
         String expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
-        Assert.assertEquals(expected, root.toString());
+        Assertions.assertEquals(expected, root.toString());
     }
 
     @Test
@@ -308,7 +308,7 @@ public class AvlNodeTest {
         String value = "niohkpfjlm";
         AvlNode<String> root = buildAvlTree(value, value.length());
         Node<String> node = root.find('i');
-        Assert.assertEquals('i', node.c);
+        Assertions.assertEquals('i', node.c);
     }
 
     @Test
@@ -316,7 +316,7 @@ public class AvlNodeTest {
         String value = "niohkpfjlm";
         AvlNode<String> root = buildAvlTree(value, value.length());
         Node<String> node = root.find('a');
-        Assert.assertNull(node);
+        Assertions.assertNull(node);
     }
 
     @Test
@@ -328,7 +328,7 @@ public class AvlNodeTest {
         for (Node<String> node : all) {
             builder.append(node.c);
         }
-        Assert.assertEquals("fhijklmnop", builder.toString());
+        Assertions.assertEquals("fhijklmnop", builder.toString());
     }
 
     @Test
@@ -336,19 +336,19 @@ public class AvlNodeTest {
         Node<String> parent = new LinkedNode<>('0');
         AvlNode<String> head = (AvlNode<String>) parent.addChild('a', AvlNode::new, convertor);
 
-        Assert.assertEquals("[{\"height\":0, \"c\":\"a\"}]", Arrays.toString(parent.table));
-        Assert.assertEquals(1, parent.size);
+        Assertions.assertEquals("[{\"height\":0, \"c\":\"a\"}]", Arrays.toString(parent.table));
+        Assertions.assertEquals(1, parent.size);
 
         head.insert(parent, 0, 'b', convertor);
 
-        Assert.assertEquals(2, parent.size);
-        Assert.assertEquals("[{\"height\":1, \"c\":\"a\", \"right\":{\"height\":0, \"c\":\"b\"}}]", Arrays.toString(parent.table));
+        Assertions.assertEquals(2, parent.size);
+        Assertions.assertEquals("[{\"height\":1, \"c\":\"a\", \"right\":{\"height\":0, \"c\":\"b\"}}]", Arrays.toString(parent.table));
 
         // 重复插入，parent 的 size 和 table 不变
         head.insert(parent, 0, 'a', convertor);
 
-        Assert.assertEquals(2, parent.size);
-        Assert.assertEquals("[{\"height\":1, \"c\":\"a\", \"right\":{\"height\":0, \"c\":\"b\"}}]", Arrays.toString(parent.table));
+        Assertions.assertEquals(2, parent.size);
+        Assertions.assertEquals("[{\"height\":1, \"c\":\"a\", \"right\":{\"height\":0, \"c\":\"b\"}}]", Arrays.toString(parent.table));
     }
 
     @Test
@@ -361,7 +361,7 @@ public class AvlNodeTest {
                 root = new AvlNode<>(c);
             } else {
                 AvlNode<String> newNode = AvlNode.insert(root, new AvlNode<>(c));
-                Assert.assertEquals(c, newNode.c);
+                Assertions.assertEquals(c, newNode.c);
                 root = AvlNode.balance(root);
             }
         }
@@ -372,10 +372,10 @@ public class AvlNodeTest {
         String value = "niohkpfjlm";
         AvlNode<String> root = buildAvlTree(value, value.length());
 
-        Assert.assertEquals(root.c, 'k');
+        Assertions.assertEquals(root.c, 'k');
         String expected = "{\"height\":3, \"c\":\"k\", \"left\":{\"height\":2, \"c\":\"i\", \"left\":{\"height\":1, \"c\":\"h\", \"left\":{\"height\":0, \"c\":\"f\"}}, \"right\":{\"height\":0, \"c\":\"j\"}}, \"right\":{\"height\":2, \"c\":\"n\", \"left\":{\"height\":1, \"c\":\"l\", \"right\":{\"height\":0, \"c\":\"m\"}}, \"right\":{\"height\":1, \"c\":\"o\", \"right\":{\"height\":0, \"c\":\"p\"}}}}";
         findError(expected, root.toString());
-        Assert.assertEquals("fhijklmnop", convert(root));
+        Assertions.assertEquals("fhijklmnop", convert(root));
     }
 
     /**
@@ -392,7 +392,7 @@ public class AvlNodeTest {
         root = AvlNode.insertAndBalance(root, new AvlNode<>('b'));
 
         findError("{\"height\":1, \"c\":\"a\", \"right\":{\"height\":0, \"c\":\"b\"}}", root.toString());
-        Assert.assertEquals("ab", convert(root));
+        Assertions.assertEquals("ab", convert(root));
     }
 
     @Test
@@ -400,65 +400,65 @@ public class AvlNodeTest {
         String value = "abcdefghijklmnopqrstuvwxyz";
         AvlNode<String> root = buildAvlTree(value, value.length());
 
-        Assert.assertEquals("abcdefghijklmnopqrstuvwxyz", convert(root));
+        Assertions.assertEquals("abcdefghijklmnopqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"p\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"left\":{\"height\":0, \"c\":\"a\"}, \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"l\", \"left\":{\"height\":1, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"k\"}}, \"right\":{\"height\":1, \"c\":\"n\", \"left\":{\"height\":0, \"c\":\"m\"}, \"right\":{\"height\":0, \"c\":\"o\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         Node<String> delete = root.find('a');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bcdefghijklmnopqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bcdefghijklmnopqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"p\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"l\", \"left\":{\"height\":1, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"k\"}}, \"right\":{\"height\":1, \"c\":\"n\", \"left\":{\"height\":0, \"c\":\"m\"}, \"right\":{\"height\":0, \"c\":\"o\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         delete = root.find('p');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bcdefghijklmnoqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bcdefghijklmnoqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"l\", \"left\":{\"height\":1, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"k\"}}, \"right\":{\"height\":1, \"c\":\"n\", \"left\":{\"height\":0, \"c\":\"m\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         delete = root.find('n');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bcdefghijklmoqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bcdefghijklmoqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"l\", \"left\":{\"height\":1, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"k\"}}, \"right\":{\"height\":0, \"c\":\"m\"}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         delete = root.find('m');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bcdefghijkloqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bcdefghijkloqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":1, \"c\":\"b\", \"right\":{\"height\":0, \"c\":\"c\"}}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":1, \"c\":\"l\", \"left\":{\"height\":0, \"c\":\"k\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
         delete = root.find('c');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghijkloqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bdefghijkloqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":1, \"c\":\"l\", \"left\":{\"height\":0, \"c\":\"k\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
         delete = root.find('c');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghijkloqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bdefghijkloqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":2, \"c\":\"j\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":1, \"c\":\"l\", \"left\":{\"height\":0, \"c\":\"k\"}}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         delete = root.find('j');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghikloqrstuvwxyz", convert(root));
+        Assertions.assertEquals("bdefghikloqrstuvwxyz", convert(root));
         findError("{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":1, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"l\"}}}, \"right\":{\"height\":3, \"c\":\"t\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"left\":{\"height\":0, \"c\":\"u\"}, \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}", root.toString());
 
 
         delete = root.find('t');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghikloqrsuvwxyz", convert(root));
+        Assertions.assertEquals("bdefghikloqrsuvwxyz", convert(root));
         String expected = "{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":1, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"l\"}}}, \"right\":{\"height\":3, \"c\":\"u\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":1, \"c\":\"v\", \"right\":{\"height\":0, \"c\":\"w\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}";
         findError(expected, root.toString());
 
         delete = root.find('u');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghikloqrsvwxyz", convert(root));
+        Assertions.assertEquals("bdefghikloqrsvwxyz", convert(root));
         expected = "{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":1, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"l\"}}}, \"right\":{\"height\":3, \"c\":\"v\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":2, \"c\":\"x\", \"left\":{\"height\":0, \"c\":\"w\"}, \"right\":{\"height\":1, \"c\":\"y\", \"right\":{\"height\":0, \"c\":\"z\"}}}}}";
         findError(expected, root.toString());
 
         delete = root.find('v');
         root = (AvlNode<String>) root.delete(delete, convertor);
-        Assert.assertEquals("bdefghikloqrswxyz", convert(root));
+        Assertions.assertEquals("bdefghikloqrswxyz", convert(root));
         expected = "{\"height\":4, \"c\":\"o\", \"left\":{\"height\":3, \"c\":\"h\", \"left\":{\"height\":2, \"c\":\"d\", \"left\":{\"height\":0, \"c\":\"b\"}, \"right\":{\"height\":1, \"c\":\"f\", \"left\":{\"height\":0, \"c\":\"e\"}, \"right\":{\"height\":0, \"c\":\"g\"}}}, \"right\":{\"height\":1, \"c\":\"k\", \"left\":{\"height\":0, \"c\":\"i\"}, \"right\":{\"height\":0, \"c\":\"l\"}}}, \"right\":{\"height\":2, \"c\":\"w\", \"left\":{\"height\":1, \"c\":\"r\", \"left\":{\"height\":0, \"c\":\"q\"}, \"right\":{\"height\":0, \"c\":\"s\"}}, \"right\":{\"height\":1, \"c\":\"y\", \"left\":{\"height\":0, \"c\":\"x\"}, \"right\":{\"height\":0, \"c\":\"z\"}}}}";
         findError(expected, root.toString());
     }
@@ -499,7 +499,7 @@ public class AvlNodeTest {
         for (Node<String> node : list) {
             builder.append(node.c);
         }
-        Assert.assertEquals("abcdefghijklmnopqrstuvwxyz", builder.toString());
+        Assertions.assertEquals("abcdefghijklmnopqrstuvwxyz", builder.toString());
     }
 
     @Test
@@ -510,7 +510,7 @@ public class AvlNodeTest {
         root = AvlNode.insertAndBalance(root, new AvlNode<>('c', "cc"));
         List<String> list = new ArrayList<>(26);
         root.inorderTraversalValue(list);
-        Assert.assertEquals("[aa, bb, cc, dd]", list.toString());
+        Assertions.assertEquals("[aa, bb, cc, dd]", list.toString());
     }
 
     public static AvlNode<String> buildAvlTree(String value, int end) {
@@ -554,7 +554,7 @@ public class AvlNodeTest {
                 break;
             }
         }
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -565,19 +565,18 @@ public class AvlNodeTest {
         AvlNode<String> avl3 = new AvlNode<>('c', "cc");
         Root<String> root = new Root<>('c');
         LinkedNode<String> linked = new LinkedNode<>('a', "bb", 0, null);
-        Assert.assertEquals(avl, avl);
-        Assert.assertNotEquals(avl, AvlNode.insertAndBalance(avl1, new AvlNode<>('b')));
-        Assert.assertNotEquals(avl, AvlNode.insertAndBalance(avl2, new AvlNode<>('b')));
-        Assert.assertNotEquals(AvlNode.insertAndBalance(avl, new AvlNode<>('b')), AvlNode.insertAndBalance(avl3, new AvlNode<>('d')));
-        Assert.assertNotEquals(avl, avl1);
-        Assert.assertNotEquals(avl, root);
-        Assert.assertNotEquals(avl, linked);
+        Assertions.assertNotEquals(avl, AvlNode.insertAndBalance(avl1, new AvlNode<>('b')));
+        Assertions.assertNotEquals(avl, AvlNode.insertAndBalance(avl2, new AvlNode<>('b')));
+        Assertions.assertNotEquals(AvlNode.insertAndBalance(avl, new AvlNode<>('b')), AvlNode.insertAndBalance(avl3, new AvlNode<>('d')));
+        Assertions.assertNotEquals(avl, avl1);
+        Assertions.assertNotEquals(avl, root);
+        Assertions.assertNotEquals(avl, linked);
     }
 
     @Test
     public void testHashCode() {
         AvlNode<String> root = new AvlNode<>('a', "aa");
         AvlNode<String> root2 = new AvlNode<>('a', "aa");
-        Assert.assertEquals(root.hashCode(), root2.hashCode());
+        Assertions.assertEquals(root.hashCode(), root2.hashCode());
     }
 }

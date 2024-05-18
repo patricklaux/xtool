@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.lang;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -30,64 +30,64 @@ public class ArrayUtilsTest {
 
     @Test
     public void isEmpty() {
-        Assert.assertTrue(ArrayUtils.isEmpty(nullBytes()));
-        Assert.assertTrue(ArrayUtils.isEmpty(emptyBytes()));
-        Assert.assertFalse(ArrayUtils.isEmpty(singletonBytes()));
+        Assertions.assertTrue(ArrayUtils.isEmpty(nullBytes()));
+        Assertions.assertTrue(ArrayUtils.isEmpty(emptyBytes()));
+        Assertions.assertFalse(ArrayUtils.isEmpty(singletonBytes()));
     }
 
     @Test
     public void isNotEmpty() {
-        Assert.assertFalse(ArrayUtils.isNotEmpty(nullBytes()));
-        Assert.assertFalse(ArrayUtils.isNotEmpty(emptyBytes()));
-        Assert.assertTrue(ArrayUtils.isNotEmpty(singletonBytes()));
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(nullBytes()));
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(emptyBytes()));
+        Assertions.assertTrue(ArrayUtils.isNotEmpty(singletonBytes()));
     }
 
     @Test
     public void testIsEmpty() {
-        Assert.assertTrue(ArrayUtils.isEmpty(nullArray()));
-        Assert.assertTrue(ArrayUtils.isEmpty(emptyArray()));
-        Assert.assertFalse(ArrayUtils.isEmpty(singletonArray()));
+        Assertions.assertTrue(ArrayUtils.isEmpty(nullArray()));
+        Assertions.assertTrue(ArrayUtils.isEmpty(emptyArray()));
+        Assertions.assertFalse(ArrayUtils.isEmpty(singletonArray()));
     }
 
     @Test
     public void testIsNotEmpty() {
-        Assert.assertFalse(ArrayUtils.isNotEmpty(nullArray()));
-        Assert.assertFalse(ArrayUtils.isNotEmpty(emptyArray()));
-        Assert.assertTrue(ArrayUtils.isNotEmpty(singletonArray()));
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(nullArray()));
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(emptyArray()));
+        Assertions.assertTrue(ArrayUtils.isNotEmpty(singletonArray()));
     }
 
     @Test
     public void getFirst() {
         String[] array = new String[]{"a", "b", "c", "d"};
-        Assert.assertEquals("a", ArrayUtils.getFirst(array));
+        Assertions.assertEquals("a", ArrayUtils.getFirst(array));
 
         Byte expected = 1;
         byte[] bytes = new byte[]{1, 2, 3, 4};
-        Assert.assertEquals(expected, ArrayUtils.getFirst(bytes));
+        Assertions.assertEquals(expected, ArrayUtils.getFirst(bytes));
     }
 
     @Test
     public void getLast() {
         String[] array = new String[]{"a", "b", "c", "d"};
-        Assert.assertEquals("d", ArrayUtils.getLast(array));
+        Assertions.assertEquals("d", ArrayUtils.getLast(array));
 
         Byte expected = 4;
         byte[] bytes = new byte[]{1, 2, 3, 4};
-        Assert.assertEquals(expected, ArrayUtils.getLast(bytes));
+        Assertions.assertEquals(expected, ArrayUtils.getLast(bytes));
     }
 
     @Test
     public void concat() {
         String[] array1 = new String[]{"a", "b", "c", "d"};
         String[] array2 = new String[]{"e", "f", "g", "h"};
-        Assert.assertEquals("[a, b, c, d, e, f, g, h]", Arrays.toString(ArrayUtils.concat(array1, array2)));
+        Assertions.assertEquals("[a, b, c, d, e, f, g, h]", Arrays.toString(ArrayUtils.concat(array1, array2)));
     }
 
     @Test
     public void testConcat() {
         byte[] array1 = new byte[]{1, 2, 3, 4};
         byte[] array2 = new byte[]{5, 6, 7, 8};
-        Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8]", Arrays.toString(ArrayUtils.concat(array1, array2)));
+        Assertions.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8]", Arrays.toString(ArrayUtils.concat(array1, array2)));
     }
 
     private byte[] nullBytes() {

@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.function.tuple;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
@@ -34,7 +34,7 @@ public class TupleTest {
         Iterator<Object> iterator = Tuples.of("a", "b", "c", "d", "e").iterator();
         int i = 0;
         while (iterator.hasNext()) {
-            Assert.assertEquals(expected[i++], iterator.next());
+            Assertions.assertEquals(expected[i++], iterator.next());
         }
     }
 }

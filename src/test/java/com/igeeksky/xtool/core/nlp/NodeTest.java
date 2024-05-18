@@ -19,8 +19,8 @@ package com.igeeksky.xtool.core.nlp;
 
 import com.igeeksky.xtool.core.function.tuple.Tuple2;
 import com.igeeksky.xtool.core.function.tuple.Tuples;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,45 +42,45 @@ public class NodeTest {
         for (char c = 'a'; c <= 'z'; c++) {
             parent.addChild(c, creator, convertor);
         }
-        Assert.assertEquals(26, parent.size);
+        Assertions.assertEquals(26, parent.size);
     }
 
     @Test
     public void increment() {
         LinkedNode<String> parent = new LinkedNode<>('0');
-        Assert.assertEquals(0, parent.size);
+        Assertions.assertEquals(0, parent.size);
 
         parent.increment();
-        Assert.assertEquals(1, parent.size);
+        Assertions.assertEquals(1, parent.size);
     }
 
     @Test
     public void decrement() {
         LinkedNode<String> parent = new LinkedNode<>('0');
-        Assert.assertEquals(0, parent.size);
+        Assertions.assertEquals(0, parent.size);
 
         parent.increment();
-        Assert.assertEquals(1, parent.size);
+        Assertions.assertEquals(1, parent.size);
 
         parent.decrement();
-        Assert.assertEquals(0, parent.size);
+        Assertions.assertEquals(0, parent.size);
     }
 
     @Test
     public void setHead() {
         LinkedNode<String> parent = new LinkedNode<>('0');
         parent.addChild('a', creator, convertor);
-        Assert.assertEquals('a', parent.table[0].c);
+        Assertions.assertEquals('a', parent.table[0].c);
 
         parent.setHead(new LinkedNode<>('b'), 0);
-        Assert.assertEquals('b', parent.table[0].c);
+        Assertions.assertEquals('b', parent.table[0].c);
     }
 
     @Test
     public void addChild() {
         LinkedNode<String> parent = new LinkedNode<>('0');
         parent.addChild('a', creator, convertor);
-        Assert.assertEquals('a', parent.table[0].c);
+        Assertions.assertEquals('a', parent.table[0].c);
     }
 
     /**
@@ -113,16 +113,16 @@ public class NodeTest {
             if (++i >= (capacity << 1)) {
                 capacity = capacity << 1;
             }
-            Assert.assertEquals(i, parent.size());
-            Assert.assertEquals(capacity, parent.table.length);
+            Assertions.assertEquals(i, parent.size());
+            Assertions.assertEquals(capacity, parent.table.length);
         }
 
-        Assert.assertEquals(finalLen, parent.table.length);
+        Assertions.assertEquals(finalLen, parent.table.length);
 
         for (int j = 0; j < finalLen; j++) {
             Node<String> node = finalTab[j];
             Node<String> node2 = parent.table[j];
-            Assert.assertEquals(node.toString(), node2.toString());
+            Assertions.assertEquals(node.toString(), node2.toString());
         }
     }
 
@@ -154,20 +154,20 @@ public class NodeTest {
                 if (++i >= (capacity << 1)) {
                     capacity = capacity << 1;
                 }
-                Assert.assertEquals(i, parent.size());
-                Assert.assertEquals(capacity, parent.table.length);
+                Assertions.assertEquals(i, parent.size());
+                Assertions.assertEquals(capacity, parent.table.length);
             }
         }
 
-        Assert.assertEquals(finalLen, parent.table.length);
-        Assert.assertEquals(finalLen, parent.size);
+        Assertions.assertEquals(finalLen, parent.table.length);
+        Assertions.assertEquals(finalLen, parent.size);
 
         for (int j = 0; j < finalLen; j++) {
             LinkedNode<String> node = finalTab[j];
             Node<String> node2 = parent.table[j];
-            Assert.assertEquals((node != null), (node2 != null));
+            Assertions.assertEquals((node != null), (node2 != null));
             if ((node != null) && (node2 != null)) {
-                Assert.assertEquals(convertor.toTreeNode(node).toString(), node2.toString());
+                Assertions.assertEquals(convertor.toTreeNode(node).toString(), node2.toString());
             }
         }
     }
@@ -180,7 +180,7 @@ public class NodeTest {
 
         Node<String> child = parent.findChild('a');
 
-        Assert.assertEquals('a', child.c);
+        Assertions.assertEquals('a', child.c);
     }
 
     @Test
@@ -190,11 +190,11 @@ public class NodeTest {
         parent.addChild('b', creator, convertor);
 
         Node<String> child = parent.findChild('a');
-        Assert.assertEquals('a', child.c);
+        Assertions.assertEquals('a', child.c);
 
         parent.deleteChild(child, convertor);
         child = parent.findChild('a');
-        Assert.assertNull(child);
+        Assertions.assertNull(child);
     }
 
     @Test
@@ -229,14 +229,14 @@ public class NodeTest {
             System.out.println(parent.size() + "\t" + parent.table.length);
         }
 
-        Assert.assertEquals(finalLen, parent.table.length);
-        Assert.assertEquals(finalLen, parent.size);
+        Assertions.assertEquals(finalLen, parent.table.length);
+        Assertions.assertEquals(finalLen, parent.size);
 
         for (int j = 0; j < finalLen; j++) {
             Node<String> node = finalTab[j];
             Node<String> node2 = parent.table[j];
             if (null != node) {
-                Assert.assertEquals(node.toString(), node2.toString());
+                Assertions.assertEquals(node.toString(), node2.toString());
             }
         }
     }
@@ -258,8 +258,8 @@ public class NodeTest {
 
         Collections.reverse(list);
 
-        Assert.assertEquals(0, parent.size());
-        Assert.assertNull(parent.table);
+        Assertions.assertEquals(0, parent.size());
+        Assertions.assertNull(parent.table);
     }
 
     @Test
@@ -301,22 +301,22 @@ public class NodeTest {
             parent.deleteChild(child, convertor);
         }
 
-        Assert.assertEquals(finalLen, parent.table.length);
-        Assert.assertEquals(finalLen, parent.size);
+        Assertions.assertEquals(finalLen, parent.table.length);
+        Assertions.assertEquals(finalLen, parent.size);
 
         for (int j = 0; j < finalLen; j++) {
             LinkedNode<String> node = finalTab[j];
             Node<String> node1 = parent.table[j];
             if (null != node) {
-                Assert.assertTrue(node1 instanceof AvlNode);
+                Assertions.assertInstanceOf(AvlNode.class, node1);
                 List<Node<String>> all = convertor.toTreeNode(node).findAll();
                 List<Node<String>> all1 = node1.findAll();
-                Assert.assertEquals(all.size(), all1.size());
+                Assertions.assertEquals(all.size(), all1.size());
                 for (int i = 0; i < all.size(); i++) {
-                    Assert.assertEquals(all.get(i).getC(), all1.get(i).getC());
+                    Assertions.assertEquals(all.get(i).getC(), all1.get(i).getC());
                 }
             } else {
-                Assert.assertNull(node1);
+                Assertions.assertNull(node1);
             }
         }
     }
@@ -333,7 +333,7 @@ public class NodeTest {
         int i = 65;
         while (iterator.hasNext()) {
             Node<String> next = iterator.next();
-            Assert.assertEquals(i++, next.c);
+            Assertions.assertEquals(i++, next.c);
         }
     }
 
@@ -344,7 +344,7 @@ public class NodeTest {
         int i = 65;
         while (iterator.hasNext()) {
             Node<String> next = iterator.next();
-            Assert.assertEquals(i++, next.c);
+            Assertions.assertEquals(i++, next.c);
         }
     }
 }

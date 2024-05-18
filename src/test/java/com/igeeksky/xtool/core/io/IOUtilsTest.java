@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.io;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.*;
@@ -57,7 +57,7 @@ public class IOUtilsTest {
             };
             IOUtils.close(null, errStream);
         } catch (Exception e) {
-            Assert.assertTrue(e instanceof com.igeeksky.xtool.core.io.IOException);
+            Assertions.assertInstanceOf(com.igeeksky.xtool.core.io.IOException.class, e);
         }
     }
 
@@ -87,12 +87,12 @@ public class IOUtilsTest {
         InputStream in = new ByteArrayInputStream(expected);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         long num = IOUtils.copy(in, out);
-        Assert.assertEquals(8, num);
+        Assertions.assertEquals(8, num);
 
         byte[] actual = out.toByteArray();
         int maxLen = Math.max(expected.length, actual.length);
         for (int i = 0; i < maxLen; i++) {
-            Assert.assertEquals(expected[i], actual[i]);
+            Assertions.assertEquals(expected[i], actual[i]);
         }
     }
 
@@ -107,7 +107,7 @@ public class IOUtilsTest {
                 }
             }, out);
         } catch (Exception e) {
-            Assert.assertTrue(e instanceof com.igeeksky.xtool.core.io.IOException);
+            Assertions.assertInstanceOf(com.igeeksky.xtool.core.io.IOException.class, e);
         }
     }
 }
