@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * 随机工具类
  *
  * @author patrick
- * @since 0.0.4 2024/5/16
+ * @since 1.0.9 2024/5/16
  */
 public class RandomUtils {
 
