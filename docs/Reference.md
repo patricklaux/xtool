@@ -1243,10 +1243,7 @@ public class IntegerValueTest {
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
-<div align=center>
-  <img src="images/trie.png" alt="trie" style="zoom: 50%;" />
-  <div align=center>图1</div>
-</div>
+![图1](images/trie.png)
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
@@ -1388,10 +1385,7 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
 ##### 8.1.2.2. 树的创建
 
-<div align=center>
-  <img src="images/trie_node.png" alt="trie_node" style="zoom: 50%;" />
-  <div align=center>图2</div>
-</div>
+![图2](images/trie_node.png)
 
 > 注：蓝色方框为数组，也就是节点定义里的 table，用于保存直接后缀节点。
 
@@ -1525,10 +1519,8 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 
 **主要方法：**
 
-<div align=center>
-<img src="images/trie_method.png" alt="trie_method" style="zoom: 67%;" />
-<div align=center>图3</div>
-</div>
+![图3](images/trie_method.png)
+
 方法比较多，先放上我设计时画的思维导图，再结合一些场景来写示例代码。
 
 ##### 8.1.3.1. Map 同名方法
