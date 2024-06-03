@@ -1,4 +1,4 @@
-# xtool
+## xtool
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases) [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits) [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -17,23 +17,22 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 ### 2.1.Maven
 
 ```xml
-
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.9'
+implementation 'com.igeeksky.xtool:xtool:1.0.10'
 ```
 
 ### 2.3.编译安装
 
-#### 项目地址：
+#### 项目地址
 
 - https://github.com/patricklaux/xtool/
 
@@ -79,16 +78,17 @@ mvn clean install
 
 ## 4. 更新日志
 
-| 版本  | 说明                                                 |
-| ----- | ---------------------------------------------------- |
-| 1.0.9 | 1. 添加 RandomUtils                                  |
-| 1.0.8 | 1. 添加 Maps.newHashMap方法                          |
-| 1.0.7 | 1. 添加 IOUtils.closeQuietly方法                     |
-| 1.0.6 | 1. Found 删除 node 字段，NodeHelper 增加精确匹配方法 |
-| 1.0.5 | 1. 调整部分方法返回值                                |
-| 1.0.4 | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码     |
-| 1.0.3 | 1. 调整DigestUtils默认小写                           |
-| 1.0.2 | 1. 补充完整注释                                      |
-| 1.0.1 | 1. 增加测试用例 2. 删除 Lists类                      |
-| 1.0.0 | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树  |
+| 版本   | 说明                                                 |
+| ------ | ---------------------------------------------------- |
+| 1.0.10 | 1. 添加 SimpleJSON（仅实现对象转 JSONString）        |
+| 1.0.9  | 1. 添加 RandomUtils                                  |
+| 1.0.8  | 1. 添加 Maps.newHashMap方法                          |
+| 1.0.7  | 1. 添加 IOUtils.closeQuietly方法                     |
+| 1.0.6  | 1. Found 删除 node 字段，NodeHelper 增加精确匹配方法 |
+| 1.0.5  | 1. 调整部分方法返回值                                |
+| 1.0.4  | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码     |
+| 1.0.3  | 1. 调整DigestUtils默认小写                           |
+| 1.0.2  | 1. 补充完整注释                                      |
+| 1.0.1  | 1. 增加测试用例 2. 删除 Lists类                      |
+| 1.0.0  | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树  |
 

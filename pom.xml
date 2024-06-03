@@ -6,14 +6,14 @@
 
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <name>xtool</name>
     <description>xtool is a very small set of Java tools.</description>
     <url>https://github.com/patricklaux/xtool</url>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -52,6 +52,13 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.10.2</version>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.4</version>
             <scope>test</scope>
             <optional>true</optional>
         </dependency>
