@@ -568,7 +568,7 @@ public class IOException extends RuntimeException {
 
 - String message 异常提示信息
 - Supplier<String> supplier 异常信息提供者（只有在真的发生异常时才调用supplier.get()方法获取异常提示信息，避免产生字符串对象）
-- RuntimeException e 自定义的异常
+- Supplier<RuntimeException> supplier 自定义的异常提供者
 
 #### 3.6.3. 默认异常类型：
 
@@ -590,8 +590,8 @@ public class AssertTest {
         // 异常时使用 supplier.get() 获取提示信息
         Assert.isTrue(true, () -> "error");
 
-        // 异常时抛出用户传入的异常
-        Assert.isTrue(true, new RuntimeException("error"));
+        // 异常时使用 supplier.get() 抛出用户提供的异常
+        Assert.isTrueSupplier(true, () -> new RuntimeException("error"));
     }
 
     @Test
@@ -2147,4 +2147,220 @@ public class ConcurrentHashTrieTest {
 NLP 领域有很多很有用的算法和数据结构，后续再慢慢补充。
 
 如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr。
+
+## 9. JSONString
+
+xtool 提供了一个对象转 JSONString 的工具类。
+
+写这个工具的起因是 Java 对象默认的 toString方法生成的对象太难读懂，IDE中使用模板生成 JSON 字符串又会导致大量的代码，而且性能也一般，因此写了整个工具来做最简单的转换。
+
+>⚠ 特别注意：
+>
+>如果 A 的属性有 B，B 的属性有 A，那么会导致循环引用，序列化时会无限递归直到栈溢出。
+>
+>因此，如果对象有循环引用问题，不要采用此工具进行序列化。
+
+### 9.1. 主要方法
+
+仅有一个静态方法：传入对象，返回 JSON 字符串
+
+```java
+public static String toJSONString(Object obj);
+```
+
+### 9.2. 代码示例
+
+```java
+/**
+ * @author patrick
+ * @since 1.0.10 2024/6/3
+ */
+class SimpleJSONTest {
+
+    /**
+     * 与Jackson对比，两者可能有差异
+     * <p>
+     * 1. SimpleJSON 仅包含非空值；Jackson 可以通过设置 JsonInclude.Include.NON_NULL 来仅包含非空值
+     * <p>
+     * 2. SimpleJSON 先序列化当前类的属性，然后再序列化父类的属性；但 Jackson 是先序列化父类属性，再序列化当前类的属性。
+     */
+    @Test
+    void toJSONString() {
+        String expected1 = "{\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"1\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\"}";
+        String expected2 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}}";
+        String expected3 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"address\":null,\"id\":\"1\",\"car\":null,\"partner\":null}}";
+
+        Coder coder = getCoder();
+
+        // SimpleJSON 序列化结果
+        String simple = SimpleJSON.toJSONString(coder);
+        System.out.println(simple);
+        Assertions.assertEquals(expected1, simple);
+
+
+        // Jackson 序列化结果 1（不含空值）
+        ObjectMapper mapper = getObjectMapper();
+        String jackson = mapper.writeValueAsString(coder);
+        System.out.println(jackson);
+        Assertions.assertEquals(expected2, jackson);
+
+
+        // Jackson 序列化结果 2（含空值）
+        ObjectMapper mapper2 = new ObjectMapper();
+        String jackson2 = mapper2.writeValueAsString(coder);
+        System.out.println(jackson2);
+        Assertions.assertEquals(expected3, jackson2);
+    }
+
+    /**
+     * 测试：基础类型 char
+     * <p>
+     * 与Jackson对比，两者有差异（Jackson 的结果多了双引号""）
+     */
+    @Test
+    void toJSONString1() {
+        String expected = "a";
+        String expected2 = "\"a\"";
+
+        char c = 'a';
+
+        // SimpleJSON 序列化结果
+        String simple = SimpleJSON.toJSONString(c);
+        System.out.println(simple);
+        Assertions.assertEquals(expected, simple);
+
+        // Jackson 序列化结果
+        ObjectMapper mapper = getObjectMapper();
+        String jackson = mapper.writeValueAsString(c);
+        System.out.println(jackson);
+        Assertions.assertEquals(expected2, jackson);
+    }
+
+    /**
+     * 测试：枚举
+     * <p>
+     * 与Jackson对比，两者有差异（Jackson 的结果多了双引号""）
+     */
+    @Test
+    void toJSONString2() {
+        String expected = "MALE";
+        String expected2 = "\"MALE\"";
+
+        // SimpleJSON 序列化结果
+        String simple = SimpleJSON.toJSONString(Sex.MALE);
+        System.out.println(simple);
+        Assertions.assertEquals(expected, simple);
+
+        // Jackson 序列化结果
+        ObjectMapper mapper = getObjectMapper();
+        String jackson = mapper.writeValueAsString(Sex.MALE);
+        System.out.println(jackson);
+        Assertions.assertEquals(expected2, jackson);
+    }
+
+    /**
+     * 测试：复杂类型 Map	【Map<Coder, Coder>】
+     * <p>
+     * 与 Jackson对比，两者有差异（Jackson 先序列化父类属性，再序列化子类属性； SimpleJSON 则相反）
+     */
+    @Test
+    void toJSONString3() {
+        String expected = "{\"{\\\"id\\\":\\\"2\\\",\\\"name\\\":\\\"2\\\",\\\"age\\\":19}\":{\"id\":\"2\",\"name\":\"2\",\"age\":19},\"{\\\"id\\\":\\\"1\\\",\\\"name\\\":\\\"1\\\",\\\"age\\\":18}\":{\"id\":\"1\",\"name\":\"1\",\"age\":18}}";
+        String expected2 = "{\"{\\\"id\\\":\\\"2\\\",\\\"name\\\":\\\"2\\\",\\\"age\\\":19}\":{\"name\":\"2\",\"age\":19,\"id\":\"2\"},\"{\\\"id\\\":\\\"1\\\",\\\"name\\\":\\\"1\\\",\\\"age\\\":18}\":{\"name\":\"1\",\"age\":18,\"id\":\"1\"}}";
+
+        Map<Coder, Coder> map = new HashMap<>();
+        Coder coder1 = new Coder("1", "1", 18);
+        map.put(coder1, coder1);
+
+        Coder coder2 = new Coder("2", "2", 19);
+        map.put(coder2, coder2);
+
+        // SimpleJSON 序列化结果（先序列化子类属性，后序列化父类属性）
+        String simple = SimpleJSON.toJSONString(map);
+        System.out.println(simple);
+        System.out.println("simple.length: " + simple.length());
+        Assertions.assertEquals(expected, simple);
+
+        // Jackson 序列化结果（先序列化父类属性，后序列化子类属性）
+        ObjectMapper mapper = getObjectMapper();
+        String jackson = mapper.writeValueAsString(map);
+        System.out.println(jackson);
+        System.out.println("jackson.length: " + jackson.length());
+        Assertions.assertEquals(expected2, jackson);
+    }
+
+    /**
+     * 测试：基础类型
+     */
+    @Test
+    void toJSONString4() {
+        String expected = "1";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString((short) 1));
+    }
+
+    /**
+     * 测试：JavaBean 集合
+     */
+    @Test
+    void toJSONString5() {
+        Set<Coder> coders = new LinkedHashSet<>();
+        coders.add(new Coder("1", "1", 18));
+        coders.add(new Coder("2", "2", 19));
+
+        String expected = "[{\"id\":\"1\",\"name\":\"1\",\"age\":18},{\"id\":\"2\",\"name\":\"2\",\"age\":19}]";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(coders));
+    }
+
+    /**
+     * 测试：JavaBean 数组
+     */
+    @Test
+    void toJSONString6() {
+        Coder coder1 = new Coder("1", "1", 18);
+        Coder coder2 = new Coder("2", "2", 19);
+
+        Coder[] array = new Coder[]{coder1, coder2};
+
+        String expected = "[{\"id\":\"1\",\"name\":\"1\",\"age\":18},{\"id\":\"2\",\"name\":\"2\",\"age\":19}]";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(array));
+    }
+
+    /**
+     * 测试：基础类型数组
+     */
+    @Test
+    void toJSONString7() {
+        String expected = "[1,2]";
+        int[] array = new int[]{1, 2};
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(array));
+    }
+
+    /**
+     * 测试 char[]，直接转换成 String
+     * <p>
+     * 注意：SimpleJSON 序列化结果无双引号；Jackson 序列化结果有双引号。=
+     */
+    @Test
+    void toJSONString8() {
+        String expected = "12a";
+        char[] array = new char[]{'1', '2', 'a'};
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(array));
+    }
+
+    /**
+     * 测试 null
+     */
+    @Test
+    void toJSONString15() {
+        String expected = "null";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(null));
+    }
+
+    private static ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper;
+    }
+}
+```
 
