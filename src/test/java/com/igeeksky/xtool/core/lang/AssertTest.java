@@ -45,7 +45,7 @@ public class AssertTest {
 
     @Test
     public void testIsTrue2() {
-        Assert.isTrue(true, new RuntimeException("error"));
+        Assert.isTrueSupplier(true, () -> new RuntimeException("error"));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class AssertTest {
     @Test
     public void testIsTrue5() {
         try {
-            Assert.isTrue(false, new RuntimeException("error"));
+            Assert.isTrueSupplier(false, () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -92,7 +92,7 @@ public class AssertTest {
 
     @Test
     public void testIsFalse2() {
-        Assert.isFalse(false, new RuntimeException("error"));
+        Assert.isFalseSupplier(false, () -> new RuntimeException("error"));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class AssertTest {
     @Test
     public void testIsFalse5() {
         try {
-            Assert.isFalse(true, new RuntimeException("error"));
+            Assert.isFalseSupplier(true, () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -139,7 +139,7 @@ public class AssertTest {
 
     @Test
     public void testNotEmpty2() {
-        Assert.notEmpty(Collections.singletonList("a"), new RuntimeException("error"));
+        Assert.notEmptySupplier(Collections.singletonList("a"), () -> new RuntimeException("error"));
     }
 
     @Test
@@ -159,7 +159,7 @@ public class AssertTest {
 
     @Test
     public void testNotEmpty6() {
-        Assert.notEmpty(Collections.singletonMap("a", "a"), new RuntimeException("error"));
+        Assert.notEmptySupplier(Collections.singletonMap("a", "a"), () -> new RuntimeException("error"));
     }
 
     @Test
@@ -179,7 +179,7 @@ public class AssertTest {
 
     @Test
     public void testNotEmpty10() {
-        Assert.notEmpty(new String[]{"a"}, new RuntimeException("error"));
+        Assert.notEmptySupplier(new String[]{"a"}, () -> new RuntimeException("error"));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class AssertTest {
     @Test
     public void testNotEmpty13() {
         try {
-            Assert.notEmpty(new String[0], new RuntimeException("error"));
+            Assert.notEmptySupplier(new String[0], () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -239,7 +239,7 @@ public class AssertTest {
     @Test
     public void testNotEmpty16() {
         try {
-            Assert.notEmpty(Collections.emptyList(), new RuntimeException("error"));
+            Assert.notEmptySupplier(Collections.emptyList(), () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -275,7 +275,7 @@ public class AssertTest {
     @Test
     public void testNotEmpty19() {
         try {
-            Assert.notEmpty(Collections.emptyMap(), new RuntimeException("error"));
+            Assert.notEmptySupplier(Collections.emptyMap(), () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -298,7 +298,7 @@ public class AssertTest {
 
     @Test
     public void testHasText2() {
-        Assert.hasText("a", new RuntimeException("error"));
+        Assert.hasTextSupplier("a", () -> new RuntimeException("error"));
     }
 
     @Test
@@ -322,7 +322,7 @@ public class AssertTest {
     @Test
     public void testHasText5() {
         try {
-            Assert.hasText("  ", new RuntimeException("error"));
+            Assert.hasTextSupplier("  ", () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -345,7 +345,7 @@ public class AssertTest {
 
     @Test
     public void testHasLength2() {
-        Assert.hasLength("a", new RuntimeException("error"));
+        Assert.hasLengthSupplier("a", () -> new RuntimeException("error"));
     }
 
     @Test
@@ -369,7 +369,7 @@ public class AssertTest {
     @Test
     public void testHasLength5() {
         try {
-            Assert.hasLength("", new RuntimeException("error"));
+            Assert.hasLengthSupplier("", () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -379,7 +379,7 @@ public class AssertTest {
     public void testHasLength6() {
         char[] chars = new char[0];
         try {
-            Assert.hasLength(chars, new RuntimeException("error"));
+            Assert.hasLengthSupplier(chars, () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
@@ -432,7 +432,7 @@ public class AssertTest {
 
     @Test
     public void testNotNull2() {
-        Assert.notNull(notNullObject(), new RuntimeException("error"));
+        Assert.notNullSupplier(notNullObject(), () -> new RuntimeException("error"));
     }
 
     @Test
@@ -456,7 +456,7 @@ public class AssertTest {
     @Test
     public void testNotNull5() {
         try {
-            Assert.notNull(null, new RuntimeException("error"));
+            Assert.notNullSupplier(null, () -> new RuntimeException("error"));
         } catch (Exception e) {
             Assertions.assertEquals("error", e.getMessage());
         }
