@@ -27,7 +27,7 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 ### 2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.11'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.11'
 ```
 
 ### 2.3.编译安装
