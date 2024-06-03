@@ -73,11 +73,11 @@ public class Assert {
      * 表达式是否为真
      *
      * @param expression 表达式
-     * @param e          异常
+     * @param supplier   异常
      */
-    public static void isTrue(boolean expression, RuntimeException e) {
+    public static void isTrueSupplier(boolean expression, Supplier<RuntimeException> supplier) {
         if (!expression) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -118,11 +118,11 @@ public class Assert {
      * 表达式是否为假
      *
      * @param expression 表达式
-     * @param e          异常
+     * @param supplier   异常
      */
-    public static void isFalse(boolean expression, RuntimeException e) {
+    public static void isFalseSupplier(boolean expression, Supplier<RuntimeException> supplier) {
         if (expression) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -165,13 +165,13 @@ public class Assert {
     /**
      * 数组是否不为空且至少包含一个元素
      *
-     * @param array 数组
-     * @param e     异常
-     * @param <T>   对象类型
+     * @param array    数组
+     * @param supplier 异常
+     * @param <T>      对象类型
      */
-    public static <T> void notEmpty(T[] array, RuntimeException e) {
+    public static <T> void notEmptySupplier(T[] array, Supplier<RuntimeException> supplier) {
         if (ArrayUtils.isEmpty(array)) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -213,12 +213,12 @@ public class Assert {
     /**
      * 列表是否不为空且至少包含一个元素
      *
-     * @param list 列表
-     * @param e    异常
+     * @param list     列表
+     * @param supplier 异常
      */
-    public static void notEmpty(List<?> list, RuntimeException e) {
+    public static void notEmptySupplier(List<?> list, Supplier<RuntimeException> supplier) {
         if (CollectionUtils.isEmpty(list)) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -260,12 +260,12 @@ public class Assert {
     /**
      * map 是否不为空且至少包含一个元素
      *
-     * @param map map
-     * @param e   异常
+     * @param map      map
+     * @param supplier 异常
      */
-    public static void notEmpty(Map<?, ?> map, RuntimeException e) {
+    public static void notEmptySupplier(Map<?, ?> map, Supplier<RuntimeException> supplier) {
         if (Maps.isEmpty(map)) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -305,12 +305,12 @@ public class Assert {
     /**
      * 字符串是否不为空且至少包含一个非空白字符
      *
-     * @param text 字符串
-     * @param e    异常
+     * @param text     字符串
+     * @param supplier 异常
      */
-    public static void hasText(String text, RuntimeException e) {
+    public static void hasTextSupplier(String text, Supplier<RuntimeException> supplier) {
         if (!StringUtils.hasText(text)) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -350,12 +350,12 @@ public class Assert {
     /**
      * 字符串是否不为空且至少包含一个字符（可以为空白字符）
      *
-     * @param text 字符串
-     * @param e    异常
+     * @param text     字符串
+     * @param supplier 异常
      */
-    public static void hasLength(String text, RuntimeException e) {
+    public static void hasLengthSupplier(String text, Supplier<RuntimeException> supplier) {
         if (!StringUtils.hasLength(text)) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -377,9 +377,9 @@ public class Assert {
         }
     }
 
-    public static void hasLength(char[] chars, RuntimeException e) {
+    public static void hasLengthSupplier(char[] chars, Supplier<RuntimeException> supplier) {
         if (chars == null || chars.length == 0) {
-            throw e;
+            throw supplier.get();
         }
     }
 
@@ -421,12 +421,12 @@ public class Assert {
     /**
      * 对象是否不为空
      *
-     * @param object 对象
-     * @param e      异常
+     * @param object   对象
+     * @param supplier 异常
      */
-    public static void notNull(Object object, RuntimeException e) {
+    public static void notNullSupplier(Object object, Supplier<RuntimeException> supplier) {
         if (object == null) {
-            throw e;
+            throw supplier.get();
         }
     }
 
