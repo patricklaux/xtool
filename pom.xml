@@ -12,11 +12,24 @@
     <url>https://github.com/patricklaux/xtool</url>
 
     <properties>
+        <!-- third party start -->
+        <jupiter.version>5.10.2</jupiter.version>
+        <jackson.version>2.15.4</jackson.version>
+        <!-- third party end -->
+
+        <!-- maven plugin start -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.gpg.version>3.2.4</maven.gpg.version>
+        <maven.source.version>3.3.1</maven.source.version>
+        <maven.javadoc.version>3.7.0</maven.javadoc.version>
+        <jacoco.version>0.8.12</jacoco.version>
+        <nexus.staging.version>1.7.0</nexus.staging.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- maven plugin end -->
     </properties>
 
     <scm>
@@ -51,14 +64,14 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.2</version>
+            <version>${jupiter.version}</version>
             <scope>test</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.15.4</version>
+            <version>${jackson.version}</version>
             <scope>test</scope>
             <optional>true</optional>
         </dependency>
@@ -69,7 +82,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <!-- Prepares the property pointing to the JaCoCo runtime agent
                     which is passed as VM argument when Maven the Surefire plugin is executed. -->
@@ -91,7 +104,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>${maven.compiler.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -101,7 +114,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>${maven.javadoc.version}</version>
                 <configuration>
                     <encoding>${maven.compiler.encoding}</encoding>
                     <docencoding>${maven.compiler.encoding}</docencoding>
@@ -136,7 +149,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>${maven.source.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -149,7 +162,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.4</version>
+                        <version>${maven.gpg.version}</version>
                         <executions>
                             <execution>
                                 <phase>verify</phase>
@@ -162,7 +175,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.7.0</version>
+                        <version>${nexus.staging.version}</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
