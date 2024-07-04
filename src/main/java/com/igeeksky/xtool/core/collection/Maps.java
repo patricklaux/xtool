@@ -22,6 +22,7 @@ import com.igeeksky.xtool.core.lang.BooleanUtils;
 import com.igeeksky.xtool.core.math.NumberUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Map 工具类
@@ -30,6 +31,8 @@ import java.util.*;
  * @since 0.0.4 2021-10-21
  */
 public class Maps {
+
+    private static final float DEFAULT_LOAD_FACTOR = 0.75F;
 
     private Maps() {
     }
@@ -333,7 +336,15 @@ public class Maps {
     }
 
     public static <K, V> HashMap<K, V> newHashMap(int capacity) {
-        return new HashMap<>(capacity / 3 * 4 + 1);
+        return new HashMap<>((int) Math.ceil(capacity / DEFAULT_LOAD_FACTOR), DEFAULT_LOAD_FACTOR);
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(int capacity, float loadFactor) {
+        return new HashMap<>((int) Math.ceil(capacity / loadFactor), loadFactor);
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(Map<? extends K, ? extends V> map) {
+        return new HashMap<>(map);
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
@@ -341,6 +352,30 @@ public class Maps {
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(int capacity) {
-        return new LinkedHashMap<>(capacity / 3 * 4 + 1);
+        return new LinkedHashMap<>((int) Math.ceil(capacity / DEFAULT_LOAD_FACTOR), DEFAULT_LOAD_FACTOR);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(int capacity, float loadFactor) {
+        return new LinkedHashMap<>((int) Math.ceil(capacity / loadFactor), loadFactor);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<? extends K, ? extends V> map) {
+        return new LinkedHashMap<>(map);
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+        return new ConcurrentHashMap<>();
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(int capacity) {
+        return new ConcurrentHashMap<>((int) Math.ceil(capacity / DEFAULT_LOAD_FACTOR), DEFAULT_LOAD_FACTOR);
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(int capacity, float loadFactor) {
+        return new ConcurrentHashMap<>((int) Math.ceil(capacity / loadFactor), loadFactor);
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(Map<? extends K, ? extends V> map) {
+        return new ConcurrentHashMap<>(map);
     }
 }

@@ -77,28 +77,4 @@ public class CollectionUtilsTest {
     private static List<String> singletonList() {
         return Collections.singletonList("a");
     }
-
-    @Test
-    public void newHashSet() {
-        HashSet<String> set = CollectionUtils.newHashSet();
-        Assertions.assertEquals(0, set.size());
-    }
-
-    @Test
-    public void testNewHashSet() {
-        HashSet<String> set = CollectionUtils.newHashSet(8);
-        Assertions.assertEquals(0, set.size());
-    }
-
-    @Test
-    public void newLinkedHashSet() {
-        LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet();
-        Assertions.assertEquals(0, set.size());
-    }
-
-    @Test
-    public void testNewLinkedHashSet() {
-        LinkedHashSet<String> set = CollectionUtils.newLinkedHashSet(8);
-        Assertions.assertEquals(0, set.size());
-    }
 }

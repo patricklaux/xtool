@@ -18,8 +18,8 @@
         <!-- third party end -->
 
         <!-- maven plugin start -->
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.version>3.13.0</maven.compiler.version>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.gpg.version>3.2.4</maven.gpg.version>
