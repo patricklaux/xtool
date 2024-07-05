@@ -11,6 +11,9 @@ class PlatformThreadFactoryTest {
 
     private static final PlatformThreadFactory threadFactory = new PlatformThreadFactory("platform-thread-");
 
+    /**
+     * 创建新线程
+     */
     @Test
     void newThread() {
         for (int i = 0; i < 10; i++) {

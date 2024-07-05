@@ -1,16 +1,22 @@
 package com.igeeksky.xtool.core.collection;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Patrick.Lau
  * @since 1.0.0 2024/7/1
  */
-public class ConcurrentHashSet<E> extends AbstractSet<E> {
+public class ConcurrentHashSet<E> extends AbstractSet<E> implements Serializable {
 
-    private final ConcurrentMap<E, Boolean> delegate;
+    @Serial
+    private static final long serialVersionUID = 8822098000974922850L;
+
+    private static final Object PRESENT = new Object();
+
+    private final transient ConcurrentHashMap<E, Object> delegate;
 
     public ConcurrentHashSet() {
         this.delegate = new ConcurrentHashMap<>();
@@ -65,7 +71,7 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> {
 
     @Override
     public boolean add(E e) {
-        return this.delegate.put(e, Boolean.TRUE) == null;
+        return this.delegate.put(e, PRESENT) == null;
     }
 
     @Override
@@ -74,10 +80,15 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> {
     }
 
     @Override
+    public Spliterator<E> spliterator() {
+        return this.delegate.keySet().spliterator();
+    }
+
+    @Override
     public boolean retainAll(Collection<?> c) {
         Objects.requireNonNull(c);
         boolean modified = false;
-        Iterator<Map.Entry<E, Boolean>> it = this.delegate.entrySet().iterator();
+        Iterator<Map.Entry<E, Object>> it = this.delegate.entrySet().iterator();
         while (it.hasNext()) {
             if (!c.contains(it.next().getKey())) {
                 it.remove();
