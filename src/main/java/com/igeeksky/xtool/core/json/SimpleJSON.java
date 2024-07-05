@@ -36,7 +36,7 @@ public class SimpleJSON {
         }
 
         // 1. 处理简单对象（基本数据类型或其它一些数值类型）
-        if (obj instanceof String || obj instanceof Enum<?> || obj instanceof Character || obj instanceof Boolean || obj instanceof Number) {
+        if (obj instanceof CharSequence || obj instanceof Enum<?> || obj instanceof Character || obj instanceof Boolean || obj instanceof Number) {
             return obj.toString();
         }
 
@@ -266,7 +266,7 @@ public class SimpleJSON {
         if (key == null) {
             return;
         }
-        if (key instanceof String || key instanceof Enum<?> || key instanceof Character || key instanceof Boolean || key instanceof Number) {
+        if (key instanceof CharSequence || key instanceof Enum<?> || key instanceof Character || key instanceof Boolean || key instanceof Number) {
             builder.append(key);
             return;
         }
@@ -284,7 +284,7 @@ public class SimpleJSON {
             return;
         }
 
-        if (val instanceof String || val instanceof Enum<?> || val instanceof Character) {
+        if (val instanceof CharSequence || val instanceof Enum<?> || val instanceof Character) {
             builder.append("\"").append(val).append("\"");
             return;
         }

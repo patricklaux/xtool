@@ -23,12 +23,14 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Patrick.Lau
  * @since 1.0.1 2021-11-19
  */
 public class MapsTest {
+
 
     @Test
     public void isEmpty() {
@@ -628,24 +630,6 @@ public class MapsTest {
         Assertions.assertEquals("defaultValue must not be null", message);
     }
 
-    @Test
-    public void testNewHashMap() {
-        HashMap<String, String> map1 = Maps.newHashMap();
-        Assertions.assertEquals(0, map1.size());
-
-        HashMap<String, String> map2 = Maps.newHashMap(2);
-        Assertions.assertEquals(0, map2.size());
-    }
-
-    @Test
-    public void testNewLinkedHashMap() {
-        HashMap<String, String> map1 = Maps.newLinkedHashMap();
-        Assertions.assertEquals(0, map1.size());
-
-        HashMap<String, String> map2 = Maps.newLinkedHashMap(2);
-        Assertions.assertEquals(0, map2.size());
-    }
-
     private static Map<String, String> nullMap() {
         return null;
     }
@@ -657,4 +641,75 @@ public class MapsTest {
     private static Map<String, String> singletonMap() {
         return Collections.singletonMap("a", "a");
     }
+
+    @Test
+    void newHashMap() {
+        HashMap<String, String> map = Maps.newHashMap();
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testNewHashMap() {
+        HashMap<String, String> map = Maps.newHashMap(2);
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    void testNewHashMap1() {
+        int size = 5;
+        Map<Integer, Integer> temp = getHashMap(size);
+        HashMap<Integer, Integer> map = Maps.newHashMap(temp);
+        Assertions.assertEquals(size, map.size());
+    }
+
+    @Test
+    void newLinkedHashMap() {
+        HashMap<String, String> map = Maps.newLinkedHashMap();
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testNewLinkedHashMap() {
+        HashMap<String, String> map = Maps.newLinkedHashMap(2);
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    void testNewLinkedHashMap1() {
+        int size = 5;
+        Map<Integer, Integer> temp = getHashMap(size);
+        Map<Integer, Integer> map = Maps.newLinkedHashMap(temp);
+        Assertions.assertEquals(size, map.size());
+    }
+
+    @Test
+    void newConcurrentHashMap() {
+        ConcurrentHashMap<String, String> map = Maps.newConcurrentHashMap();
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    void testNewConcurrentHashMap() {
+        System.out.println((int) Math.ceil(Integer.MAX_VALUE / 0.75));
+        System.out.println(Integer.MAX_VALUE);
+        ConcurrentHashMap<String, String> map = Maps.newConcurrentHashMap(2);
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    void testNewConcurrentHashMap1() {
+        int size = 5;
+        Map<Integer, Integer> temp = getHashMap(size);
+        Map<Integer, Integer> map = Maps.newConcurrentHashMap(temp);
+        Assertions.assertEquals(size, map.size());
+    }
+
+    private static HashMap<Integer, Integer> getHashMap(int size) {
+        HashMap<Integer, Integer> temp = HashMap.newHashMap(size);
+        for (int i = 0; i < size; i++) {
+            temp.put(i, i);
+        }
+        return temp;
+    }
+
 }

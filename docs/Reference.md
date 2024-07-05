@@ -1,6 +1,6 @@
 ## xtool-1.0.10参考文档
 
-Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.10
+Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.11
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)  [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases)  [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits)  [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -26,14 +26,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
 </dependency>
 ```
 
 #### 1.2.2.Gradle
 
 ```groovy
-implementation 'com.igeeksky.xtool:xtool:1.0.10'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.10'
 ```
 
 #### 1.2.3.编译安装
@@ -1243,10 +1243,7 @@ public class IntegerValueTest {
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
-<div align=center>
-  <img src="images/trie.png" alt="trie" style="zoom: 50%;" />
-  <div align=center>图1</div>
-</div>
+![图1](images/trie.png)
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
@@ -1388,10 +1385,7 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
 ##### 8.1.2.2. 树的创建
 
-<div align=center>
-  <img src="images/trie_node.png" alt="trie_node" style="zoom: 50%;" />
-  <div align=center>图2</div>
-</div>
+![图2](images/trie_node.png)
 
 > 注：蓝色方框为数组，也就是节点定义里的 table，用于保存直接后缀节点。
 
@@ -1525,10 +1519,8 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 
 **主要方法：**
 
-<div align=center>
-<img src="images/trie_method.png" alt="trie_method" style="zoom: 67%;" />
-<div align=center>图3</div>
-</div>
+![图3](images/trie_method.png)
+
 方法比较多，先放上我设计时画的思维导图，再结合一些场景来写示例代码。
 
 ##### 8.1.3.1. Map 同名方法

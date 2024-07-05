@@ -205,6 +205,14 @@ class SimpleJSONTest {
         Assertions.assertEquals(expected, getCoder().toString());
     }
 
+    @Test
+    void toJSONString14() {
+        String expected = "test";
+        StringBuilder builder = new StringBuilder().append(expected);
+
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(builder));
+    }
+
     /**
      * 测试 null
      */

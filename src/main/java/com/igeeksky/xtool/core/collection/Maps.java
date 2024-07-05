@@ -22,6 +22,7 @@ import com.igeeksky.xtool.core.lang.BooleanUtils;
 import com.igeeksky.xtool.core.math.NumberUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Map 工具类
@@ -29,7 +30,9 @@ import java.util.*;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
-public class Maps {
+public final class Maps {
+
+    private static final double DEFAULT_LOAD_FACTOR = 0.75D;
 
     private Maps() {
     }
@@ -332,15 +335,40 @@ public class Maps {
         return new HashMap<>();
     }
 
-    public static <K, V> HashMap<K, V> newHashMap(int capacity) {
-        return new HashMap<>(capacity / 3 * 4 + 1);
+    public static <K, V> HashMap<K, V> newHashMap(int expectedSize) {
+        return new HashMap<>(calculateCapacity(expectedSize));
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(Map<? extends K, ? extends V> map) {
+        return new HashMap<>(map);
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
         return new LinkedHashMap<>();
     }
 
-    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(int capacity) {
-        return new LinkedHashMap<>(capacity / 3 * 4 + 1);
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(int expectedSize) {
+        return new LinkedHashMap<>(calculateCapacity(expectedSize));
     }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<? extends K, ? extends V> map) {
+        return new LinkedHashMap<>(map);
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+        return new ConcurrentHashMap<>();
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(int expectedSize) {
+        return new ConcurrentHashMap<>(calculateCapacity(expectedSize));
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap(Map<? extends K, ? extends V> map) {
+        return new ConcurrentHashMap<>(map);
+    }
+
+    private static int calculateCapacity(int expectedSize) {
+        return (int) Math.ceil(expectedSize / DEFAULT_LOAD_FACTOR);
+    }
+
 }
