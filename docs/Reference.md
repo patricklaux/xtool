@@ -865,6 +865,115 @@ public class ArrayUtilsTest {
 }
 ```
 
+### 4.4. Sets
+
+主要用于创建 Set
+
+```java
+class SetsTest {
+
+    /**
+     * 创建 HashSet
+     */
+    @Test
+    public void newHashSet() {
+        HashSet<String> set = Sets.newHashSet();
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 使用期望容量创建 HashSet
+     */
+    @Test
+    public void testNewHashSet() {
+        HashSet<String> set = Sets.newHashSet(8);
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 集合对象转换为 HashSet
+     */
+    @Test
+    public void testNewHashSet1() {
+        int size = 5;
+        ArrayList<Integer> list = getArrayList(size);
+        HashSet<Integer> set = Sets.newHashSet(list);
+        Assertions.assertEquals(size, set.size());
+    }
+
+    /**
+     * 创建 LinkedHashSet
+     */
+    @Test
+    public void newLinkedHashSet() {
+        LinkedHashSet<String> set = Sets.newLinkedHashSet();
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 使用期望容量创建 LinkedHashSet
+     */
+    @Test
+    public void testNewLinkedHashSet() {
+        LinkedHashSet<String> set = Sets.newLinkedHashSet(8);
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 集合对象转换为 LinkedHashSet
+     */
+    @Test
+    public void testNewLinkedHashSet1() {
+        int size = 5;
+        ArrayList<Integer> list = getArrayList(size);
+        LinkedHashSet<Integer> set = Sets.newLinkedHashSet(list);
+        Assertions.assertEquals(size, set.size());
+    }
+
+    /**
+     * 创建 ConcurrentHashSet
+     */
+    @Test
+    void newConcurrentHashSet() {
+        ConcurrentHashSet<String> set = Sets.newConcurrentHashSet();
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 使用期望容量创建 ConcurrentHashSet
+     */
+    @Test
+    void testNewConcurrentHashSet() {
+        ConcurrentHashSet<String> set = Sets.newConcurrentHashSet(1);
+        Assertions.assertEquals(0, set.size());
+    }
+
+    /**
+     * 集合对象转换为 LinkedHashSet
+     */
+    @Test
+    void testNewConcurrentHashSet1() {
+        int size = 5;
+        ArrayList<Integer> list = getArrayList(size);
+        ConcurrentHashSet<Integer> set = Sets.newConcurrentHashSet(list);
+        Assertions.assertEquals(size, set.size());
+    }
+
+    private static ArrayList<Integer> getArrayList(int size) {
+        ArrayList<Integer> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(i);
+        }
+        return list;
+    }
+
+}
+```
+
+### 4.5. ConcurrentHashSet
+
+类似于 HashSet 的实现，底层使用 ConcurrentHashMap 作为存储。
+
 ## 5. 安全工具类
 
 ### 5.1. DigestUtils
@@ -2356,3 +2465,8 @@ class SimpleJSONTest {
 }
 ```
 
+## 10. 线程与并发
+
+PlatformThreadFactory：平台线程池
+
+VirtualThreadFactory：虚拟线程池

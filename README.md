@@ -80,6 +80,7 @@ mvn clean install
 
 | 版本   | 说明                                                         |
 | ------ | ------------------------------------------------------------ |
+| 1.0.11 | 1. 添加 ConcurrentHashSet <br />2. 添加 PlatformThreadFactory<br />3. 添加 VirtualThreadFactory<br />4. 升级为支持 JDK 21，不再支持 JDK 17 |
 | 1.0.10 | 1. 添加 SimpleJSON（仅实现对象转 JSONString）<br />2. 升级为支持 JDK 17，不再支持 JDK 8 |
 | 1.0.9  | 1. 添加 RandomUtils                                          |
 | 1.0.8  | 1. 添加 Maps.newHashMap方法                                  |
