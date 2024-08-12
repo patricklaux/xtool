@@ -20,6 +20,7 @@ package com.igeeksky.xtool.core.function.tuple;
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -28,15 +29,10 @@ import java.util.function.Function;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
-public class Pair<K, V> implements Serializable {
-
-    private final K key;
-    private final V value;
+public record Pair<K, V>(K key, V value) implements Serializable {
 
     @ParameterNames({"key", "value"})
-    public Pair(K key, V value) {
-        this.key = key;
-        this.value = value;
+    public Pair {
     }
 
     /**
@@ -44,7 +40,8 @@ public class Pair<K, V> implements Serializable {
      *
      * @return 键
      */
-    public K getKey() {
+    @Override
+    public K key() {
         return key;
     }
 
@@ -53,8 +50,13 @@ public class Pair<K, V> implements Serializable {
      *
      * @return 值
      */
-    public V getValue() {
+    @Override
+    public V value() {
         return value;
+    }
+
+    public <K1, V1> Pair<K1, V1> map(Function<K, K1> keyMapper, Function<V, V1> valueMapper) {
+        return new Pair<>(keyMapper.apply(key), valueMapper.apply(value));
     }
 
     /**
@@ -99,25 +101,16 @@ public class Pair<K, V> implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Pair)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof Pair<?, ?> pair)) return false;
 
-        Pair<?, ?> pair = (Pair<?, ?>) o;
-
-        if (getKey() != null ? !getKey().equals(pair.getKey()) : pair.getKey() != null) {
-            return false;
-        }
-        return getValue() != null ? getValue().equals(pair.getValue()) : pair.getValue() == null;
+        return Objects.equals(key(), pair.key()) && Objects.equals(value(), pair.value());
     }
 
     @Override
     public int hashCode() {
-        int result = getKey() != null ? getKey().hashCode() : 0;
-        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        int result = Objects.hashCode(key());
+        result = 31 * result + Objects.hashCode(value());
         return result;
     }
 
@@ -129,4 +122,5 @@ public class Pair<K, V> implements Serializable {
                 + (null != value ? ((value instanceof String ? ("\"" + value + "\"") : value)) : "")
                 + "}";
     }
+
 }

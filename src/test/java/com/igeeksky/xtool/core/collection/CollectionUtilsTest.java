@@ -77,4 +77,5 @@ public class CollectionUtilsTest {
     private static List<String> singletonList() {
         return Collections.singletonList("a");
     }
+
 }

@@ -17,6 +17,7 @@
 
 package com.igeeksky.xtool.core.math;
 
+import com.igeeksky.xtool.core.lang.IntegerValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -29,13 +29,13 @@ public class PairTest {
     @Test
     public void getKey() {
         Pair<String, String> pair = Pairs.of("key", "value");
-        Assertions.assertEquals("key", pair.getKey());
+        Assertions.assertEquals("key", pair.key());
     }
 
     @Test
     public void getValue() {
         Pair<String, String> pair = Pairs.of("key", "value");
-        Assertions.assertEquals("value", pair.getValue());
+        Assertions.assertEquals("value", pair.value());
     }
 
     @Test
@@ -89,14 +89,14 @@ public class PairTest {
     public void mapKey() {
         Pair<String, String> pair = Pairs.of("key", "value");
         Pair<Integer, String> newPair = pair.mapKey((k) -> 1);
-        Assertions.assertEquals(Integer.valueOf(1), newPair.getKey());
+        Assertions.assertEquals(Integer.valueOf(1), newPair.key());
     }
 
     @Test
     public void mapValue() {
         Pair<String, String> pair = Pairs.of("key", "value");
         Pair<String, Integer> newPair = pair.mapValue((k) -> 1);
-        Assertions.assertEquals(Integer.valueOf(1), newPair.getValue());
+        Assertions.assertEquals(Integer.valueOf(1), newPair.value());
     }
 
     @Test
