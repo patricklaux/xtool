@@ -52,20 +52,25 @@ public class SimpleJSON {
      * @param obj 复杂对象
      */
     private static void process(Object obj, StringBuilder builder) {
-        if (obj == null) {
-            return;
-        }
+        switch (obj) {
+            case null -> {
+                return;
+            }
 
-        // 处理 Map 类型
-        if (obj instanceof Map<?, ?> map) {
-            processMap(map, builder);
-            return;
-        }
+            // 处理 Map 类型
+            case Map<?, ?> map -> {
+                processMap(map, builder);
+                return;
+            }
 
-        // 处理 Iterable 类型
-        if (obj instanceof Iterable<?> it) {
-            processIterable(it, builder);
-            return;
+            // 处理 Iterable 类型
+            case Iterable<?> it -> {
+                processIterable(it, builder);
+                return;
+            }
+
+            default -> {
+            }
         }
 
         // 处理基本类型数组

@@ -135,11 +135,11 @@ public class AvlNode<V> extends TreeNode<V> {
             }
         }
 
-        //原位置
+        // 原位置
         if (loHead != null) {
             setHeadToTable(newTab, loHead, lc, oldIndex, convertor);
         }
-        //原位置+oldCap
+        // 原位置+oldCap
         if (hiHead != null) {
             setHeadToTable(newTab, hiHead, hc, oldIndex + oldCap, convertor);
         }
@@ -313,7 +313,7 @@ public class AvlNode<V> extends TreeNode<V> {
                 // 查找左子树最大节点并交换删除节点
                 return swapPredecessor(del, dl);
             }
-            //没有子节点
+            // 没有子节点
             return null;
         }
         // 查找右子树最小节点并交换删除节点
@@ -434,34 +434,20 @@ public class AvlNode<V> extends TreeNode<V> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AvlNode)) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AvlNode<?> avlNode)) return false;
+        if (!super.equals(o)) return false;
 
-        AvlNode<?> avlNode = (AvlNode<?>) o;
-
-        if (height != avlNode.height) {
-            return false;
-        }
-        if (!Objects.equals(left, avlNode.left)) {
-            return false;
-        }
-        return Objects.equals(right, avlNode.right);
+        return height == avlNode.height && Objects.equals(left, avlNode.left) && Objects.equals(right, avlNode.right);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int) height;
-        result = 31 * result + (left != null ? left.hashCode() : 0);
-        result = 31 * result + (right != null ? right.hashCode() : 0);
+        result = 31 * result + height;
+        result = 31 * result + Objects.hashCode(left);
+        result = 31 * result + Objects.hashCode(right);
         return result;
     }
 
@@ -474,4 +460,5 @@ public class AvlNode<V> extends TreeNode<V> {
                 ((null != right) ? (", \"right\":" + right) : "") +
                 "}";
     }
+
 }

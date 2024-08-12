@@ -2,7 +2,6 @@ package com.igeeksky.xtool.core.concurrent;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Patrick.Lau
@@ -11,9 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class VirtualThreadFactory implements ThreadFactory {
 
     private final String prefix;
-    private final boolean inherit;
-    private final Thread.UncaughtExceptionHandler ueh;
-    private final AtomicLong counter = new AtomicLong(0L);
+    private final ThreadFactory factory;
 
     public VirtualThreadFactory(String prefix) {
         this(prefix, false, Thread.getDefaultUncaughtExceptionHandler());
@@ -29,21 +26,20 @@ public class VirtualThreadFactory implements ThreadFactory {
 
     public VirtualThreadFactory(String prefix, boolean inherit, Thread.UncaughtExceptionHandler ueh) {
         Objects.requireNonNull(prefix, "VirtualThreadFactory: prefix must not be null");
+        Thread.Builder.OfVirtual ofVirtual = Thread.ofVirtual()
+                .name(prefix, 0)
+                .inheritInheritableThreadLocals(inherit);
+        if (ueh != null) {
+            ofVirtual.uncaughtExceptionHandler(ueh);
+        }
         this.prefix = prefix;
-        this.inherit = inherit;
-        this.ueh = ueh;
+        this.factory = ofVirtual.factory();
     }
 
     @Override
     public Thread newThread(Runnable task) {
         Objects.requireNonNull(task, prefix + " VirtualThreadFactory: task must not be null");
-        Thread.Builder.OfVirtual ofVirtual = Thread.ofVirtual()
-                .name(prefix + counter.getAndIncrement())
-                .inheritInheritableThreadLocals(inherit);
-        if (ueh != null) {
-            return ofVirtual.uncaughtExceptionHandler(ueh).unstarted(task);
-        }
-        return ofVirtual.unstarted(task);
+        return factory.newThread(task);
     }
 
 }
