@@ -24,6 +24,7 @@ package com.igeeksky.xtool.core.lang;
  * @since 0.0.4 2021-10-21
  */
 public class BooleanUtils {
+
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
@@ -70,4 +71,5 @@ public class BooleanUtils {
             return defaultValue;
         }
     }
+
 }

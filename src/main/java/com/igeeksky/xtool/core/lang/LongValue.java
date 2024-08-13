@@ -15,35 +15,35 @@
  */
 
 
-package com.igeeksky.xtool.core.math;
+package com.igeeksky.xtool.core.lang;
 
 /**
- * int 值包装类 ！！非原子操作
+ * long 值包装类，！！非原子操作
  *
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-16
  */
-public class IntegerValue {
+public class LongValue {
 
-    private int value;
+    private long value;
 
-    public IntegerValue() {
+    public LongValue() {
     }
 
-    public IntegerValue(int initialValue) {
+    public LongValue(long initialValue) {
         value = initialValue;
     }
 
-    public final int get() {
+    public final long get() {
         return value;
     }
 
-    public final void set(int value) {
+    public final void set(long value) {
         this.value = value;
     }
 
-    public final int getAndSet(int newValue) {
-        int val = value;
+    public final long getAndSet(long newValue) {
+        long val = value;
         value = newValue;
         return val;
     }
@@ -52,11 +52,11 @@ public class IntegerValue {
         ++value;
     }
 
-    public final int incrementAndGet() {
+    public final long incrementAndGet() {
         return ++value;
     }
 
-    public final int getAndIncrement() {
+    public final long getAndIncrement() {
         return value++;
     }
 
@@ -64,11 +64,11 @@ public class IntegerValue {
         --value;
     }
 
-    public final int decrementAndGet() {
+    public final long decrementAndGet() {
         return --value;
     }
 
-    public final int getAndDecrement() {
+    public final long getAndDecrement() {
         return value--;
     }
 }

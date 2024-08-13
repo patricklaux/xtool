@@ -29,14 +29,14 @@ public class PairsTest {
     @Test
     public void of() {
         Pair<String, String> pair = Pairs.of("key", "value");
-        Assertions.assertEquals("key", pair.getKey());
-        Assertions.assertEquals("value", pair.getValue());
+        Assertions.assertEquals("key", pair.key());
+        Assertions.assertEquals("value", pair.value());
     }
 
     @Test
     public void emptyPair() {
         Pair<String, String> pair = Pairs.emptyPair();
-        Assertions.assertNull(pair.getKey());
-        Assertions.assertNull(pair.getValue());
+        Assertions.assertNull(pair.key());
+        Assertions.assertNull(pair.value());
     }
 }

@@ -52,19 +52,25 @@ public class SimpleJSON {
      * @param obj 复杂对象
      */
     private static void process(Object obj, StringBuilder builder) {
-        if (obj == null) {
-            return;
-        }
-        // 处理 Map 类型
-        if (obj instanceof Map) {
-            processMap((Map<?, ?>) obj, builder);
-            return;
-        }
+        switch (obj) {
+            case null -> {
+                return;
+            }
 
-        // 处理 Iterable 类型
-        if (obj instanceof Iterable) {
-            processIterable((Iterable<?>) obj, builder);
-            return;
+            // 处理 Map 类型
+            case Map<?, ?> map -> {
+                processMap(map, builder);
+                return;
+            }
+
+            // 处理 Iterable 类型
+            case Iterable<?> it -> {
+                processIterable(it, builder);
+                return;
+            }
+
+            default -> {
+            }
         }
 
         // 处理基本类型数组
@@ -75,8 +81,8 @@ public class SimpleJSON {
         }
 
         // 处理复杂对象数组
-        if (obj instanceof Object[]) {
-            processArray((Object[]) obj, builder);
+        if (obj instanceof Object[] objs) {
+            processArray(objs, builder);
             return;
         }
 
@@ -205,11 +211,11 @@ public class SimpleJSON {
 
         builder.append('{');
         for (Pair<char[], Method> property : properties) {
-            Method method = property.getValue();
+            Method method = property.value();
             if (method.canAccess(obj)) {
                 Object value = method.invoke(obj);
                 if (value != null) {
-                    builder.append('\"').append(property.getKey()).append("\":");
+                    builder.append('\"').append(property.key()).append("\":");
                     processValue(value, builder);
                     builder.append(',');
                 }

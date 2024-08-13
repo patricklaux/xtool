@@ -2,7 +2,6 @@ package com.igeeksky.xtool.core.concurrent;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Patrick.Lau
@@ -11,9 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PlatformThreadFactory implements ThreadFactory {
 
     private final String prefix;
-    private final boolean inherit;
-    private final Thread.UncaughtExceptionHandler ueh;
-    private final AtomicLong counter = new AtomicLong(0L);
+    private final ThreadFactory factory;
 
     public PlatformThreadFactory(String prefix) {
         this(prefix, false, Thread.getDefaultUncaughtExceptionHandler());
@@ -28,22 +25,22 @@ public class PlatformThreadFactory implements ThreadFactory {
     }
 
     public PlatformThreadFactory(String prefix, boolean inherit, Thread.UncaughtExceptionHandler ueh) {
-        Objects.requireNonNull(prefix, "VirtualThreadFactory: prefix must not be null");
+        Objects.requireNonNull(prefix, "PlatformThreadFactory: prefix must not be null");
         this.prefix = prefix;
-        this.inherit = inherit;
-        this.ueh = ueh;
+
+        Thread.Builder.OfPlatform ofPlatform = Thread.ofPlatform()
+                .name(prefix, 0)
+                .inheritInheritableThreadLocals(inherit);
+        if (ueh != null) {
+            ofPlatform.uncaughtExceptionHandler(ueh);
+        }
+        this.factory = ofPlatform.factory();
     }
 
     @Override
     public Thread newThread(Runnable task) {
         Objects.requireNonNull(task, prefix + " PlatformThreadFactory: task must not be null");
-        Thread.Builder.OfPlatform ofPlatform = Thread.ofPlatform()
-                .name(prefix + counter.getAndIncrement())
-                .inheritInheritableThreadLocals(inherit);
-        if (ueh != null) {
-            return ofPlatform.uncaughtExceptionHandler(ueh).unstarted(task);
-        }
-        return ofPlatform.unstarted(task);
+        return this.factory.newThread(task);
     }
 
 }

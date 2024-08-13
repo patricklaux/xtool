@@ -29,10 +29,20 @@ import java.util.function.Function;
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-21
  */
-public record Pair<K, V>(K key, V value) implements Serializable {
+public class KeyValue<K, V> implements Serializable {
+
+    private final K key;
+
+    private final V value;
+
+    public KeyValue() {
+        this(null, null);
+    }
 
     @ParameterNames({"key", "value"})
-    public Pair {
+    public KeyValue(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
 
     /**
@@ -40,8 +50,7 @@ public record Pair<K, V>(K key, V value) implements Serializable {
      *
      * @return 键
      */
-    @Override
-    public K key() {
+    public K getKey() {
         return key;
     }
 
@@ -50,13 +59,8 @@ public record Pair<K, V>(K key, V value) implements Serializable {
      *
      * @return 值
      */
-    @Override
-    public V value() {
+    public V getValue() {
         return value;
-    }
-
-    public <K1, V1> Pair<K1, V1> map(Function<K, K1> keyMapper, Function<V, V1> valueMapper) {
-        return new Pair<>(keyMapper.apply(key), valueMapper.apply(value));
     }
 
     /**
@@ -66,8 +70,8 @@ public record Pair<K, V>(K key, V value) implements Serializable {
      * @param <R>    转换类型
      * @return 包含转换后的对象的新的 Pair
      */
-    public <R> Pair<R, V> mapKey(Function<K, R> mapper) {
-        return new Pair<>(mapper.apply(key), value);
+    public <R> KeyValue<R, V> mapKey(Function<K, R> mapper) {
+        return new KeyValue<>(mapper.apply(key), value);
     }
 
     /**
@@ -77,9 +81,23 @@ public record Pair<K, V>(K key, V value) implements Serializable {
      * @param <R>    转换类型
      * @return 包含转换后的对象的新的 Pair
      */
-    public <R> Pair<K, R> mapValue(Function<V, R> mapper) {
-        return new Pair<>(key, mapper.apply(value));
+    public <R> KeyValue<K, R> mapValue(Function<V, R> mapper) {
+        return new KeyValue<>(key, mapper.apply(value));
     }
+
+    /**
+     * 将当前 KeyValue 对象中的键和值映射为新的键和值
+     *
+     * @param keyMapper 转换函数：用于将当前 KeyValue 对象的键转换为新键
+     * @param valueMapper 转换函数：用于将当前 KeyValue 对象的值转换为新值
+     * @param <K1> 新键的类型
+     * @param <V1> 新值的类型
+     * @return 包含映射后键值对的新的KeyValue对象
+     */
+    public <K1, V1> KeyValue<K1, V1> map(Function<K, K1> keyMapper, Function<V, V1> valueMapper) {
+        return new KeyValue<>(keyMapper.apply(key), valueMapper.apply(value));
+    }
+
 
     /**
      * 是否包含键
@@ -102,15 +120,15 @@ public record Pair<K, V>(K key, V value) implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pair<?, ?> pair)) return false;
+        if (!(o instanceof KeyValue<?, ?> keyValue)) return false;
 
-        return Objects.equals(key(), pair.key()) && Objects.equals(value(), pair.value());
+        return Objects.equals(getKey(), keyValue.getKey()) && Objects.equals(getValue(), keyValue.getValue());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(key());
-        result = 31 * result + Objects.hashCode(value());
+        int result = Objects.hashCode(getKey());
+        result = 31 * result + Objects.hashCode(getValue());
         return result;
     }
 

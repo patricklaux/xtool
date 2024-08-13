@@ -83,4 +83,5 @@ public class TrieConstants {
 
     public static final int REDUCE_RANGE_4 = 4;
     public static final int REDUCE_THRESHOLD_4 = 2;
+
 }

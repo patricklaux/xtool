@@ -15,9 +15,7 @@
  */
 
 
-package com.igeeksky.xtool.core.math;
-
-import com.igeeksky.xtool.core.lang.StringUtils;
+package com.igeeksky.xtool.core.lang;
 
 /**
  * 数值工具类

@@ -19,7 +19,7 @@ package com.igeeksky.xtool.core.collection;
 
 import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.lang.BooleanUtils;
-import com.igeeksky.xtool.core.math.NumberUtils;
+import com.igeeksky.xtool.core.lang.NumberUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
