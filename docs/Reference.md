@@ -26,14 +26,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
 </dependency>
 ```
 
 #### 1.2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.13'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.14'
 ```
 
 #### 1.2.3.编译安装
@@ -107,24 +107,6 @@ public class Pair<K, V> {
     }
 
     // ......
-}
-```
-
-### 2.2. @Perfect
-
-**完美代码标识**
-
-此注解可用于类、构造器、方法和字段；仅存在于源码。
-
-对于确信已经完美而无需再行修改的代码，可使用此注解进行标识。
-
-软件项目常常会有大量代码，因此需要标注已解决问题，从而让我们可以集中精力去解决未知问题，这个注解正是起到这样的作用。
-
-```java
-
-@Perfect
-public class ConcurrentHashTrie<V> implements Trie<V> {
-    //......
 }
 ```
 
