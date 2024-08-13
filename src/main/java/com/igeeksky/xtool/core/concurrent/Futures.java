@@ -41,7 +41,7 @@ public class Futures {
         } catch (TimeoutException e) {
             return i;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ConcurrentException(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class Futures {
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new ConcurrentException(e);
         }
     }
 

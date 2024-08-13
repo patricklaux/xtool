@@ -2,7 +2,10 @@ package com.igeeksky.xtool.core.collection;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,28 +17,31 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Serializable
     @Serial
     private static final long serialVersionUID = 8822098000974922850L;
 
-    private static final Object PRESENT = new Object();
-
-    private final transient ConcurrentHashMap<E, Object> delegate;
+    private final ConcurrentHashMap.KeySetView<E, Boolean> delegate;
 
     public ConcurrentHashSet() {
-        this.delegate = new ConcurrentHashMap<>();
+        ConcurrentHashMap<E, Boolean> map = new ConcurrentHashMap<>();
+        this.delegate = map.keySet(Boolean.TRUE);
     }
 
     public ConcurrentHashSet(int initialCapacity) {
-        this.delegate = new ConcurrentHashMap<>(initialCapacity);
+        ConcurrentHashMap<E, Boolean> map = new ConcurrentHashMap<>(initialCapacity);
+        this.delegate = map.keySet(Boolean.TRUE);
     }
 
     public ConcurrentHashSet(int initialCapacity, float loadFactor) {
-        this.delegate = new ConcurrentHashMap<>(initialCapacity, loadFactor);
+        ConcurrentHashMap<E, Boolean> map = new ConcurrentHashMap<>(initialCapacity, loadFactor);
+        this.delegate = map.keySet(Boolean.TRUE);
     }
 
     public ConcurrentHashSet(int initialCapacity, float loadFactor, int concurrencyLevel) {
-        this.delegate = new ConcurrentHashMap<>(initialCapacity, loadFactor, concurrencyLevel);
+        ConcurrentHashMap<E, Boolean> map = new ConcurrentHashMap<>(initialCapacity, loadFactor, concurrencyLevel);
+        this.delegate = map.keySet(Boolean.TRUE);
     }
 
     public ConcurrentHashSet(Collection<? extends E> c) {
-        this.delegate = new ConcurrentHashMap<>((int) Math.ceil(c.size() / 0.75f));
+        ConcurrentHashMap<E, Boolean> map = new ConcurrentHashMap<>((int) Math.ceil(c.size() / 0.75f));
+        this.delegate = map.keySet(Boolean.TRUE);
         addAll(c);
     }
 
@@ -51,51 +57,42 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Serializable
 
     @Override
     public boolean contains(Object o) {
-        return delegate.containsKey(o);
+        return this.delegate.contains(o);
     }
 
     @Override
     public Iterator<E> iterator() {
-        return this.delegate.keySet().iterator();
+        return this.delegate.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return this.delegate.keySet().toArray();
+        return this.delegate.toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.delegate.keySet().toArray(a);
+        return this.delegate.toArray(a);
     }
 
     @Override
     public boolean add(E e) {
-        return this.delegate.put(e, PRESENT) == null;
+        return this.delegate.add(e);
     }
 
     @Override
     public boolean remove(Object o) {
-        return this.delegate.remove(o) != null;
+        return this.delegate.remove(o);
     }
 
     @Override
     public Spliterator<E> spliterator() {
-        return this.delegate.keySet().spliterator();
+        return this.delegate.spliterator();
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        Objects.requireNonNull(c);
-        boolean modified = false;
-        Iterator<Map.Entry<E, Object>> it = this.delegate.entrySet().iterator();
-        while (it.hasNext()) {
-            if (!c.contains(it.next().getKey())) {
-                it.remove();
-                modified = true;
-            }
-        }
-        return modified;
+        return delegate.retainAll(c);
     }
 
     @Override
