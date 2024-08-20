@@ -114,6 +114,37 @@ public class ArrayUtils {
         return isEmpty(array) ? null : array[array.length - 1];
     }
 
+
+    /**
+     * 使用指定元素填充数组
+     *
+     * @param array 待填充的数组
+     * @param obj   用于填充数组的元素
+     * @return 已填充指定元素的泛型数组（原数组）
+     */
+    public static <T> T[] fill(T[] array, T obj) {
+        // 使用Arrays.fill方法对数组进行填充
+        Arrays.fill(array, obj);
+        // 返回填充后的数组
+        return array;
+    }
+
+
+    /**
+     * 根据指定大小和值创建并填充一个泛型数组
+     *
+     * @param size 数组的大小
+     * @param t    需要填充到数组的元素
+     * @return 已填充指定元素的泛型数组
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] fill(int size, T t) {
+        T[] array = (T[]) new Object[size];
+        Arrays.fill(array, t);
+        return array;
+    }
+
+
     /**
      * 拼接多个对象数组
      *
