@@ -123,9 +123,7 @@ public class ArrayUtils {
      * @return 已填充指定元素的泛型数组（原数组）
      */
     public static <T> T[] fill(T[] array, T obj) {
-        // 使用Arrays.fill方法对数组进行填充
         Arrays.fill(array, obj);
-        // 返回填充后的数组
         return array;
     }
 
