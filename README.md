@@ -20,14 +20,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.14</version>
+    <version>1.0.15</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.14'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.15'
 ```
 
 ### 2.3.编译安装
@@ -78,8 +78,9 @@ mvn clean install
 
 ## 4. 更新日志
 
-| 版本   | 说明                                                         |
-| ------ | ------------------------------------------------------------ |
+| 版本     | 说明                                                         |
+|--------| ------------------------------------------------------------ |
+| 1.0.14 | 1. add Codec <br />2. add Compressor |
 | 1.0.13 | 1. add Futures <br />2. add ByteArray <br />3. add KeyValue & ExpireKeyValue |
 | 1.0.12 | 1. 修改部分文档说明                                          |
 | 1.0.11 | 1. 添加 ConcurrentHashSet <br />2. 添加 PlatformThreadFactory<br />3. 添加 VirtualThreadFactory<br />4. 升级为支持 JDK 21，不再支持 JDK 17 |
