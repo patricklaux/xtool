@@ -1,7 +1,7 @@
 package com.igeeksky.xtool.core.lang;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 随机工具类
@@ -25,7 +25,22 @@ public class RandomUtils {
 
     private static final char[] NUM_LC_UC = ArrayUtils.concat(NUM, LC, UC);
 
+    private static final int COUNT = 128;
+    private static final int MASK = COUNT - 1;
+    private static final Random[] RANDOMS = new Random[COUNT];
+    private static final AtomicInteger INDEX = new AtomicInteger(0);
+
+    static {
+        for (int i = 0; i < RANDOMS.length; i++) {
+            RANDOMS[i] = new Random();
+        }
+    }
+
     private RandomUtils() {
+    }
+
+    private static Random random() {
+        return RANDOMS[INDEX.getAndIncrement() & MASK];
     }
 
     /**
@@ -155,18 +170,17 @@ public class RandomUtils {
     }
 
     private static char[] nextCharArrayPrivate(int len, char[] chars) {
-        if (len < 0) {
-            throw new IllegalArgumentException("Len must be non-negative.");
+        Assert.isTrue(len >= 0, "Len must be non-negative.");
+
+        if (len == 0) {
+            return new char[0];
         }
 
         char[] result = new char[len];
-        if (len == 0) return result;
 
-        int bound = chars.length;
-        Random random = ThreadLocalRandom.current();
-
+        Random random = random();
         for (int i = 0; i < len; i++) {
-            result[i] = chars[random.nextInt(bound)];
+            result[i] = chars[random.nextInt(chars.length)];
         }
 
         return result;
@@ -179,14 +193,12 @@ public class RandomUtils {
      * @return 随机字节数组
      */
     public static byte[] nextBytes(int len) {
-        if (len < 0) {
-            throw new IllegalArgumentException("Len must be non-negative.");
-        }
+        Assert.isTrue(len >= 0, "Len must be non-negative.");
 
         byte[] bytes = new byte[len];
         if (len == 0) return bytes;
 
-        ThreadLocalRandom.current().nextBytes(bytes);
+        random().nextBytes(bytes);
         return bytes;
     }
 
@@ -196,7 +208,7 @@ public class RandomUtils {
      * @param bytes 用户给定的字节数组
      */
     public static void nextBytes(byte[] bytes) {
-        ThreadLocalRandom.current().nextBytes(bytes);
+        random().nextBytes(bytes);
     }
 
     /**
@@ -205,7 +217,7 @@ public class RandomUtils {
      * @return 随机 int 值： 0 &lt;= result &lt; Integer.MAX_VALUE
      */
     public static int nextInt() {
-        return ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
+        return random().nextInt(Integer.MAX_VALUE);
     }
 
     /**
@@ -232,7 +244,7 @@ public class RandomUtils {
         if (startInclusive >= endExclusive) {
             throw new IllegalArgumentException("EndExclusive must be greater than startInclusive.");
         }
-        return ThreadLocalRandom.current().nextInt(endExclusive - startInclusive) + startInclusive;
+        return random().nextInt(endExclusive - startInclusive) + startInclusive;
     }
 
     /**
@@ -241,7 +253,7 @@ public class RandomUtils {
      * @return 随机 long 值： 0 &lt;= result &lt; Long.MAX_VALUE
      */
     public static long nextLong() {
-        return ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
+        return random().nextLong(Long.MAX_VALUE);
     }
 
     /**
@@ -251,7 +263,7 @@ public class RandomUtils {
      * @return 随机 long 值： 0 &lt;= result &lt; endExclusive
      */
     public static long nextLong(long endExclusive) {
-        return ThreadLocalRandom.current().nextLong(endExclusive);
+        return random().nextLong(endExclusive);
     }
 
     /**
@@ -268,7 +280,7 @@ public class RandomUtils {
         if (startInclusive >= endExclusive) {
             throw new IllegalArgumentException("EndExclusive must be greater than startInclusive.");
         }
-        return ThreadLocalRandom.current().nextLong(endExclusive - startInclusive) + startInclusive;
+        return random().nextLong(endExclusive - startInclusive) + startInclusive;
     }
 
     /**
@@ -307,7 +319,7 @@ public class RandomUtils {
         if (endInclusive == startInclusive) {
             return startInclusive;
         }
-        return startInclusive + ((endInclusive - startInclusive) * ThreadLocalRandom.current().nextFloat());
+        return startInclusive + ((endInclusive - startInclusive) * random().nextFloat());
     }
 
     /**
@@ -346,7 +358,7 @@ public class RandomUtils {
         if (endInclusive == startInclusive) {
             return startInclusive;
         }
-        return startInclusive + ((endInclusive - startInclusive) * ThreadLocalRandom.current().nextDouble());
+        return startInclusive + ((endInclusive - startInclusive) * random().nextDouble());
     }
 
     /**
@@ -355,7 +367,7 @@ public class RandomUtils {
      * @return 随机 boolean 值
      */
     public static boolean nextBoolean() {
-        return ThreadLocalRandom.current().nextBoolean();
+        return random().nextBoolean();
     }
 
 }
