@@ -78,9 +78,11 @@ mvn clean install
 
 ## 4. 更新日志
 
-| 版本     | 说明                                                         |
-|--------| ------------------------------------------------------------ |
-| 1.0.14 | 1. add Codec <br />2. add Compressor |
+| 版本   | 说明                                                         |
+| ------ | ------------------------------------------------------------ |
+| 1.0.16 | remove ThreadLocalRandom，change to Random[]                 |
+| 1.0.15 | add ArrayUtils.fill                                          |
+| 1.0.14 | 1. add Codec <br />2. add Compressor                         |
 | 1.0.13 | 1. add Futures <br />2. add ByteArray <br />3. add KeyValue & ExpireKeyValue |
 | 1.0.12 | 1. 修改部分文档说明                                          |
 | 1.0.11 | 1. 添加 ConcurrentHashSet <br />2. 添加 PlatformThreadFactory<br />3. 添加 VirtualThreadFactory<br />4. 升级为支持 JDK 21，不再支持 JDK 17 |
