@@ -31,7 +31,7 @@ public class RandomUtils {
     private static final AtomicInteger INDEX = new AtomicInteger(0);
 
     static {
-        for (int i = 0; i < RANDOMS.length; i++) {
+        for (int i = 0; i < COUNT; i++) {
             RANDOMS[i] = new Random();
         }
     }

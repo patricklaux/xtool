@@ -1,6 +1,11 @@
 ## xtool
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases) [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits) [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) 
+[![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases) 
+![Maven](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg) 
+[![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool) 
+[![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits) 
+[![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## 1. 简介
 
