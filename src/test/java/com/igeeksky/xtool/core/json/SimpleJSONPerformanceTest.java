@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 class SimpleJSONPerformanceTest {
 
     /**
-     * SimpleJSON 性能： 100 万次，耗时 2463 毫秒
+     * SimpleJSON 性能： 100 万次，耗时 2344 毫秒
      * <p>
      * Jackson 性能：100 万次，耗时 1469 毫秒
      * <p>
@@ -31,7 +31,7 @@ class SimpleJSONPerformanceTest {
     void toJSONString1() {
         Coder[] array = getCoders();
 
-        String expected = "[{\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"1\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"1\",\"age\":18,\"address\":\"Shenzhen\"},{\"id\":\"2\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U9\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"2\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"2\",\"age\":19,\"address\":\"Shenzhen\"}]";
+        String expected = "[{\"name\":\"1\",\"age\":18,\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}},{\"name\":\"2\",\"age\":19,\"address\":\"Shenzhen\",\"id\":\"2\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U9\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"2\"}}]";
         String simple = null;
 
         long start = System.currentTimeMillis();
@@ -92,7 +92,7 @@ class SimpleJSONPerformanceTest {
     void toJSONString3() {
         Coder coder = getCoder();
 
-        String expected = "{\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"1\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\"}";
+        String expected = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}}";
         String simple = null;
 
         long start = System.currentTimeMillis();

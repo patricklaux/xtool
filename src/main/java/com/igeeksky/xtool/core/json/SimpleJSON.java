@@ -2,15 +2,10 @@ package com.igeeksky.xtool.core.json;
 
 import com.igeeksky.xtool.core.collection.Maps;
 import com.igeeksky.xtool.core.function.tuple.Pair;
-import com.igeeksky.xtool.core.function.tuple.Pairs;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -198,10 +193,10 @@ public class SimpleJSON {
     /**
      * 自定义对象类型 转换为 String
      */
-    private static void processBean(Object obj, StringBuilder builder) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    private static void processBean(Object obj, StringBuilder builder) throws InvocationTargetException, IllegalAccessException {
         Class<?> clazz = obj.getClass();
 
-        List<Pair<char[], Method>> properties = getType(clazz).getProperties();
+        List<Pair<char[], Method>> properties = getType(clazz).properties();
 
         int size = properties.size();
         if (size == 0) {
@@ -230,37 +225,13 @@ public class SimpleJSON {
         }
     }
 
-    private static JavaType getType(Class<?> rawClass) throws IntrospectionException {
+    private static JavaType getType(Class<?> rawClass) {
         JavaType type = TYPE_MAP.get(rawClass);
         if (type != null) {
             return type;
         }
 
-        type = new JavaType();
-
-        Class<?> superclass = rawClass.getSuperclass();
-        Field[] fields = rawClass.getDeclaredFields();
-        Field[] superFields = superclass.getDeclaredFields();
-
-        List<Pair<char[], Method>> pairs = new ArrayList<>(fields.length + superFields.length);
-        readProperties(fields, rawClass, pairs);
-        readProperties(superFields, rawClass, pairs);
-
-        type.setProperties(pairs);
-
-        TYPE_MAP.put(rawClass, type);
-        return type;
-    }
-
-    private static void readProperties(Field[] fields, Class<?> clazz, List<Pair<char[], Method>> pairs) throws IntrospectionException {
-        for (Field field : fields) {
-            String name = field.getName();
-            PropertyDescriptor descriptor = new PropertyDescriptor(name, clazz);
-            Method readMethod = descriptor.getReadMethod();
-            if (readMethod != null) {
-                pairs.add(Pairs.of(name.toCharArray(), readMethod));
-            }
-        }
+        return TYPE_MAP.computeIfAbsent(rawClass, clazz -> new JavaType(MethodResolver.resolveReadMethod(clazz)));
     }
 
     /**
@@ -303,17 +274,8 @@ public class SimpleJSON {
         process(val, builder);
     }
 
-    private static class JavaType {
+    private record JavaType(List<Pair<char[], Method>> properties) {
 
-        private List<Pair<char[], Method>> properties;
-
-        public List<Pair<char[], Method>> getProperties() {
-            return properties;
-        }
-
-        public void setProperties(List<Pair<char[], Method>> properties) {
-            this.properties = properties;
-        }
     }
 
 }
