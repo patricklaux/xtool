@@ -27,16 +27,12 @@ class SimpleJSONTest {
     /**
      * 与Jackson对比，两者可能有差异
      * <p>
-     * 1. SimpleJSON 仅包含非空值；Jackson 可以通过设置 JsonInclude.Include.NON_NULL 来仅包含非空值
-     * <p>
-     * 2. SimpleJSON 先序列化当前类的属性，然后再序列化父类的属性；但 Jackson 是先序列化父类属性，再序列化当前类的属性。
+     * SimpleJSON 仅包含非空值；Jackson 可以通过设置 JsonInclude.Include.NON_NULL 来仅包含非空值
      */
     @Test
     void toJSONString() throws JsonProcessingException {
-
-        String expected1 = "{\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"1\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\"}";
-        String expected2 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}}";
-        String expected3 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"address\":null,\"id\":\"1\",\"car\":null,\"partner\":null}}";
+        String expected1 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}}";
+        String expected2 = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"address\":null,\"id\":\"1\",\"car\":null,\"partner\":null}}";
 
         Coder coder = getCoder();
 
@@ -50,14 +46,14 @@ class SimpleJSONTest {
         ObjectMapper mapper = getObjectMapper();
         String jackson = mapper.writeValueAsString(coder);
         System.out.println(jackson);
-        Assertions.assertEquals(expected2, jackson);
+        Assertions.assertEquals(expected1, jackson);
 
 
         // Jackson 序列化结果 2
         ObjectMapper mapper2 = new ObjectMapper();
         String jackson2 = mapper2.writeValueAsString(coder);
         System.out.println(jackson2);
-        Assertions.assertEquals(expected3, jackson2);
+        Assertions.assertEquals(expected2, jackson2);
     }
 
     /**
@@ -102,13 +98,10 @@ class SimpleJSONTest {
 
     /**
      * 测试：Map
-     * <p>
-     * 与 Jackson对比，两者有差异（Jackson 先序列化父类属性，再序列化子类属性； SimpleJSON 则相反）
      */
     @Test
     void toJSONString3() throws JsonProcessingException {
-        String expected = "{\"{\\\"id\\\":\\\"2\\\",\\\"name\\\":\\\"2\\\",\\\"age\\\":19}\":{\"id\":\"2\",\"name\":\"2\",\"age\":19},\"{\\\"id\\\":\\\"1\\\",\\\"name\\\":\\\"1\\\",\\\"age\\\":18}\":{\"id\":\"1\",\"name\":\"1\",\"age\":18}}";
-        String expected2 = "{\"{\\\"id\\\":\\\"2\\\",\\\"name\\\":\\\"2\\\",\\\"age\\\":19}\":{\"name\":\"2\",\"age\":19,\"id\":\"2\"},\"{\\\"id\\\":\\\"1\\\",\\\"name\\\":\\\"1\\\",\\\"age\\\":18}\":{\"name\":\"1\",\"age\":18,\"id\":\"1\"}}";
+        String expected = "{\"{\\\"name\\\":\\\"2\\\",\\\"age\\\":19,\\\"id\\\":\\\"2\\\"}\":{\"name\":\"2\",\"age\":19,\"id\":\"2\"},\"{\\\"name\\\":\\\"1\\\",\\\"age\\\":18,\\\"id\\\":\\\"1\\\"}\":{\"name\":\"1\",\"age\":18,\"id\":\"1\"}}";
 
         Map<Coder, Coder> map = new HashMap<>();
         Coder coder1 = new Coder("1", "1", 18);
@@ -117,18 +110,18 @@ class SimpleJSONTest {
         Coder coder2 = new Coder("2", "2", 19);
         map.put(coder2, coder2);
 
-        // SimpleJSON 序列化结果（先序列化子类属性，后序列化父类属性）
+        // SimpleJSON 序列化结果
         String simple = SimpleJSON.toJSONString(map);
         System.out.println(simple);
         System.out.println("simple.length: " + simple.length());
         Assertions.assertEquals(expected, simple);
 
-        // Jackson 序列化结果（先序列化父类属性，后序列化子类属性）
+        // Jackson 序列化结果
         ObjectMapper mapper = getObjectMapper();
         String jackson = mapper.writeValueAsString(map);
         System.out.println(jackson);
         System.out.println("jackson.length: " + jackson.length());
-        Assertions.assertEquals(expected2, jackson);
+        Assertions.assertEquals(expected, jackson);
     }
 
     @Test
@@ -138,25 +131,33 @@ class SimpleJSONTest {
         Assertions.assertEquals(String.valueOf(1), result);
     }
 
+    /**
+     * 测试：Set
+     */
     @Test
-    void toJSONString5() {
+    void toJSONString5() throws JsonProcessingException {
         Set<Coder> coders = new LinkedHashSet<>();
         coders.add(new Coder("1", "1", 18));
         coders.add(new Coder("2", "2", 19));
 
-        String json = "[{\"id\":\"1\",\"name\":\"1\",\"age\":18},{\"id\":\"2\",\"name\":\"2\",\"age\":19}]";
-        Assertions.assertEquals(json, SimpleJSON.toJSONString(coders));
+        String expected = "[{\"name\":\"1\",\"age\":18,\"id\":\"1\"},{\"name\":\"2\",\"age\":19,\"id\":\"2\"}]";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(coders));
+        Assertions.assertEquals(expected, getObjectMapper().writeValueAsString(coders));
     }
 
+    /**
+     * 测试：数组
+     */
     @Test
-    void toJSONString6() {
+    void toJSONString6() throws JsonProcessingException {
         Coder coder1 = new Coder("1", "1", 18);
         Coder coder2 = new Coder("2", "2", 19);
 
         Coder[] array = new Coder[]{coder1, coder2};
 
-        String json = "[{\"id\":\"1\",\"name\":\"1\",\"age\":18},{\"id\":\"2\",\"name\":\"2\",\"age\":19}]";
-        Assertions.assertEquals(json, SimpleJSON.toJSONString(array));
+        String expected = "[{\"name\":\"1\",\"age\":18,\"id\":\"1\"},{\"name\":\"2\",\"age\":19,\"id\":\"2\"}]";
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(array));
+        Assertions.assertEquals(expected, getObjectMapper().writeValueAsString(array));
     }
 
     @Test
@@ -201,9 +202,10 @@ class SimpleJSONTest {
     }
 
     @Test
-    void toJSONString13() {
-        String expected = "{\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"id\":\"1\",\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\"},\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\"}";
+    void toJSONString13() throws JsonProcessingException {
+        String expected = "{\"name\":\"李白\",\"age\":18,\"sex\":\"MALE\",\"address\":\"Shenzhen\",\"id\":\"1\",\"car\":{\"brand\":\"BYD\",\"model\":\"仰望U8\",\"color\":\"Moonlight Silver\",\"year\":1},\"partner\":{\"name\":\"null\",\"age\":18,\"sex\":\"FEMALE\",\"id\":\"1\"}}";
         Assertions.assertEquals(expected, getCoder().toString());
+        Assertions.assertEquals(expected, getObjectMapper().writeValueAsString(getCoder()));
     }
 
     @Test
