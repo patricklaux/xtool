@@ -1,7 +1,6 @@
 package com.igeeksky.xtool.core.lang;
 
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 随机工具类
@@ -28,7 +27,6 @@ public class RandomUtils {
     private static final int COUNT = 128;
     private static final int MASK = COUNT - 1;
     private static final Random[] RANDOMS = new Random[COUNT];
-    private static final AtomicInteger INDEX = new AtomicInteger(0);
 
     static {
         for (int i = 0; i < COUNT; i++) {
@@ -40,7 +38,7 @@ public class RandomUtils {
     }
 
     private static Random random() {
-        return RANDOMS[INDEX.getAndIncrement() & MASK];
+        return RANDOMS[(int) Thread.currentThread().threadId() & MASK];
     }
 
     /**
