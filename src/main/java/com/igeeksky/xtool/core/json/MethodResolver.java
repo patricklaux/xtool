@@ -22,7 +22,7 @@ public class MethodResolver {
     private static final String IS_PREFIX = "is";
     private static final String GET_PREFIX = "get";
 
-    public static List<Pair<char[], Method>> resolveReadMethod(Class<?> beanClass) {
+    public static List<Pair<char[], FieldReader>> resolveReadMethod(Class<?> beanClass) {
         if (beanClass == null || beanClass == Object.class) {
             return List.of();
         }
@@ -37,12 +37,12 @@ public class MethodResolver {
         List<Class<?>> reversed = classes.reversed();
 
         Map<String, Field> fields = getDeclaredFields(reversed);
-        Map<String, Method> methods = getDeclaredMethods(reversed);
+        Map<String, List<Method>> methods = getDeclaredMethods(reversed);
 
-        Map<String, Method> readMethods = resolveReadMethod(fields, methods);
+        Map<String, FieldReader> readMethods = resolveReadMethod(fields, methods);
 
-        List<Pair<char[], Method>> properties = new ArrayList<>(readMethods.size());
-        for (Map.Entry<String, Method> entry : readMethods.entrySet()) {
+        List<Pair<char[], FieldReader>> properties = new ArrayList<>(readMethods.size());
+        for (Map.Entry<String, FieldReader> entry : readMethods.entrySet()) {
             properties.add(Pairs.of(entry.getKey().toCharArray(), entry.getValue()));
         }
 
@@ -75,12 +75,12 @@ public class MethodResolver {
         return result;
     }
 
-    private static Map<String, Method> resolveReadMethod(Map<String, Field> fields, Map<String, Method> methods) {
+    private static Map<String, FieldReader> resolveReadMethod(Map<String, Field> fields, Map<String, List<Method>> methods) {
         if (fields.isEmpty() || methods.isEmpty()) {
             return Map.of();
         }
 
-        Map<String, Method> readMethods = Maps.newLinkedHashMap(fields.size());
+        Map<String, FieldReader> readMethods = Maps.newLinkedHashMap(fields.size());
 
         for (Map.Entry<String, Field> entry : fields.entrySet()) {
             String fieldName = entry.getKey();
@@ -95,25 +95,40 @@ public class MethodResolver {
                 readMethodName = nextReadMethodName = GET_PREFIX + capitalized;
             }
 
-            Method readMethod = methods.get(readMethodName);
-            if (readMethod == null) {
-                if (readMethodName.equals(nextReadMethodName)) {
-                    continue;
-                }
-                readMethod = methods.get(nextReadMethodName);
-            }
-
+            Method readMethod = getReadMethod(methods.get(readMethodName));
             if (readMethod != null) {
-                validateReadMethod(readMethod);
-                readMethods.put(fieldName, readMethod);
+                readMethods.put(fieldName, new FieldReader(field, readMethod));
+                continue;
+            }
+            if (readMethodName.equals(nextReadMethodName)) {
+                continue;
+            }
+            readMethod = getReadMethod(methods.get(nextReadMethodName));
+            if (readMethod != null) {
+                readMethods.put(fieldName, new FieldReader(field, readMethod));
+            }
+            if (Modifier.isPublic(field.getModifiers())) {
+                readMethods.put(fieldName, new FieldReader(field));
             }
         }
 
         return readMethods;
     }
 
-    private static Map<String, Method> getDeclaredMethods(List<Class<?>> classes) {
-        Map<String, Method> methodMap = Maps.newHashMap();
+    private static Method getReadMethod(List<Method> methods) {
+        if (methods == null) {
+            return null;
+        }
+        for (Method method : methods) {
+            if (validateReadMethod(method)) {
+                return method;
+            }
+        }
+        return null;
+    }
+
+    private static Map<String, List<Method>> getDeclaredMethods(List<Class<?>> classes) {
+        Map<String, List<Method>> methodMap = Maps.newHashMap();
         for (Class<?> clazz : classes) {
             Method[] declaredMethods = clazz.getDeclaredMethods();
             for (Method method : declaredMethods) {
@@ -127,22 +142,20 @@ public class MethodResolver {
                 boolean isAbstract = Modifier.isAbstract(modifiers);
                 boolean isTransient = Modifier.isTransient(modifiers);
                 if (isPublic && !isAbstract && !isTransient) {
-                    methodMap.put(method.getName(), method);
+                    List<Method> methods = methodMap.computeIfAbsent(method.getName(), k -> new ArrayList<>());
+                    methods.add(method);
                 }
             }
         }
         return methodMap;
     }
 
-    private static void validateReadMethod(Method readMethod) {
+    private static boolean validateReadMethod(Method readMethod) {
         Class<?> returnType = readMethod.getReturnType();
         if (returnType == Void.TYPE) {
-            throw new IllegalStateException("readMethod: " + readMethod + " returns void");
+            return false;
         }
-        int parameterCount = readMethod.getParameterCount();
-        if (parameterCount != 0) {
-            throw new IllegalStateException("readMethod: " + readMethod + ", bad read method arg count: " + parameterCount);
-        }
+        return readMethod.getParameterCount() == 0;
     }
 
 }

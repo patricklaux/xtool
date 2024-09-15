@@ -5,7 +5,6 @@ import com.igeeksky.xtool.core.function.tuple.Pair;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -196,7 +195,7 @@ public class SimpleJSON {
     private static void processBean(Object obj, StringBuilder builder) throws InvocationTargetException, IllegalAccessException {
         Class<?> clazz = obj.getClass();
 
-        List<Pair<char[], Method>> properties = getType(clazz).properties();
+        List<Pair<char[], FieldReader>> properties = getType(clazz).properties();
 
         int size = properties.size();
         if (size == 0) {
@@ -205,15 +204,13 @@ public class SimpleJSON {
         }
 
         builder.append('{');
-        for (Pair<char[], Method> property : properties) {
-            Method method = property.value();
-            if (method.canAccess(obj)) {
-                Object value = method.invoke(obj);
-                if (value != null) {
-                    builder.append('\"').append(property.key()).append("\":");
-                    processValue(value, builder);
-                    builder.append(',');
-                }
+        for (Pair<char[], FieldReader> property : properties) {
+            FieldReader fieldReader = property.value();
+            Object value = fieldReader.read(obj);
+            if (value != null) {
+                builder.append('\"').append(property.key()).append("\":");
+                processValue(value, builder);
+                builder.append(',');
             }
         }
 
@@ -274,7 +271,7 @@ public class SimpleJSON {
         process(val, builder);
     }
 
-    private record JavaType(List<Pair<char[], Method>> properties) {
+    private record JavaType(List<Pair<char[], FieldReader>> properties) {
 
     }
 
