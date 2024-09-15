@@ -80,6 +80,7 @@ mvn clean install
 
 | 版本   | 说明                                                         |
 | ------ | ------------------------------------------------------------ |
+| 1.0.19 | 优化 SimpleJSON 实现：如果 field 为 public，即使无 readMethod，也读取属性值 |
 | 1.0.18 | 优化 RandomUtils 实现，通过 threadId 计算 index ，并获取数组对应 index 的 Random 实例 |
 | 1.0.17 | 优化 SimpleJSON 实现，仅获取 readMethod，支持非标准 JavaBean |
 | 1.0.16 | remove ThreadLocalRandom，change to Random[]                 |
