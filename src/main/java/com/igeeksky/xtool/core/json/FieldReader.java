@@ -29,7 +29,9 @@ public class FieldReader {
                 return readMethod.invoke(obj);
             }
         } else {
-            return field.get(obj);
+            if (field.canAccess(obj)) {
+                return field.get(obj);
+            }
         }
         return null;
     }
