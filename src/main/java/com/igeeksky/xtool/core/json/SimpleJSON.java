@@ -5,6 +5,7 @@ import com.igeeksky.xtool.core.function.tuple.Pair;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -69,14 +70,17 @@ public class SimpleJSON {
 
         // 处理基本类型数组
         Class<?> clazz = obj.getClass();
-        if (clazz.isArray() && clazz.getComponentType().isPrimitive()) {
-            processPrimitiveArray(obj, builder);
-            return;
-        }
-
-        // 处理复杂对象数组
-        if (obj instanceof Object[] objs) {
-            processArray(objs, builder);
+        if (clazz.isArray()) {
+            // 处理复杂对象数组
+            if (obj instanceof Object[] objects) {
+                processObjectArray(objects, builder);
+                return;
+            }
+            Class<?> type = clazz.getComponentType();
+            if (type != null && type.isPrimitive()) {
+                processPrimitiveArray(obj, builder);
+                return;
+            }
             return;
         }
 
@@ -140,7 +144,7 @@ public class SimpleJSON {
     /**
      * 对象数组 转换为 String
      */
-    private static void processArray(Object[] objects, StringBuilder builder) {
+    private static void processObjectArray(Object[] objects, StringBuilder builder) {
         int length = objects.length;
         if (length == 0) {
             builder.append("[]");
@@ -173,6 +177,11 @@ public class SimpleJSON {
         Object base = Array.get(obj, 0);
         if (base instanceof Character) {
             builder.append((char[]) obj);
+            return;
+        }
+
+        if (base instanceof Byte) {
+            builder.append("\"").append(new String(Base64.getEncoder().encode((byte[]) obj))).append("\"");
             return;
         }
 

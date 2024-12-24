@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.igeeksky.xtool.core.domain.Car;
 import com.igeeksky.xtool.core.domain.Coder;
 import com.igeeksky.xtool.core.domain.Sex;
+import com.igeeksky.xtool.core.lang.ByteArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -226,6 +227,24 @@ class SimpleJSONTest {
         Assertions.assertEquals(expected, getObjectMapper().writeValueAsString(null));
 
         Assertions.assertEquals(expected, SimpleJSON.toJSONString(null));
+    }
+
+    /**
+     * 测试 byte[]
+     */
+    @Test
+    void toJSONString16() throws JsonProcessingException {
+        String expected = "{\"value\":\"MTIz\"}";
+
+        ByteArray array = ByteArray.wrap("123".getBytes());
+
+        System.out.println(getObjectMapper().writeValueAsString(array));
+
+        System.out.println(SimpleJSON.toJSONString(array));
+
+        Assertions.assertEquals(expected, SimpleJSON.toJSONString(array));
+
+        Assertions.assertEquals(expected, getObjectMapper().writeValueAsString(array));
     }
 
     private static Coder getCoder() {

@@ -5,6 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
+ * String 序列化器
+ *
  * @author Patrick.Lau
  * @since 1.0.14 2024/8/15
  */
@@ -29,6 +31,9 @@ public class StringCodec implements Codec<String> {
     }
 
     public static StringCodec getInstance(Charset charset) {
+        if (charset == null) {
+            throw new CodecException("charset must not be null");
+        }
         if (Objects.equals(StandardCharsets.UTF_8, charset)) {
             return UTF_8;
         }
