@@ -20,14 +20,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.20</version>
+    <version>1.0.21</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.20'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.21'
 ```
 
 ### 2.3.编译安装
@@ -80,6 +80,8 @@ mvn clean install
 
 | 版本   | 说明                                                         |
 | ------ | ------------------------------------------------------------ |
+| 1.0.21 | KeyValue 和 ByteArray 增加静态方法                           |
+| 1.0.20 | Futures 增加 awaitAll 方法                                   |
 | 1.0.19 | 优化 SimpleJSON 实现：如果 field 为 public，即使无 readMethod，也读取属性值 |
 | 1.0.18 | 优化 RandomUtils 实现，通过 threadId 计算 index ，并获取数组对应 index 的 Random 实例 |
 | 1.0.17 | 优化 SimpleJSON 实现，仅获取 readMethod，支持非标准 JavaBean |

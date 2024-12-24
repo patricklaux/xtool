@@ -113,4 +113,111 @@ public class ArrayUtilsTest {
     private String[] singletonArray() {
         return new String[]{"1"};
     }
+
+    @Test
+    public void isEmpty_ByteArray_Null_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isEmpty(nullBytes()));
+    }
+
+    @Test
+    public void isEmpty_ByteArray_Empty_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isEmpty(emptyBytes()));
+    }
+
+    @Test
+    public void isEmpty_ByteArray_NonEmpty_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isEmpty(singletonBytes()));
+    }
+
+    @Test
+    public void isNotEmpty_ByteArray_Null_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(nullBytes()));
+    }
+
+    @Test
+    public void isNotEmpty_ByteArray_Empty_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(emptyBytes()));
+    }
+
+    @Test
+    public void isNotEmpty_ByteArray_NonEmpty_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isNotEmpty(singletonBytes()));
+    }
+
+    @Test
+    public void isEmpty_ObjectArray_Null_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isEmpty(nullArray()));
+    }
+
+    @Test
+    public void isEmpty_ObjectArray_Empty_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isEmpty(emptyArray()));
+    }
+
+    @Test
+    public void isEmpty_ObjectArray_NonEmpty_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isEmpty(singletonArray()));
+    }
+
+    @Test
+    public void isNotEmpty_ObjectArray_Null_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(nullArray()));
+    }
+
+    @Test
+    public void isNotEmpty_ObjectArray_Empty_ReturnsFalse() {
+        Assertions.assertFalse(ArrayUtils.isNotEmpty(emptyArray()));
+    }
+
+    @Test
+    public void isNotEmpty_ObjectArray_NonEmpty_ReturnsTrue() {
+        Assertions.assertTrue(ArrayUtils.isNotEmpty(singletonArray()));
+    }
+
+    @Test
+    public void getFirst_ObjectArray_NonEmpty_ReturnsFirstElement() {
+        String[] array = new String[]{"a", "b", "c", "d"};
+        Assertions.assertEquals("a", ArrayUtils.getFirst(array));
+    }
+
+    @Test
+    public void getFirst_ByteArray_NonEmpty_ReturnsFirstElement() {
+        Byte expected = 1;
+        byte[] bytes = new byte[]{1, 2, 3, 4};
+        Assertions.assertEquals(expected, ArrayUtils.getFirst(bytes));
+    }
+
+    @Test
+    public void getLast_ObjectArray_NonEmpty_ReturnsLastElement() {
+        String[] array = new String[]{"a", "b", "c", "d"};
+        Assertions.assertEquals("d", ArrayUtils.getLast(array));
+    }
+
+    @Test
+    public void getLast_ByteArray_NonEmpty_ReturnsLastElement() {
+        Byte expected = 4;
+        byte[] bytes = new byte[]{1, 2, 3, 4};
+        Assertions.assertEquals(expected, ArrayUtils.getLast(bytes));
+    }
+
+    @Test
+    public void concat_ObjectArrays_ConcatenatesArrays() {
+        String[] array1 = new String[]{"a", "b", "c", "d"};
+        String[] array2 = new String[]{"e", "f", "g", "h"};
+        Assertions.assertEquals("[a, b, c, d, e, f, g, h]", Arrays.toString(ArrayUtils.concat(array1, array2)));
+    }
+
+    @Test
+    public void concat_ByteArrays_ConcatenatesArrays() {
+        byte[] array1 = new byte[]{1, 2, 3, 4};
+        byte[] array2 = new byte[]{5, 6, 7, 8};
+        Assertions.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8]", Arrays.toString(ArrayUtils.concat(array1, array2)));
+    }
+
+    @Test
+    public void concat_CharArrays_ConcatenatesArrays() {
+        char[] array1 = new char[]{'a', 'b', 'c', 'd'};
+        char[] array2 = new char[]{'e', 'f', 'g', 'h'};
+        Assertions.assertEquals("[a, b, c, d, e, f, g, h]", Arrays.toString(ArrayUtils.concat(array1, array2)));
+    }
 }

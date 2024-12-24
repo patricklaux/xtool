@@ -2,6 +2,7 @@ package com.igeeksky.xtool.core.function.tuple;
 
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
+import java.io.Serial;
 import java.util.function.Function;
 
 /**
@@ -9,6 +10,11 @@ import java.util.function.Function;
  * @since 1.0.0 2024/8/13
  */
 public class ExpiryKeyValue<K, V> extends KeyValue<K, V> {
+
+    @Serial
+    private static final long serialVersionUID = -1L;
+
+    private static final ExpiryKeyValue<?, ?> EMPTY = new ExpiryKeyValue<>(null, null, 0);
 
     private final long ttl;
 
@@ -49,19 +55,28 @@ public class ExpiryKeyValue<K, V> extends KeyValue<K, V> {
         return new ExpiryKeyValue<>(keyMapper.apply(getKey()), valueMapper.apply(getValue()), ttl);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <K, V> ExpiryKeyValue<K, V> empty() {
+        return (ExpiryKeyValue<K, V>) EMPTY;
+    }
+
+    public static <K, V> ExpiryKeyValue<K, V> create(K key, V value, long ttl) {
+        return new ExpiryKeyValue<>(key, value, ttl);
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ExpiryKeyValue<?, ?> that)) return false;
         if (!super.equals(o)) return false;
 
-        return getTtl() == that.getTtl();
+        return ttl == that.ttl;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + Long.hashCode(getTtl());
+        result = 31 * result + Long.hashCode(ttl);
         return result;
     }
 

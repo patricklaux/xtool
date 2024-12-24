@@ -19,6 +19,7 @@ package com.igeeksky.xtool.core.function.tuple;
 
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -31,13 +32,14 @@ import java.util.function.Function;
  */
 public class KeyValue<K, V> implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -1L;
+
+    private static final KeyValue<?, ?> EMPTY = new KeyValue<>(null, null);
+
     private final K key;
 
     private final V value;
-
-    public KeyValue() {
-        this(null, null);
-    }
 
     @ParameterNames({"key", "value"})
     public KeyValue(K key, V value) {
@@ -88,16 +90,15 @@ public class KeyValue<K, V> implements Serializable {
     /**
      * 将当前 KeyValue 对象中的键和值映射为新的键和值
      *
-     * @param keyMapper 转换函数：用于将当前 KeyValue 对象的键转换为新键
+     * @param keyMapper   转换函数：用于将当前 KeyValue 对象的键转换为新键
      * @param valueMapper 转换函数：用于将当前 KeyValue 对象的值转换为新值
-     * @param <K1> 新键的类型
-     * @param <V1> 新值的类型
+     * @param <K1>        新键的类型
+     * @param <V1>        新值的类型
      * @return 包含映射后键值对的新的KeyValue对象
      */
     public <K1, V1> KeyValue<K1, V1> map(Function<K, K1> keyMapper, Function<V, V1> valueMapper) {
         return new KeyValue<>(keyMapper.apply(key), valueMapper.apply(value));
     }
-
 
     /**
      * 是否包含键
@@ -117,6 +118,15 @@ public class KeyValue<K, V> implements Serializable {
         return null != value;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <K, V> KeyValue<K, V> empty() {
+        return (KeyValue<K, V>) EMPTY;
+    }
+
+    public static <K, V> KeyValue<K, V> create(K key, V value) {
+        return new KeyValue<>(key, value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,8 +137,8 @@ public class KeyValue<K, V> implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(getKey());
-        result = 31 * result + Objects.hashCode(getValue());
+        int result = Objects.hashCode(key);
+        result = 31 * result + Objects.hashCode(value);
         return result;
     }
 
