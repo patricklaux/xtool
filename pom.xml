@@ -15,7 +15,7 @@
         <!-- third party start -->
         <jupiter.version>5.11.4</jupiter.version>
         <jackson.version>2.18.2</jackson.version>
-        <!-- third party end -->
+        <!-- third party  end -->
 
         <!-- maven plugin start -->
         <maven.compiler.source>21</maven.compiler.source>
