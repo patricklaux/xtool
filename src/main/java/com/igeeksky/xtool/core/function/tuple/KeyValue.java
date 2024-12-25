@@ -19,7 +19,6 @@ package com.igeeksky.xtool.core.function.tuple;
 
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
@@ -31,9 +30,6 @@ import java.util.function.Function;
  * @since 0.0.4 2021-10-21
  */
 public class KeyValue<K, V> implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = -1L;
 
     private static final KeyValue<?, ?> EMPTY = new KeyValue<>(null, null);
 

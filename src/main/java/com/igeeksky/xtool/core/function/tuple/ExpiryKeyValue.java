@@ -2,7 +2,6 @@ package com.igeeksky.xtool.core.function.tuple;
 
 import com.igeeksky.xtool.core.annotation.ParameterNames;
 
-import java.io.Serial;
 import java.util.function.Function;
 
 /**
@@ -10,9 +9,6 @@ import java.util.function.Function;
  * @since 1.0.0 2024/8/13
  */
 public class ExpiryKeyValue<K, V> extends KeyValue<K, V> {
-
-    @Serial
-    private static final long serialVersionUID = -1L;
 
     private static final ExpiryKeyValue<?, ?> EMPTY = new ExpiryKeyValue<>(null, null, 0);
 
