@@ -6,15 +6,15 @@
 
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.22</version>
+    <version>1.0.23</version>
     <name>xtool</name>
     <description>xtool is a very small set of Java tools.</description>
     <url>https://github.com/patricklaux/xtool</url>
 
     <properties>
         <!-- third party start -->
-        <jupiter.version>5.10.2</jupiter.version>
-        <jackson.version>2.15.4</jackson.version>
+        <jupiter.version>5.11.4</jupiter.version>
+        <jackson.version>2.18.2</jackson.version>
         <!-- third party end -->
 
         <!-- maven plugin start -->
