@@ -85,38 +85,11 @@ mvn clean install
 
 ------
 
-## 2. 自定义注解
+## 2. 常用工具类
 
-### 2.1. @ParameterNames
+### 2.1. StringUtils
 
-**记录参数名称**
-
-此注解可用于构造器和方法；运行期可读取。
-
-JDK 1.8 之前不记录构造器和方法的参数名称；JDK 1.8 及之后的版本可以通过在编译时指定 -parameters来记录参数名称（默认不记录），但 Jar 包体积会增大。
-
-如果我们需要反射生成的类是可以确定的，那么可以使用此注解来记录参数名，反射时再读取此注解来获取参数名。
-
-```java
-public class Pair<K, V> {
-
-    @ParameterNames({"key", "value"})
-    public Pair(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    // ......
-}
-```
-
-------
-
-## 3. 常用工具类
-
-### 3.1. StringUtils
-
-#### 3.1.1. hasText 与 hasLength
+#### 2.1.1. hasText 与 hasLength
 
 **判断字符串是否为空或空白**
 
@@ -180,7 +153,7 @@ public class StringUtilsTest {
 }
 ```
 
-#### 3.1.2. trim 与 trimToNull
+#### 2.1.2. trim 与 trimToNull
 
 **去除空白字符**
 
@@ -246,7 +219,7 @@ public class StringUtilsTest {
 }
 ```
 
-#### 3.1.3. toUpperCase 与 toLowerCase
+#### 2.1.3. toUpperCase 与 toLowerCase
 
 **字符串大小写转换**
 
@@ -284,7 +257,7 @@ public class StringUtilsTest {
 }
 ```
 
-#### 3.1.4. capitalize 与 unCapitalize
+#### 2.1.4. capitalize 与 unCapitalize
 
 **字符串的首字符大小写转换**
 
@@ -325,9 +298,9 @@ public class StringUtilsTest {
 }
 ```
 
-### 3.2. NumberUtils
+### 2.2. NumberUtils
 
-#### 3.2.1. toXXX 转换为数值
+#### 2.2.1. toXXX 转换为数值
 
 - toLong(Object original) ：无默认值，返回值为包装类型（转换异常时抛出异常）；
 
@@ -427,9 +400,9 @@ public class NumberUtilsTest {
 
 > **提示**：另外，还有 *toInteger*、*toShort*、 *toByte*、 *toDouble*、 *toFloat* 方法，与 *toLong* 类似，略。
 
-### 3.3. BooleanUtils
+### 2.3. BooleanUtils
 
-#### 3.3.1. toBoolean 转换为布尔值
+#### 2.3.1. toBoolean 转换为布尔值
 
 此方法与 NumberUtils.toXXX() 类似。
 
@@ -509,19 +482,19 @@ public class BooleanUtilsTest {
 }
 ```
 
-### 3.4. IOUtils
+### 2.4. IOUtils
 
 IOUtils 提供了关闭流 和 复制流的静态方法，比较简单，略。
 
-#### 3.4.1. close 关闭流
+#### 2.4.1. close 关闭流
 
 详见接口文档，略。
 
-#### 3.4.2. copy 复制流
+#### 2.4.2. copy 复制流
 
 详见接口文档，略。
 
-### 3.5. IOException
+### 2.5. IOException
 
 关闭流或复制流时如果发生了异常，通常我们什么都不能做，因此用这个类将 java.io.IOException 转换为 RuntimeException。
 
@@ -533,9 +506,9 @@ public class IOException extends RuntimeException {
 }
 ```
 
-### 3.6. Assert 断言
+### 2.6. Assert 断言
 
-#### 3.6.1. 主要方法
+#### 2.6.1. 主要方法
 
 - isTrue 判断表达式是否为真
 - isFalse 判断表达式是否为假
@@ -544,7 +517,7 @@ public class IOException extends RuntimeException {
 - hasLength 判断字符串是否不为空且至少有一个字符（可以为空白字符）
 - notNull 判断对象是否不为空
 
-#### 3.6.2. 参数说明
+#### 2.6.2. 参数说明
 
 每个方法都支持三种不同的入参，调用者可以自行选择：
 
@@ -552,11 +525,11 @@ public class IOException extends RuntimeException {
 - Supplier<String> supplier 异常信息提供者（只有在真的发生异常时才调用supplier.get()方法获取异常提示信息，避免产生字符串对象）
 - Supplier<RuntimeException> supplier 自定义的异常提供者
 
-#### 3.6.3. 默认异常类型：
+#### 2.6.3. 默认异常类型：
 
 java.lang.IllegalArgumentException
 
-#### 3.6.4. 代码示例
+#### 2.6.4. 代码示例
 
 ```java
 public class AssertTest {
@@ -589,11 +562,11 @@ public class AssertTest {
 
 ------
 
-## 4. 集合与数组
+## 3. 集合与数组
 
-### 4.1. CollectionUtils
+### 3.1. CollectionUtils
 
-#### 4.1.1. isEmpty 与 isNotEmpty
+#### 3.1.1. isEmpty 与 isNotEmpty
 
 ```java
 public class CollectionUtilsTest {
@@ -636,7 +609,7 @@ public class CollectionUtilsTest {
 }
 ```
 
-#### 4.1.2. concat 多个集合拼接
+#### 3.1.2. concat 多个集合拼接
 
 *concat*(Collection<E>... collections) 方法是可变参数，支持多个集合的拼接。
 
@@ -664,13 +637,13 @@ public class MapsTest {
 
 如果您有某个方法经常要用而又不想写重复代码，欢迎提交 pr 或 issue！
 
-### 4.2. Maps
+### 3.2. Maps
 
-#### 4.2.1. isEmpty 与 isNotEmpty
+#### 3.2.1. isEmpty 与 isNotEmpty
 
 其处理逻辑与 **CollectionUtils.isEmpty** 相似，略。
 
-#### 4.2.2. 合并两个 map
+#### 3.2.2. 合并两个 map
 
 sourceMap 的 *key-value* 合并到 targetMap
 
@@ -705,7 +678,7 @@ public class MapsTest {
 > - 只有 targetMap 没有的key ，才从 sourceMap 中复制到 targetMap ；targetMap 已有的 key，一律保留原值（即使值为空）。
 > - targetMap 不能为 *Collections.emptyMap()*、*Collections.singletonMap()* …… 等无法添加元素的 map
 
-#### 4.2.3. 获取Map中的值并转换成目标类型
+#### 3.2.3. 获取Map中的值并转换成目标类型
 
 - **getLong(Map<K,V> map, K key)  无默认值**
 
@@ -785,13 +758,13 @@ public class MapsTest {
 >
 > - *Maps.getLong* 、*Maps.getInteger* …… 等方法其实是调用了 NumberUtils.toXXX 和 BooleanUtils.toBoolean，因此响应逻辑是一致的。
 
-### 4.3. ArrayUtils
+### 3.3. ArrayUtils
 
-#### 4.3.1. isEmpty 与 isNotEmpty
+#### 3.3.1. isEmpty 与 isNotEmpty
 
 支持泛型数组和 byte数组，其处理逻辑与 **CollectionUtils.isEmpty** 相似，略。
 
-#### 4.3.2. getFirst与getLast
+#### 3.3.2. getFirst与getLast
 
 - **getFirst**：获取数组的第一个元素；
 - **getLast**：获取数组的最后一个元素。
@@ -821,7 +794,7 @@ public class ArrayUtilsTest {
 }
 ```
 
-#### 4.3.3. concat 多个数组拼接
+#### 3.3.3. concat 多个数组拼接
 
 其处理逻辑与 **CollectionUtils.concat ** 相似，不同点：
 
@@ -847,7 +820,7 @@ public class ArrayUtilsTest {
 }
 ```
 
-### 4.4. Sets
+### 3.4. Sets
 
 主要用于创建 Set
 
@@ -952,17 +925,17 @@ class SetsTest {
 }
 ```
 
-### 4.5. ConcurrentHashSet
+### 3.5. ConcurrentHashSet
 
 类似于 HashSet 的实现，底层使用 ConcurrentHashMap 作为存储。
 
-## 5. 安全工具类
+## 4. 安全工具类
 
-### 5.1. DigestUtils
+### 4.1. DigestUtils
 
 **摘要信息工具类**
 
-#### 5.1.1. 支持算法
+#### 4.1.1. 支持算法
 
 - MD5
 - SHA-1
@@ -971,13 +944,13 @@ class SetsTest {
 - SHA-384
 - SHA-512
 
-#### 5.1.2. 参数说明
+#### 4.1.2. 参数说明
 
 - String text 字符串 （或 byte []）
 - Charset charset 字符编码（可省略，默认为 StandardCharsets.UTF_8 ）
 - boolean lowerCase 是否使用小写字符（可省略，默认为 true ，）
 
-#### 5.1.3. 代码示例
+#### 4.1.3. 代码示例
 
 ```java
 public class DigestUtilsTest {
@@ -1027,11 +1000,11 @@ public class DigestUtilsTest {
 }
 ```
 
-### 5.2. HexUtils
+### 4.2. HexUtils
 
 **16进制字符串工具类**
 
-#### 5.2.1. encodeHex 与 encodeHexStr
+#### 4.2.1. encodeHex 与 encodeHexStr
 
 - encodeHex 将字节数组转换成16进制的字符数组，返回 char[]
 - encodeHexStr 将字节数组转换成16进制的字符串，返回 String
@@ -1042,9 +1015,9 @@ public class DigestUtilsTest {
 
 ------
 
-## 6. 函数式编程
+## 5. 函数式编程
 
-### 6.1. 元组
+### 5.1. 元组
 
 Haskell、Scala、Python 等函数式语言都有元组的概念，元组其实可看作是**容量不可变、元素不可变**的列表，但与列表不同的是**元组可以包含不同的元素类型**。
 
@@ -1053,11 +1026,9 @@ Java 编程当中，有很多时候需要用到一些不可变的定长列表，
 - **Pair**：元素可以为空，构造方法为 Public（键值对）。
 - **Tuple**：元素不能为空，构造方法为 Friendly，必须使用 Tuples 来创建（当前实现了 一元组 至 五元组）。
 
-#### 6.1.1. Pair 与 Pairs
+#### 5.1.1. Pair
 
-Pairs 是静态工厂类，用于创建 Pair。
-
-##### 6.1.1.1 代码示例
+##### 5.1.1.1 代码示例
 
 ```java
 public class PairTest {
@@ -1065,14 +1036,14 @@ public class PairTest {
     // 获取 key
     @Test
     public void getKey() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         org.junit.Assert.assertEquals("key", pair.getKey());
     }
 
     // 获取 value
     @Test
     public void getValue() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assert.assertEquals("value", pair.getValue());
     }
 
@@ -1080,7 +1051,7 @@ public class PairTest {
     @Test
     public void mapKey() {
         Integer expected = 1;
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Pair<Integer, String> newPair = pair.mapKey((k) -> 1);
         Assert.assertEquals(expected, newPair.getKey());
     }
@@ -1089,7 +1060,7 @@ public class PairTest {
     @Test
     public void mapValue() {
         Integer expected = 1;
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Pair<String, Integer> newPair = pair.mapValue((k) -> 1);
         Assert.assertEquals(expected, newPair.getValue());
     }
@@ -1097,24 +1068,24 @@ public class PairTest {
     // key 是否为空
     @Test
     public void hasKey() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assert.assertTrue(pair.hasKey());
     }
 
     // value 是否为空
     @Test
     public void hasValue() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assert.assertTrue(pair.hasValue());
     }
 }
 ```
 
-#### 6.1.2. Tuple 与 Tuples
+#### 5.1.2. Tuple 与 Tuples
 
 Tuples 是静态工厂类，用于创建 Tuple 。
 
-##### 6.1.2.1 代码示例
+##### 5.1.2.1 代码示例
 
 ```java
 public class Tuple3Test {
@@ -1182,7 +1153,7 @@ public class Tuple3Test {
 
 ------
 
-## 7. 数值类
+## 6. 数值类
 
 xtool 提供了两个数值类：
 
@@ -1195,9 +1166,9 @@ Java 已经有了 AtomicInteger ……等原子操作的数值类型，为什么
 
 但 Integer 和 Long 类型又没有递增、递减这些方法，因此写了这两个类。
 
-### 7.1. IntegerValue 与 LongValue
+### 6.1. IntegerValue 与 LongValue
 
-#### 7.1.1. 主要方法
+#### 6.1.1. 主要方法
 
 - get 获取值
 - set 设置新值
@@ -1209,7 +1180,7 @@ Java 已经有了 AtomicInteger ……等原子操作的数值类型，为什么
 - decrementAndGet 递减，并返回递减后的新值
 - getAndDecrement 递减，并返回递减前的旧值
 
-#### 7.1.2. 代码示例
+#### 6.1.2. 代码示例
 
 ```java
 public class IntegerValueTest {
@@ -1305,9 +1276,9 @@ public class IntegerValueTest {
 
 ------
 
-## 8. NLP 相关
+## 7. NLP 相关
 
-### 8.1. 字典树 ConcurrentHashTrie
+### 7.1. 字典树 ConcurrentHashTrie
 
 2017年时曾利用一个周末的时间实现了基于 Hash + 单链表的字典树，现在回头来看：一是代码有些乱；二是方法比较少；三是不支持并发；四是单链表在 Hash 冲突严重的情况下会有性能问题。
 
@@ -1320,7 +1291,7 @@ public class IntegerValueTest {
 - 内存优化：使用自定义的单链表和 AVLTree，最大限度去除了可有可无的信息。
 - 性能优化：使用新的遍历算法（非递归；无队列和栈），在大容量的情况下可以保持高效率遍历而无需担心内存溢出和栈溢出问题。
 
-#### 8.1.1. 什么是字典树？
+#### 7.1.1. 什么是字典树？
 
 字典树 [Trie](https://en.wikipedia.org/wiki/Trie) 又称为前缀树（prefix tree），是一种搜索树。
 
@@ -1334,7 +1305,7 @@ public class IntegerValueTest {
 
 那么，HashMap 就有点难以处理了。这时，我们可以采用下图所示的树形结构。
 
-![图1](images/trie.png)
+<img src="images/trie.png" alt="图1" style="zoom:50%;" />
 
 每个单词看作是一个字符序列，每个字符是一个节点，节点之间用边相连。只要从根节点开始顺着序列路径查找，就能找到对应的单词。
 
@@ -1376,9 +1347,9 @@ public class IntegerValueTest {
 
 现在，我们先来考虑选择什么方式去构造这样的一棵字典树。
 
-#### 8.1.2. 字典树的实现
+#### 7.1.2. 字典树的实现
 
-##### 8.1.2.1. 树的节点
+##### 7.1.2.1. 树的节点
 
 **HashMap？**
 
@@ -1474,9 +1445,9 @@ AvlNode 的增删查操作也比 LinkedNode 要复杂得多，而且多了一种
 
 总而言之，开源类库面对的是通用场景，而不是某个特定场景，因此需要考虑更多情况，以达到某种意义上的平衡。
 
-##### 8.1.2.2. 树的创建
+##### 7.1.2.2. 树的创建
 
-![图2](images/trie_node.png)
+<img src="images/trie_node.png" alt="图2" style="zoom:50%;" />
 
 > 注：蓝色方框为数组，也就是节点定义里的 table，用于保存直接后缀节点。
 
@@ -1532,7 +1503,7 @@ abstract class Node<V> {
 
 循环调用 addChild 方法，依次插入字符串的每一个字符，最后一个字符的节点设置 value。
 
-##### 8.1.2.3. 单词查找
+##### 7.1.2.3. 单词查找
 
 **代码实现：**
 
@@ -1558,7 +1529,7 @@ abstract class Node<V> {
 
 循环调用 findChild 方法，依次查找字符串的每一个字符，并判断节点是否存在。如果到达单词结尾，且节点的 value 不为空，则说明单词匹配成功。
 
-##### 8.1.2.4. 扩容缩容
+##### 7.1.2.4. 扩容缩容
 
 - **扩容**
 
@@ -1606,7 +1577,7 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 
 一旦同一位置的节点数达到阈值8，LinkedNode 就会转换为 AvlNode。AVLTree 的最坏时间复杂度为O(logn)，再乘于字符串的长度 m，因此查找整个字符串的最坏时间复杂度就是 O(mlogn)。
 
-#### 8.1.3. 字典树的使用
+#### 7.1.3. 字典树的使用
 
 **主要方法：**
 
@@ -1614,7 +1585,7 @@ Java使用的 UTF-16 字符集的字符数为65536。当 table 容量为128时�
 
 方法比较多，先放上我设计时画的思维导图，再结合一些场景来写示例代码。
 
-##### 8.1.3.1. Map 同名方法
+##### 7.1.3.1. Map 同名方法
 
 **方法说明**：
 
@@ -1749,7 +1720,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-##### 8.1.3.2. 前缀匹配：prefixMatch 与 prefixMatchAll
+##### 7.1.3.2. 前缀匹配：prefixMatch 与 prefixMatchAll
 
 **方法说明**：
 
@@ -1843,7 +1814,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-##### 8.1.3.3. 匹配前缀：keyWithPrefix 与 keysWithPrefix
+##### 7.1.3.3. 匹配前缀：keyWithPrefix 与 keysWithPrefix
 
 **方法说明**：
 
@@ -1961,7 +1932,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-##### 8.1.3.4. 包含匹配：match 与 matchAll
+##### 7.1.3.4. 包含匹配：match 与 matchAll
 
 **方法说明**：
 
@@ -2067,7 +2038,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-##### 8.1.3.5. 树的遍历：keys, values 与 traversal
+##### 7.1.3.5. 树的遍历：keys, values 与 traversal
 
 **方法说明：**
 
@@ -2186,7 +2157,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-##### 8.1.3.6 树的高度：height
+##### 7.1.3.6 树的高度：height
 
 **方法说明：**
 
@@ -2225,13 +2196,7 @@ public class ConcurrentHashTrieTest {
 }
 ```
 
-### 8.2. 关于NLP
-
-NLP 领域有很多很有用的算法和数据结构，后续再慢慢补充。
-
-如果您需要哪个数据结构或算法，可以提 issue 哦；当然，如果您有兴趣开发，欢迎提交 pr。
-
-## 9. JSONString
+## 8. JSONString
 
 xtool 提供了一个对象转 JSONString 的工具类。
 
@@ -2243,7 +2208,7 @@ xtool 提供了一个对象转 JSONString 的工具类。
 >
 >因此，如果对象有循环引用问题，不要采用此工具进行序列化。
 
-### 9.1. 主要方法
+### 8.1. 主要方法
 
 仅有一个静态方法：传入对象，返回 JSON 字符串
 
@@ -2251,7 +2216,7 @@ xtool 提供了一个对象转 JSONString 的工具类。
 public static String toJSONString(Object obj);
 ```
 
-### 9.2. 代码示例
+### 8.2. 代码示例
 
 ```java
 /**
@@ -2447,7 +2412,7 @@ class SimpleJSONTest {
 }
 ```
 
-## 10. 线程与并发
+## 9. 线程与并发
 
 PlatformThreadFactory：平台线程池
 

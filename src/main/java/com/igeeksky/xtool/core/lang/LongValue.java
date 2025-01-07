@@ -71,4 +71,23 @@ public class LongValue {
     public final long getAndDecrement() {
         return value--;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LongValue longValue)) return false;
+
+        return value == longValue.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return value + "";
+    }
+
 }
