@@ -71,4 +71,23 @@ public class IntegerValue {
     public final int getAndDecrement() {
         return value--;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IntegerValue that)) return false;
+
+        return value == that.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return value + "";
+    }
+
 }

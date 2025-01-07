@@ -96,4 +96,9 @@ public class ByteArray {
         return h;
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(value);
+    }
+
 }
