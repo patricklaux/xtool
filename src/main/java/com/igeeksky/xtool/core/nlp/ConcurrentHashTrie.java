@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import com.igeeksky.xtool.core.function.tuple.Tuple2;
-import com.igeeksky.xtool.core.function.tuple.Tuples;
+import com.igeeksky.xtool.core.tuple.Tuple2;
+import com.igeeksky.xtool.core.tuple.Tuples;
 import com.igeeksky.xtool.core.lang.Assert;
 import com.igeeksky.xtool.core.lang.IntegerValue;
 
@@ -131,7 +131,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
         } finally {
             readLock.unlock();
         }
-        return (found == null) ? null : Tuples.of(found.getKey(), found.getValue());
+        return (found == null) ? null : Tuples.of(found.key(), found.value());
     }
 
     @Override
@@ -154,7 +154,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
         }
 
         List<Tuple2<String, V>> result = new LinkedList<>();
-        founds.forEach(find -> result.add(Tuples.of(find.getKey(), find.getValue())));
+        founds.forEach(find -> result.add(Tuples.of(find.key(), find.value())));
         return result;
     }
 
@@ -261,7 +261,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
             if (null != found) {
                 founds.add(found);
                 if (!oneByOne) {
-                    i = found.getEnd();
+                    i = found.end();
                 }
             }
         }
@@ -295,7 +295,7 @@ public class ConcurrentHashTrie<V> implements Trie<V> {
             if (!oneByOne && size > 0) {
                 if (founds.getLast() != last) {
                     last = founds.getLast();
-                    i = last.getEnd();
+                    i = last.end();
                 }
             }
         }

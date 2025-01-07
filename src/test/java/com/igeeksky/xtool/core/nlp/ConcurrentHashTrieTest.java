@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import com.igeeksky.xtool.core.function.tuple.Tuple2;
-import com.igeeksky.xtool.core.function.tuple.Tuples;
+import com.igeeksky.xtool.core.tuple.Tuple2;
+import com.igeeksky.xtool.core.tuple.Tuples;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -327,7 +327,7 @@ public class ConcurrentHashTrieTest {
 
         List<Found<String>> shortMatches = trie.match("abcdefg");
         System.out.println(shortMatches);
-        String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
+        String expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assertions.assertEquals(expected, shortMatches.toString());
 
 
@@ -338,19 +338,19 @@ public class ConcurrentHashTrieTest {
 
         List<Found<String>> longMatches = trie.match("abcdefg", true, true);
         System.out.println(longMatches);
-        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
+        expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assertions.assertEquals(expected, longMatches.toString());
 
 
         List<Found<String>> skipMatches2 = trie.match("abcdefg", false, false);
         System.out.println(skipMatches2);
-        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}]";
+        expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}]";
         Assertions.assertEquals(expected, skipMatches2.toString());
 
 
         List<Found<String>> skipMatches = trie.match("abcdefg", true, false);
         System.out.println(skipMatches);
-        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
+        expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assertions.assertEquals(expected, skipMatches.toString());
     }
 
@@ -370,7 +370,7 @@ public class ConcurrentHashTrieTest {
 
         List<Found<String>> shortMatches = trie.matchAll("abcdefg");
         System.out.println(shortMatches);
-        String expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
+        String expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":1, \"end\":2, \"key\":\"bc\", \"value\":\"bc\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"begin\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assertions.assertEquals(expected, shortMatches.toString());
 
 
@@ -381,12 +381,12 @@ public class ConcurrentHashTrieTest {
 
         List<Found<String>> shortMatches2 = trie.matchAll("abcdefg", false, Integer.MAX_VALUE);
         System.out.println(shortMatches2);
-        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"start\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"start\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
+        expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":3, \"key\":\"cd\", \"value\":\"cd\"}, {\"begin\":4, \"end\":5, \"key\":\"ef\", \"value\":\"ef\"}, {\"begin\":4, \"end\":6, \"key\":\"efg\", \"value\":\"efg\"}]";
         Assertions.assertEquals(expected, shortMatches2.toString());
 
         List<Found<String>> shortMatches3 = trie.matchAll("abcdefg", false, 1);
         System.out.println(shortMatches3);
-        expected = "[{\"start\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}]";
+        expected = "[{\"begin\":0, \"end\":1, \"key\":\"ab\", \"value\":\"ab\"}]";
         Assertions.assertEquals(expected, shortMatches3.toString());
     }
 

@@ -17,8 +17,8 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import com.igeeksky.xtool.core.function.tuple.Tuple2;
-import com.igeeksky.xtool.core.function.tuple.Tuples;
+import com.igeeksky.xtool.core.tuple.Tuple2;
+import com.igeeksky.xtool.core.tuple.Tuples;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -277,11 +277,11 @@ public class ConcurrentHashTrie2Test {
 
         String text = "为什么不准发布？敏感词真敏感！";
         List<Found<String>> match = trie.match(text);
-        Assertions.assertEquals("[{\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"begin\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
 
         // match 与 matchAll 对比，起始位置 8：contains只返回“敏感”；matchAll 返回了“敏感”和“敏感词”；
         List<Found<String>> matchAll = trie.matchAll(text);
-        Assertions.assertEquals("[{\"start\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"begin\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"begin\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
     }
 
 
@@ -298,46 +298,46 @@ public class ConcurrentHashTrie2Test {
 
         // match 与 matchAll 对比
         List<Found<String>> match = trie.match("xxabcdexx");
-        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         List<Found<String>> matchAll = trie.matchAll("xxabcdexx");
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
 
         // match 参数变化对比
         // 最长匹配；逐字符扫描
         match = trie.match("xxabcdexx", true, true);
-        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", true, false);
-        Assertions.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
 
         // 最短匹配；逐字符扫描
         match = trie.match("xxabcdexx", false, true);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", false, false);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
 
 
         // matchAll 参数变化对比
         // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
 
         // 逐字符扫描；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", true, 1);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", false, 1);
-        Assertions.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assertions.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
     }
 
     @Test

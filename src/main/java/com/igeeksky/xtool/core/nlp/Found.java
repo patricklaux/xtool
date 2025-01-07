@@ -20,99 +20,52 @@ package com.igeeksky.xtool.core.nlp;
 /**
  * 用于文本段的关键字过滤，返回关键字在文本段中的起止位置
  *
- * @param <V> 与Node的值类型相同
+ * @param <V>   与Node的值类型相同
+ * @param begin key 在文本段中的起始位置
+ * @param end   key 在文本段中的结束位置
+ * @param value key 对应的 value
  * @author Patrick.Lau
  * @since 0.0.4 2021-10-23
  */
-public class Found<V> {
-
-    /**
-     * key 在文本段中的起始位置
-     */
-    private final int start;
-
-    /**
-     * key 在文本段中的结束位置
-     */
-    private final int end;
-
-    private final String key;
-
-    /**
-     * key 对应的 value
-     */
-    private final V value;
-
-    public Found(int start, int end, String key, V value) {
-        this.start = start;
-        this.end = end;
-        this.key = key;
-        this.value = value;
-    }
-
-    /**
-     * @return value 在文本中的开始位置
-     */
-    public int getStart() {
-        return start;
-    }
-
-    /**
-     * @return value 在文本中的结束位置
-     */
-    public int getEnd() {
-        return end;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    /**
-     * @return value值
-     */
-    public V getValue() {
-        return value;
-    }
+public record Found<V>(int begin, int end, String key, V value) {
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Found)) {
+        if (!(o instanceof Found<?> found)) {
             return false;
         }
 
-        Found<?> found = (Found<?>) o;
-
-        if (getStart() != found.getStart()) {
+        if (begin() != found.begin()) {
             return false;
         }
-        if (getEnd() != found.getEnd()) {
+        if (end() != found.end()) {
             return false;
         }
-        if (getKey() != null ? !getKey().equals(found.getKey()) : found.getKey() != null) {
+        if (key() != null ? !key().equals(found.key()) : found.key() != null) {
             return false;
         }
-        return getValue() != null ? getValue().equals(found.getValue()) : found.getValue() == null;
+        return value() != null ? value().equals(found.value()) : found.value() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getKey() != null ? getKey().hashCode() : 0;
-        result = 31 * result + getStart();
-        result = 31 * result + getEnd();
-        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        int result = key() != null ? key().hashCode() : 0;
+        result = 31 * result + begin();
+        result = 31 * result + end();
+        result = 31 * result + (value() != null ? value().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "{\"start\":" + start +
+        return "{\"begin\":" + begin +
                 ", \"end\":" + end +
                 (null == key ? "" : (", \"key\":\"" + key + "\"")) +
                 (null == value ? "" : (", \"value\":\"" + value + "\"")) +
                 "}";
     }
+
 }

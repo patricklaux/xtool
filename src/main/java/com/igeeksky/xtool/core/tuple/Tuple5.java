@@ -15,7 +15,9 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core.tuple;
+
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -158,34 +160,23 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Tuple5)) {
+        if (!(o instanceof Tuple5<?, ?, ?, ?, ?> tuple5)) {
             return false;
         }
-
-        Tuple5<?, ?, ?, ?, ?> tuple5 = (Tuple5<?, ?, ?, ?, ?>) o;
-
-        if (!getT1().equals(tuple5.getT1())) {
-            return false;
-        }
-        if (!getT2().equals(tuple5.getT2())) {
-            return false;
-        }
-        if (!getT3().equals(tuple5.getT3())) {
-            return false;
-        }
-        if (!getT4().equals(tuple5.getT4())) {
-            return false;
-        }
-        return getT5().equals(tuple5.getT5());
+        return ObjectUtils.deepEquals(t1, tuple5.t1)
+                && ObjectUtils.deepEquals(t2, tuple5.t2)
+                && ObjectUtils.deepEquals(t3, tuple5.t3)
+                && ObjectUtils.deepEquals(t4, tuple5.t4)
+                && ObjectUtils.deepEquals(t5, tuple5.t5);
     }
 
     @Override
     public int hashCode() {
-        int result = getT1().hashCode();
-        result = 31 * result + getT2().hashCode();
-        result = 31 * result + getT3().hashCode();
-        result = 31 * result + getT4().hashCode();
-        result = 31 * result + getT5().hashCode();
+        int result = ObjectUtils.deepHashCode(t1);
+        result = 31 * result + ObjectUtils.deepHashCode(t2);
+        result = 31 * result + ObjectUtils.deepHashCode(t3);
+        result = 31 * result + ObjectUtils.deepHashCode(t4);
+        result = 31 * result + ObjectUtils.deepHashCode(t5);
         return result;
     }
 
@@ -193,4 +184,5 @@ public class Tuple5<T1, T2, T3, T4, T5> implements Tuple {
     public String toString() {
         return Arrays.toString(toArray());
     }
+
 }

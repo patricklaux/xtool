@@ -1,6 +1,4 @@
-package com.igeeksky.xtool.core.function.tuple;
-
-import com.igeeksky.xtool.core.annotation.ParameterNames;
+package com.igeeksky.xtool.core;
 
 import java.util.function.Function;
 
@@ -19,7 +17,6 @@ public class ExpiryKeyValue<K, V> extends KeyValue<K, V> {
      * @param value 值
      * @param ttl   存活时长
      */
-    @ParameterNames({"key", "value", "ttl"})
     public ExpiryKeyValue(K key, V value, long ttl) {
         super(key, value);
         this.ttl = ttl;

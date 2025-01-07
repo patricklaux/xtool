@@ -180,7 +180,7 @@ public class Futures {
      * @param start   起始位置，从此位置开始取消未完成的任务
      * @param futures 任务列表
      */
-    public static void cancelAll(int start, Future<?>[] futures) {
+    public static void cancelAll(int start, Future<?>[] futures, boolean mayInterruptIfRunning) {
         int i = start, len = futures.length;
         for (; i < len; i++) {
             Future<?> future = futures[i];
@@ -188,7 +188,10 @@ public class Futures {
                 if (future.isDone()) {
                     continue;
                 }
-                future.cancel(true);
+                if (future.isCancelled()) {
+                    continue;
+                }
+                future.cancel(mayInterruptIfRunning);
             }
         }
     }
@@ -205,6 +208,9 @@ public class Futures {
             Future<?> future = futures.get(i);
             if (future != null) {
                 if (future.isDone()) {
+                    continue;
+                }
+                if (future.isCancelled()) {
                     continue;
                 }
                 future.cancel(true);

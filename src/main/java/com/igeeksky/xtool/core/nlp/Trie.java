@@ -17,7 +17,7 @@
 
 package com.igeeksky.xtool.core.nlp;
 
-import com.igeeksky.xtool.core.function.tuple.Tuple2;
+import com.igeeksky.xtool.core.tuple.Tuple2;
 
 import java.util.List;
 import java.util.TreeMap;
@@ -235,7 +235,7 @@ public interface Trie<V> {
      *
      * <pre>
      *     Trie中已有：ab, abc, abcd, abd, bcd
-     *     trie.match("xxabcdexx") == [{"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
+     *     trie.match("xxabcdexx") == [{"begin":2, "end":5, "key":"abcd", "value":"abcd"}, {"begin":3, "end":5, "key":"bcd", "value":"bcd"}]
      * </pre>
      *
      * @param text 文本段（不为空且长度大于0）
@@ -252,16 +252,16 @@ public interface Trie<V> {
      *     Trie中已有：ab, abc, abcd, abd, bcd
      *
      *     trie.match("xxabcdexx", true, true) ==
-     *     [{"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
+     *     [{"begin":2, "end":5, "key":"abcd", "value":"abcd"}, {"begin":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
      *     trie.match("xxabcdexx", true, false) ==
-     *     [{"start":2, "end":5, "key":"abcd", "value":"abcd"}]
+     *     [{"begin":2, "end":5, "key":"abcd", "value":"abcd"}]
      *
      *     trie.match("xxabcdexx", false, true) ==
-     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
+     *     [{"begin":2, "end":3, "key":"ab", "value":"ab"}, {"begin":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
      *     trie.match("xxabcdexx", false, false) ==
-     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}]
+     *     [{"begin":2, "end":3, "key":"ab", "value":"ab"}]
      * </pre>
      *
      * @param text         文本段（不为空且长度大于0）
@@ -290,8 +290,8 @@ public interface Trie<V> {
      *     例：
      *     Trie中已有：ab, abc, abcd, abd, bcd
      *     trie.matchAll("xxabcdexx") ==
-     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
-     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
+     *     [{"begin":2, "end":3, "key":"ab", "value":"ab"}, {"begin":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"begin":2, "end":5, "key":"abcd", "value":"abcd"}, {"begin":3, "end":5, "key":"bcd", "value":"bcd"}]
      * </pre>
      *
      * @param text 文本段（不为空且长度大于0）
@@ -313,16 +313,16 @@ public interface Trie<V> {
      *     Trie中已有：ab, abc, abcd, abd, bcd
      *
      *     trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE) ==
-     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
-     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}, {"start":3, "end":5, "key":"bcd", "value":"bcd"}]
+     *     [{"begin":2, "end":3, "key":"ab", "value":"ab"}, {"begin":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"begin":2, "end":5, "key":"abcd", "value":"abcd"}, {"begin":3, "end":5, "key":"bcd", "value":"bcd"}]
      *
      *     trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE) ==
-     *     [{"start":2, "end":3, "key":"ab", "value":"ab"}, {"start":2, "end":4, "key":"abc", "value":"abc"},
-     *     {"start":2, "end":5, "key":"abcd", "value":"abcd"}]
+     *     [{"begin":2, "end":3, "key":"ab", "value":"ab"}, {"begin":2, "end":4, "key":"abc", "value":"abc"},
+     *     {"begin":2, "end":5, "key":"abcd", "value":"abcd"}]
      *
      *
-     *     trie.matchAll("xxabcdexx", true, 1) == [{"start":2, "end":3, "key":"ab", "value":"ab"}]
-     *     trie.matchAll("xxabcdexx", false, 1) == [{"start":2, "end":3, "key":"ab", "value":"ab"}]
+     *     trie.matchAll("xxabcdexx", true, 1) == [{"begin":2, "end":3, "key":"ab", "value":"ab"}]
+     *     trie.matchAll("xxabcdexx", false, 1) == [{"begin":2, "end":3, "key":"ab", "value":"ab"}]
      *
      * </pre>
      *

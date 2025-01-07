@@ -1,4 +1,4 @@
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core;
 
 
 import org.junit.jupiter.api.BeforeEach;

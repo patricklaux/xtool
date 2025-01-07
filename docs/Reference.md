@@ -1,6 +1,6 @@
-## xtool-1.0.10参考文档
+## xtool 参考文档
 
-Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.22
+Author: [Patrick.Lau](mailto:patricklauxx@gmail.com)        Version: 1.0.23
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)  [![Release](https://img.shields.io/github/v/release/patricklaux/xtool)](https://github.com/patricklaux/xtool/releases)  [![Maven Central](https://img.shields.io/maven-central/v/com.igeeksky.xtool/xtool.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.igeeksky.xtool%22%20AND%20a:%22xtool%22)  [![codecov](https://codecov.io/gh/patricklaux/xtool/branch/main/graph/badge.svg?token=VJ87A1IAVH)](https://codecov.io/gh/patricklaux/xtool)  [![Last commit](https://img.shields.io/github/last-commit/patricklaux/xtool)](https://github.com/patricklaux/xtool/commits)  [![Join the chat at https://gitter.im/igeeksky/xtool](https://badges.gitter.im/igeeksky/xtool.svg)](https://gitter.im/igeeksky/xtool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -26,14 +26,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.0.22</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 #### 1.2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.0.22'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.1.0'
 ```
 
 #### 1.2.3.编译安装
@@ -2002,11 +2002,11 @@ public class ConcurrentHashTrieTest {
 
         String text = "为什么不准发布？敏感词真敏感！";
         List<Found<String>> match = trie.match(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"begin\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", match.toString());
 
         // match 与 matchAll 对比，起始位置 8：contains只返回“敏感”；matchAll 返回了“敏感”和“敏感词”；
         List<Found<String>> matchAll = trie.matchAll(text);
-        Assert.assertEquals("[{\"start\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"start\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"start\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":8, \"end\":9, \"key\":\"敏感\", \"value\":\"敏感\"}, {\"begin\":8, \"end\":10, \"key\":\"敏感词\", \"value\":\"敏感词\"}, {\"begin\":12, \"end\":13, \"key\":\"敏感\", \"value\":\"敏感\"}]", matchAll.toString());
     }
 
 
@@ -2023,46 +2023,46 @@ public class ConcurrentHashTrieTest {
 
         // match 与 matchAll 对比
         List<Found<String>> match = trie.match("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         List<Found<String>> matchAll = trie.matchAll("xxabcdexx");
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
 
         // match 参数变化对比
         // 最长匹配；逐字符扫描
         match = trie.match("xxabcdexx", true, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最长匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", true, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", match.toString());
 
         // 最短匹配；逐字符扫描
         match = trie.match("xxabcdexx", false, true);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", match.toString());
 
         // 最短匹配；跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配
         match = trie.match("xxabcdexx", false, false);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", match.toString());
 
 
         // matchAll 参数变化对比
         // 逐字符扫描；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", true, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"start\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}, {\"begin\":3, \"end\":5, \"key\":\"bcd\", \"value\":\"bcd\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为Integer.MAX_VALUE
         matchAll = trie.matchAll("xxabcdexx", false, Integer.MAX_VALUE);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"start\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"start\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}, {\"begin\":2, \"end\":4, \"key\":\"abc\", \"value\":\"abc\"}, {\"begin\":2, \"end\":5, \"key\":\"abcd\", \"value\":\"abcd\"}]", matchAll.toString());
 
         // 逐字符扫描；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", true, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
 
         // 跳过已匹配到的词，跳到已匹配到的词的下标 + 1 开始匹配；最大返回数量为1
         matchAll = trie.matchAll("xxabcdexx", false, 1);
-        Assert.assertEquals("[{\"start\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
+        Assert.assertEquals("[{\"begin\":2, \"end\":3, \"key\":\"ab\", \"value\":\"ab\"}]", matchAll.toString());
     }
 }
 ```
