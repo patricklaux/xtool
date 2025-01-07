@@ -1,7 +1,7 @@
 package com.igeeksky.xtool.core.json;
 
 import com.igeeksky.xtool.core.collection.Maps;
-import com.igeeksky.xtool.core.function.tuple.Pair;
+import com.igeeksky.xtool.core.Pair;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;

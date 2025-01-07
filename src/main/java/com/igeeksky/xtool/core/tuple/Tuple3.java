@@ -15,7 +15,9 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core.tuple;
+
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -114,26 +116,19 @@ public class Tuple3<T1, T2, T3> implements Tuple {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Tuple3)) {
+        if (!(o instanceof Tuple3<?, ?, ?> tuple3)) {
             return false;
         }
-
-        Tuple3<?, ?, ?> tuple3 = (Tuple3<?, ?, ?>) o;
-
-        if (!getT1().equals(tuple3.getT1())) {
-            return false;
-        }
-        if (!getT2().equals(tuple3.getT2())) {
-            return false;
-        }
-        return getT3().equals(tuple3.getT3());
+        return ObjectUtils.deepEquals(t1, tuple3.t1)
+                && ObjectUtils.deepEquals(t2, tuple3.t2)
+                && ObjectUtils.deepEquals(t3, tuple3.t3);
     }
 
     @Override
     public int hashCode() {
-        int result = getT1().hashCode();
-        result = 31 * result + getT2().hashCode();
-        result = 31 * result + getT3().hashCode();
+        int result = ObjectUtils.deepHashCode(t1);
+        result = 31 * result + ObjectUtils.deepHashCode(t2);
+        result = 31 * result + ObjectUtils.deepHashCode(t3);
         return result;
     }
 

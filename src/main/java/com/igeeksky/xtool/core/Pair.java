@@ -15,12 +15,11 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core;
 
-import com.igeeksky.xtool.core.annotation.ParameterNames;
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -31,28 +30,22 @@ import java.util.function.Function;
  */
 public record Pair<K, V>(K key, V value) implements Serializable {
 
-    @ParameterNames({"key", "value"})
-    public Pair {
+    private static final Pair<?, ?> EMPTY = new Pair<>(null, null);
+
+    public static <K, V> Pair<K, V> create(K key, V value) {
+        return new Pair<>(key, value);
     }
 
     /**
-     * 获取 key
+     * 静态工厂：返回不包含值的 {@link Pair} 单例对象
      *
-     * @return 键
+     * @param <K> 键类型
+     * @param <V> 值类型
+     * @return {@link Pair} -- singleton
      */
-    @Override
-    public K key() {
-        return key;
-    }
-
-    /**
-     * 获取 value
-     *
-     * @return 值
-     */
-    @Override
-    public V value() {
-        return value;
+    @SuppressWarnings("unchecked")
+    public static <K, V> Pair<K, V> emptyPair() {
+        return (Pair<K, V>) EMPTY;
     }
 
     public <K1, V1> Pair<K1, V1> map(Function<K, K1> keyMapper, Function<V, V1> valueMapper) {
@@ -101,16 +94,20 @@ public record Pair<K, V>(K key, V value) implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Pair<?, ?> pair)) return false;
-
-        return Objects.equals(key(), pair.key()) && Objects.equals(value(), pair.value());
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Pair<?, ?> pair)) {
+            return false;
+        }
+        return ObjectUtils.deepEquals(key, pair.key()) &&
+                ObjectUtils.deepEquals(value, pair.value());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(key());
-        result = 31 * result + Objects.hashCode(value());
+        int result = ObjectUtils.deepHashCode(key);
+        result = 31 * result + ObjectUtils.deepHashCode(value);
         return result;
     }
 

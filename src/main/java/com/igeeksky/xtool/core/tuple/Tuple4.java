@@ -15,7 +15,9 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core.tuple;
+
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -136,30 +138,21 @@ public class Tuple4<T1, T2, T3, T4> implements Tuple {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Tuple4)) {
+        if (!(o instanceof Tuple4<?, ?, ?, ?> tuple4)) {
             return false;
         }
-
-        Tuple4<?, ?, ?, ?> tuple4 = (Tuple4<?, ?, ?, ?>) o;
-
-        if (!getT1().equals(tuple4.getT1())) {
-            return false;
-        }
-        if (!getT2().equals(tuple4.getT2())) {
-            return false;
-        }
-        if (!getT3().equals(tuple4.getT3())) {
-            return false;
-        }
-        return t4.equals(tuple4.t4);
+        return ObjectUtils.deepEquals(t1, tuple4.t1)
+                && ObjectUtils.deepEquals(t2, tuple4.t2)
+                && ObjectUtils.deepEquals(t3, tuple4.t3)
+                && ObjectUtils.deepEquals(t4, tuple4.t4);
     }
 
     @Override
     public int hashCode() {
-        int result = getT1().hashCode();
-        result = 31 * result + getT2().hashCode();
-        result = 31 * result + getT3().hashCode();
-        result = 31 * result + t4.hashCode();
+        int result = ObjectUtils.deepHashCode(t1);
+        result = 31 * result + ObjectUtils.deepHashCode(t2);
+        result = 31 * result + ObjectUtils.deepHashCode(t3);
+        result = 31 * result + ObjectUtils.deepHashCode(t4);
         return result;
     }
 

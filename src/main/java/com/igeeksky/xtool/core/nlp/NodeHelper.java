@@ -18,8 +18,8 @@
 package com.igeeksky.xtool.core.nlp;
 
 
-import com.igeeksky.xtool.core.function.tuple.Tuple2;
-import com.igeeksky.xtool.core.function.tuple.Tuples;
+import com.igeeksky.xtool.core.tuple.Tuple2;
+import com.igeeksky.xtool.core.tuple.Tuples;
 
 import java.util.Arrays;
 import java.util.Iterator;

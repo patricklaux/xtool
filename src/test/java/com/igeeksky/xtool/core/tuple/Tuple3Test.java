@@ -15,7 +15,7 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core.tuple;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

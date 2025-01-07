@@ -15,12 +15,11 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core;
 
-import com.igeeksky.xtool.core.annotation.ParameterNames;
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -37,7 +36,6 @@ public class KeyValue<K, V> implements Serializable {
 
     private final V value;
 
-    @ParameterNames({"key", "value"})
     public KeyValue(K key, V value) {
         this.key = key;
         this.value = value;
@@ -125,16 +123,20 @@ public class KeyValue<K, V> implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof KeyValue<?, ?> keyValue)) return false;
-
-        return Objects.equals(getKey(), keyValue.getKey()) && Objects.equals(getValue(), keyValue.getValue());
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof KeyValue<?, ?> kv)) {
+            return false;
+        }
+        return ObjectUtils.deepEquals(getKey(), kv.getKey()) &&
+                ObjectUtils.deepEquals(getValue(), kv.getValue());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(key);
-        result = 31 * result + Objects.hashCode(value);
+        int result = ObjectUtils.deepHashCode(key);
+        result = 31 * result + ObjectUtils.deepHashCode(value);
         return result;
     }
 

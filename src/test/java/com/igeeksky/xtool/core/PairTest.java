@@ -15,8 +15,9 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core;
 
+import com.igeeksky.xtool.core.tuple.Tuples;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,81 +28,95 @@ import org.junit.jupiter.api.Test;
 public class PairTest {
 
     @Test
+    public void create() {
+        Pair<String, String> pair = Pair.create("key", "value");
+        Assertions.assertEquals("key", pair.key());
+        Assertions.assertEquals("value", pair.value());
+    }
+
+    @Test
+    public void emptyPair() {
+        Pair<String, String> pair = Pair.emptyPair();
+        Assertions.assertNull(pair.key());
+        Assertions.assertNull(pair.value());
+    }
+
+    @Test
     public void getKey() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assertions.assertEquals("key", pair.key());
     }
 
     @Test
     public void getValue() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assertions.assertEquals("value", pair.value());
     }
 
     @Test
     public void hasValue() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assertions.assertTrue(pair.hasValue());
     }
 
     @Test
     public void testHasValue() {
-        Pair<String, String> pair = Pairs.emptyPair();
+        Pair<String, String> pair = Pair.emptyPair();
         Assertions.assertFalse(pair.hasValue());
     }
 
     @Test
     public void testEquals() {
-        Pair<String, String> pair = Pairs.emptyPair();
-        Pair<String, String> pair2 = Pairs.emptyPair();
+        Pair<String, String> pair = Pair.emptyPair();
+        Pair<String, String> pair2 = Pair.emptyPair();
         Assertions.assertEquals(pair, pair2);
     }
 
     @Test
     public void testEquals2() {
-        Pair<String, String> pair = Pairs.of("key", "value");
-        Pair<String, String> pair2 = Pairs.emptyPair();
+        Pair<String, String> pair = Pair.create("key", "value");
+        Pair<String, String> pair2 = Pair.emptyPair();
         Assertions.assertNotEquals(pair, pair2);
         Assertions.assertNotEquals(pair, Tuples.of("key", "value"));
     }
 
     @Test
     public void testEquals3() {
-        Pair<Pair<String, String>, Pair<String, String>> pair = Pairs.of(Pairs.of("key", "value"), Pairs.of("key", "value"));
-        Pair<Pair<String, String>, Pair<String, String>> pair2 = Pairs.of(Pairs.of("key", "value"), Pairs.of("key", "value"));
+        Pair<Pair<String, String>, Pair<String, String>> pair = Pair.create(Pair.create("key", "value"), Pair.create("key", "value"));
+        Pair<Pair<String, String>, Pair<String, String>> pair2 = Pair.create(Pair.create("key", "value"), Pair.create("key", "value"));
         Assertions.assertEquals(pair, pair2);
     }
 
     @Test
     public void hashcode() {
-        Pair<String, String> pair = Pairs.of("key", "value");
-        Pair<String, String> pair2 = Pairs.emptyPair();
+        Pair<String, String> pair = Pair.create("key", "value");
+        Pair<String, String> pair2 = Pair.emptyPair();
         Assertions.assertNotEquals(pair.hashCode(), pair2.hashCode());
     }
 
     @Test
     public void testToString() {
-        Pair<Pair<String, String>, Pair<String, String>> pair = Pairs.of(Pairs.of("key", "value"), Pairs.of("key", "value"));
+        Pair<Pair<String, String>, Pair<String, String>> pair = Pair.create(Pair.create("key", "value"), Pair.create("key", "value"));
         Assertions.assertEquals("{\"key\":{\"key\":\"key\", \"value\":\"value\"}, \"value\":{\"key\":\"key\", \"value\":\"value\"}}", pair.toString());
     }
 
     @Test
     public void mapKey() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Pair<Integer, String> newPair = pair.mapKey((k) -> 1);
         Assertions.assertEquals(Integer.valueOf(1), newPair.key());
     }
 
     @Test
     public void mapValue() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Pair<String, Integer> newPair = pair.mapValue((k) -> 1);
         Assertions.assertEquals(Integer.valueOf(1), newPair.value());
     }
 
     @Test
     public void hasKey() {
-        Pair<String, String> pair = Pairs.of("key", "value");
+        Pair<String, String> pair = Pair.create("key", "value");
         Assertions.assertTrue(pair.hasKey());
     }
 }

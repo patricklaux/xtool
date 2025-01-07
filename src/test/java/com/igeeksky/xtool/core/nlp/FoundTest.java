@@ -29,13 +29,13 @@ public class FoundTest {
     @Test
     public void getStart() {
         Found<String> found = new Found<>(0, 2, null, "ac");
-        Assertions.assertEquals(0, found.getStart());
+        Assertions.assertEquals(0, found.begin());
     }
 
     @Test
     public void getEnd() {
         Found<String> found = new Found<>(0, 2, null, "ac");
-        Assertions.assertEquals(2, found.getEnd());
+        Assertions.assertEquals(2, found.end());
     }
 
     @Test

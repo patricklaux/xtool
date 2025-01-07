@@ -87,11 +87,9 @@ public abstract class BaseNode<V> implements Iterable<Node<V>>, Map.Entry<Charac
         if (this == o) {
             return true;
         }
-        if (!(o instanceof BaseNode)) {
+        if (!(o instanceof BaseNode<?> baseNode)) {
             return false;
         }
-
-        BaseNode<?> baseNode = (BaseNode<?>) o;
 
         if (getC() != baseNode.getC()) {
             return false;

@@ -1,8 +1,7 @@
 package com.igeeksky.xtool.core.json;
 
+import com.igeeksky.xtool.core.Pair;
 import com.igeeksky.xtool.core.collection.Maps;
-import com.igeeksky.xtool.core.function.tuple.Pair;
-import com.igeeksky.xtool.core.function.tuple.Pairs;
 import com.igeeksky.xtool.core.lang.StringUtils;
 
 import java.beans.Transient;
@@ -43,7 +42,7 @@ public class MethodResolver {
 
         List<Pair<char[], FieldReader>> properties = new ArrayList<>(readMethods.size());
         for (Map.Entry<String, FieldReader> entry : readMethods.entrySet()) {
-            properties.add(Pairs.of(entry.getKey().toCharArray(), entry.getValue()));
+            properties.add(Pair.create(entry.getKey().toCharArray(), entry.getValue()));
         }
 
         return properties;

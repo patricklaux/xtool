@@ -15,24 +15,28 @@
  */
 
 
-package com.igeeksky.xtool.core.function.tuple;
+package com.igeeksky.xtool.core.tuple;
+
+import com.igeeksky.xtool.core.lang.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * 一元组
+ * 二元组
  *
  * @author Patrick.Lau
  * @since 0.0.4 2021-11-10
  */
-public class Tuple1<T1> implements Tuple {
+public class Tuple2<T1, T2> implements Tuple {
 
     final T1 t1;
+    final T2 t2;
 
-    Tuple1(T1 t1) {
+    Tuple2(T1 t1, T2 t2) {
         this.t1 = Objects.requireNonNull(t1, "t1");
+        this.t2 = Objects.requireNonNull(t2, "t2");
     }
 
     /**
@@ -45,24 +49,44 @@ public class Tuple1<T1> implements Tuple {
     }
 
     /**
+     * 获取第二个元素
+     *
+     * @return 第二个元素
+     */
+    public T2 getT2() {
+        return t2;
+    }
+
+    /**
      * 转换第一个元素，并返回新的元组
      *
      * @param mapper 转换函数
      * @param <R>    转换类型
      * @return 包含转换后的对象的新的元组
      */
-    public <R> Tuple1<R> mapT1(Function<T1, R> mapper) {
-        return new Tuple1<>(mapper.apply(t1));
+    public <R> Tuple2<R, T2> mapT1(Function<T1, R> mapper) {
+        return new Tuple2<>(mapper.apply(t1), t2);
+    }
+
+    /**
+     * 转换第二个元素，并返回新的元组
+     *
+     * @param mapper 转换函数
+     * @param <R>    转换类型
+     * @return 包含转换后的对象的新的元组
+     */
+    public <R> Tuple2<T1, R> mapT2(Function<T2, R> mapper) {
+        return new Tuple2<>(t1, mapper.apply(t2));
     }
 
     @Override
     public int size() {
-        return 1;
+        return 2;
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[]{t1};
+        return new Object[]{t1, t2};
     }
 
     @Override
@@ -70,16 +94,18 @@ public class Tuple1<T1> implements Tuple {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Tuple1)) {
+        if (!(o instanceof Tuple2<?, ?> tuple2)) {
             return false;
         }
-        Tuple1<?> tuple1 = (Tuple1<?>) o;
-        return getT1().equals(tuple1.getT1());
+        return ObjectUtils.deepEquals(t1, tuple2.t1)
+                && ObjectUtils.deepEquals(t2, tuple2.t2);
     }
 
     @Override
     public int hashCode() {
-        return getT1().hashCode();
+        int result = ObjectUtils.deepHashCode(t1);
+        result = 31 * result + ObjectUtils.deepHashCode(t2);
+        return result;
     }
 
     @Override
