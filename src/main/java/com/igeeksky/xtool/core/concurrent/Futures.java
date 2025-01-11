@@ -123,7 +123,6 @@ public class Futures {
                     nanos = endTime - System.nanoTime();
                 }
             }
-
             return i;
         } catch (TimeoutException e) {
             return i;
@@ -188,9 +187,6 @@ public class Futures {
                 if (future.isDone()) {
                     continue;
                 }
-                if (future.isCancelled()) {
-                    continue;
-                }
                 future.cancel(mayInterruptIfRunning);
             }
         }
@@ -208,9 +204,6 @@ public class Futures {
             Future<?> future = futures.get(i);
             if (future != null) {
                 if (future.isDone()) {
-                    continue;
-                }
-                if (future.isCancelled()) {
                     continue;
                 }
                 future.cancel(true);

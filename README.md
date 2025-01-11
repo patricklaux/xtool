@@ -20,14 +20,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.1.0'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.1.1'
 ```
 
 ### 2.3.编译安装
@@ -76,32 +76,120 @@ mvn clean install
 
 **！！！总之，欢迎 pr，欢迎 issue！！！**
 
+
+
 ## 4. 更新日志
 
-| 版本   | 说明                                                         |
-| ------ | ------------------------------------------------------------ |
-| 1.1.0  | 1. remove @ParameterNames<br />2. add ObjectUtils<br />3. tuple move to root package |
-| 1.0.22 | add ImmutableByteArray                                       |
-| 1.0.21 | KeyValue 和 ByteArray 增加静态方法                           |
-| 1.0.20 | Futures 增加 awaitAll 方法                                   |
-| 1.0.19 | 优化 SimpleJSON 实现：如果 field 为 public，即使无 readMethod，也读取属性值 |
-| 1.0.18 | 优化 RandomUtils 实现，通过 threadId 计算 index ，并获取数组对应 index 的 Random 实例 |
-| 1.0.17 | 优化 SimpleJSON 实现，仅获取 readMethod，支持非标准 JavaBean |
-| 1.0.16 | remove ThreadLocalRandom，change to Random[]                 |
-| 1.0.15 | add ArrayUtils.fill                                          |
-| 1.0.14 | 1. add Codec <br />2. add Compressor                         |
-| 1.0.13 | 1. add Futures <br />2. add ByteArray <br />3. add KeyValue & ExpireKeyValue |
-| 1.0.12 | 1. 修改部分文档说明                                          |
-| 1.0.11 | 1. 添加 ConcurrentHashSet <br />2. 添加 PlatformThreadFactory<br />3. 添加 VirtualThreadFactory<br />4. 升级为支持 JDK 21，不再支持 JDK 17 |
-| 1.0.10 | 1. 添加 SimpleJSON（仅实现对象转 JSONString）<br />2. 升级为支持 JDK 17，不再支持 JDK 8 |
-| 1.0.9  | 1. 添加 RandomUtils                                          |
-| 1.0.8  | 1. 添加 Maps.newHashMap方法                                  |
-| 1.0.7  | 1. 添加 IOUtils.closeQuietly方法                             |
-| 1.0.6  | 1. Found 删除 node 字段，NodeHelper 增加精确匹配方法         |
-| 1.0.5  | 1. 调整部分方法返回值                                        |
-| 1.0.4  | 1. 增加测试用例；2. 编写参考文档；3.调整部分代码             |
-| 1.0.3  | 1. 调整DigestUtils默认小写                                   |
-| 1.0.2  | 1. 补充完整注释                                              |
-| 1.0.1  | 1. 增加测试用例 2. 删除 Lists类                              |
-| 1.0.0  | 1. 添加常用工具类 2. 添加 ConcurrentHashTrie 字典树          |
+### 1.1.1
+
+1. add RingBuffer
+
+### 1.1.0
+
+1. remove @ParameterNames
+2. add ObjectUtils
+3. tuple move to root package
+
+### 1.0.22
+
+1. add ImmutableByteArray
+
+### 1.0.21
+
+1. KeyValue 和 ByteArray 增加静态方法
+
+### 1.0.20
+
+1. Futures 增加 awaitAll 方法
+
+### 1.0.19
+
+1. 优化 SimpleJSON 实现：如果 field 为 public，即使无 readMethod，也读取属性值
+
+### 1.0.18
+
+1. 优化 RandomUtils 实现，通过 threadId 计算 index ，并获取数组对应 index 的 Random 实例
+
+### 1.0.17
+
+1. 优化 SimpleJSON 实现，仅获取 readMethod，支持非标准 JavaBean
+
+### 1.0.16
+
+1. remove ThreadLocalRandom，change to Random[]
+
+### 1.0.15
+
+1. add ArrayUtils.fill
+
+### 1.0.14
+
+1. add Codec
+2. add Compressor
+
+### 1.0.13
+
+1. add Futures
+2. add ByteArray
+3. add KeyValue & ExpireKeyValue
+
+### 1.0.12
+
+1. 修改部分文档说明
+
+### 1.0.11
+
+1. 添加 ConcurrentHashSet
+2. 添加 PlatformThreadFactory
+3. 添加 VirtualThreadFactory
+4. 升级为支持 JDK 21，不再支持 JDK 17
+
+### 1.0.10
+
+1. 添加 SimpleJSON（仅实现对象转 JSONString）
+2. 升级为支持 JDK 17，不再支持 JDK 8
+
+### 1.0.9
+
+1. 添加 RandomUtils
+
+### 1.0.8
+
+1. 添加 Maps.newHashMap方法
+
+### 1.0.7
+
+1. 添加 IOUtils.closeQuietly方法
+
+### 1.0.6
+
+1. Found 删除 node 字段，NodeHelper 增加精确匹配方法
+
+### 1.0.5
+
+1. 调整部分方法返回值
+
+### 1.0.4
+
+1. 增加测试用例
+2. 编写参考文档
+3. 调整部分代码
+
+### 1.0.3
+
+1. 调整DigestUtils默认小写
+
+### 1.0.2
+
+1. 补充完整注释
+
+### 1.0.1
+
+1. 增加测试用例
+2. 删除 Lists类
+
+### 1.0.0
+
+1. 添加常用工具类 
+2. 添加 ConcurrentHashTrie 字典树
 
