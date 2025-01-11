@@ -83,6 +83,7 @@ mvn clean install
 ### 1.1.1
 
 1. add RingBuffer
+2. add FuturesTest
 
 ### 1.1.0
 
