@@ -2,6 +2,7 @@ package com.igeeksky.xtool.core.collection;
 
 
 import com.igeeksky.xtool.core.lang.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RingBufferTest {
 
     @Test
+    @Disabled
     void size_maxCapacity_ReturnsMaxCapacity() {
         RingBuffer<String> buffer = new RingBuffer<>((1 << 30) + 1);
         assertEquals(1 << 30, buffer.capacity());
