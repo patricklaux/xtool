@@ -20,14 +20,14 @@ xtool 是一个小小的 Java 工具集，遵循简单、可靠的原则，不�
 <dependency>
     <groupId>com.igeeksky.xtool</groupId>
     <artifactId>xtool</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
 ### 2.2.Gradle
 
 ```groovy
-implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.1.1'
+implementation group: 'com.igeeksky.xtool', name: 'xtool', version: '1.1.2'
 ```
 
 ### 2.3.编译安装
@@ -79,6 +79,10 @@ mvn clean install
 
 
 ## 4. 更新日志
+
+### 1.1.2
+
+1. add Shutdown API
 
 ### 1.1.1
 
