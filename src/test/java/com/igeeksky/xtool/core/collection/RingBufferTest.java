@@ -377,7 +377,7 @@ public class RingBufferTest {
 
     @Test
     void test_TwoOffer_OnePoll_Concurrently() throws InterruptedException {
-        RingBuffer<String> buffer = new RingBuffer<>(2048);
+        RingBuffer<String> buffer = new RingBuffer<>(1000);
         StringConsumer consumer = new StringConsumer();
         CountDownLatch latch = new CountDownLatch(2);
 
@@ -402,7 +402,7 @@ public class RingBufferTest {
         thread1.start();
         thread2.start();
 
-        latch.await(2000, TimeUnit.MILLISECONDS);
+        LockSupport.parkNanos(10);
 
         for (int i = 0; i < 2001; i++) {
             String polled = buffer.poll();
@@ -412,6 +412,21 @@ public class RingBufferTest {
             }
             assertEquals(consumer.getCount(), buffer.reads());
         }
+
+        System.out.println("buffer.reads()1:" + buffer.reads());
+
+        boolean ignored = latch.await(100, TimeUnit.MILLISECONDS);
+
+        for (int i = 0; i < 2001; i++) {
+            String polled = buffer.poll();
+            if (polled != null) {
+                consumer.accept(polled);
+                continue;
+            }
+            assertEquals(consumer.getCount(), buffer.reads());
+        }
+
+        System.out.println("buffer.reads()2:" + buffer.reads());
 
         Set<String> values = consumer.getValues();
         for (int i = 0; i < 2000; i++) {
