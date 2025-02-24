@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 import java.util.function.Consumer;
@@ -375,7 +376,7 @@ public class RingBufferTest {
     }
 
     @Test
-    void test_TwoOffer_OnePoll_Concurrently() {
+    void test_TwoOffer_OnePoll_Concurrently() throws InterruptedException {
         RingBuffer<String> buffer = new RingBuffer<>(2048);
         StringConsumer consumer = new StringConsumer();
         CountDownLatch latch = new CountDownLatch(2);
@@ -401,6 +402,8 @@ public class RingBufferTest {
         thread1.start();
         thread2.start();
 
+        latch.await(2000, TimeUnit.MILLISECONDS);
+
         for (int i = 0; i < 2001; i++) {
             String polled = buffer.poll();
             if (polled != null) {
@@ -408,7 +411,6 @@ public class RingBufferTest {
                 continue;
             }
             assertEquals(consumer.getCount(), buffer.reads());
-            LockSupport.parkNanos(100);
         }
 
         Set<String> values = consumer.getValues();
