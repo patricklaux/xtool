@@ -72,7 +72,7 @@ public class FuturesTest {
         when(future2.isDone()).thenReturn(true);
         when(future3.isDone()).thenReturn(true);
 
-        int result = Futures.awaitAll(1000, TimeUnit.MILLISECONDS, 0, new Future<?>[]{future1, future2, future3});
+        int result = Futures.awaitAll(new Future<?>[]{future1, future2, future3}, 1000, TimeUnit.MILLISECONDS, 0);
         assertEquals(3, result);
     }
 
@@ -82,7 +82,7 @@ public class FuturesTest {
         when(future2.isDone()).thenReturn(true);
         when(future3.isDone()).thenReturn(true);
 
-        int result = Futures.checkAll(0, new Future<?>[]{future1, future2, future3});
+        int result = Futures.checkAll(new Future<?>[]{future1, future2, future3});
         assertEquals(3, result);
     }
 
@@ -92,13 +92,13 @@ public class FuturesTest {
         when(future2.isDone()).thenReturn(false);
         when(future3.isDone()).thenReturn(true);
 
-        int result = Futures.checkAll(0, new Future<?>[]{future1, future2, future3});
+        int result = Futures.checkAll(new Future<?>[]{future1, future2, future3});
         assertEquals(1, result);
     }
 
     @Test
     public void checkAll_EmptyList_ReturnsZero() {
-        int result = Futures.checkAll(0, new Future<?>[]{});
+        int result = Futures.checkAll(new Future<?>[]{});
         assertEquals(0, result);
     }
 
@@ -108,7 +108,7 @@ public class FuturesTest {
         when(future2.isDone()).thenReturn(true);
         when(future3.isDone()).thenReturn(true);
 
-        Futures.cancelAll(0, new Future<?>[]{future1, future2, future3}, false);
+        Futures.cancelAll(new Future<?>[]{future1, future2, future3}, false);
 
         verify(future1, never()).cancel(anyBoolean());
         verify(future2, never()).cancel(anyBoolean());
@@ -117,12 +117,12 @@ public class FuturesTest {
 
     @Test
     public void cancelAll_EmptyList_NoCancellation() {
-        Futures.cancelAll(0, new Future<?>[]{}, false);
+        Futures.cancelAll(new Future<?>[]{}, false);
     }
 
     @Test
     public void cancelAll_ListWithNulls_NoCancellation() {
-        Futures.cancelAll(0, new Future<?>[]{future1, null, future2}, false);
+        Futures.cancelAll(new Future<?>[]{future1, null, future2}, false);
     }
 
 }
