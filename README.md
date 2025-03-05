@@ -80,7 +80,7 @@ mvn clean install
 
 ## 4. 更新日志
 
-### 1.2.0
+### 1.2.1
 
 * `Futures` InterruptedException: interrupt currentThread
 
