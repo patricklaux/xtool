@@ -21,6 +21,42 @@ public final class Futures {
     }
 
     /**
+     * 等待任务完成并返回任务执行结果（无时间限制）
+     *
+     * @param future 任务
+     * @return 任务执行结果
+     */
+    public static <T> T await(Future<T> future) {
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
+        }
+    }
+
+    /**
+     * 等待任务完成并返回任务执行结果（无时间限制）
+     *
+     * @param future 任务
+     * @return 任务执行结果
+     */
+    public static <T> T await(Future<T> future, long timeout, TimeUnit unit) {
+        try {
+            return future.get(timeout, unit);
+        } catch (TimeoutException e) {
+            throw new ConcurrentException("Timeout:wait " + timeout + unit.name(), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
+        }
+    }
+
+    /**
      * 等待所有任务完成（无时间限制）
      * <p>
      * 默认从 0 开始检查并等待任务完成
@@ -49,8 +85,11 @@ public final class Futures {
                     future.get();
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ConcurrentException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
         }
     }
 
@@ -83,8 +122,11 @@ public final class Futures {
                     future.get();
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            throw new ConcurrentException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
         }
     }
 
@@ -135,8 +177,11 @@ public final class Futures {
             return i;
         } catch (TimeoutException e) {
             return i;
-        } catch (Exception e) {
-            throw new ConcurrentException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
         }
     }
 
@@ -186,8 +231,11 @@ public final class Futures {
             return i;
         } catch (TimeoutException e) {
             return i;
-        } catch (Exception e) {
-            throw new ConcurrentException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ConcurrentException("Interrupted", e);
+        } catch (ExecutionException e) {
+            throw new ConcurrentException(e.getMessage(), e.getCause());
         }
     }
 
